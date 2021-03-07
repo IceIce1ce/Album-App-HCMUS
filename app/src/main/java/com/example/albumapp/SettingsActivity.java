@@ -54,7 +54,13 @@ public class SettingsActivity extends AppCompatActivity {
         btnChangePin = findViewById(R.id.btn_changePin);
         btnChangePin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                finish();
+                if(password.equals("")){
+                    Toast.makeText(SettingsActivity.this, "Pin hasn't been set", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    startActivity(new Intent(SettingsActivity.this, ChangePasswordActivity.class));
+                    finish();
+                }
             }
         });
         btnAbout = findViewById(R.id.btn_about);

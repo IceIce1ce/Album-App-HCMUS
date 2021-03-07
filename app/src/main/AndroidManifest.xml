@@ -12,6 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AlbumApp">
+        <activity android:name=".ChangePasswordActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".SettingsActivity"/>
         <activity android:name=".SetPasswordActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".PasswordActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
