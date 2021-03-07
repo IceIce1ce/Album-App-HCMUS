@@ -13,7 +13,9 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class PicturesActivity extends Fragment {
     View pictures;
@@ -56,7 +58,14 @@ public class PicturesActivity extends Fragment {
         gallery.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), "Info of image: " + images.get(position), Toast.LENGTH_SHORT).show();
+                String img_path = images.get(position);
+                ImageInfo s = new ImageInfo(img_path);
+                Toast.makeText(getActivity(), "Info of image: " + img_path
+                        + "\nFolder: " + s.getFolder()
+                        + "\nFilename: " + s.getFilename()
+                        + "\nDate: " + s.getDate()
+                        + "\nSize: " + s.getSize()
+                        + "\nResolution: " + s.getResolution(), Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
