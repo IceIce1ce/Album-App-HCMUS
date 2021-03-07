@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.albumapp.MainActivity" >
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/baseline_search_24"
+        android:orderInCategory="140"
+        app:showAsAction="ifRoom|withText"
+        android:title="Search"/>
+
+    <item
+        android:id="@+id/action_sort"
+        android:icon="@drawable/ic_baseline_sort_24"
+        android:orderInCategory="140"
+        app:showAsAction="ifRoom|withText"
+        android:title="Sort"/>
+
+    <item
+        android:id="@+id/action_more_vert"
+        android:icon="@drawable/ic_baseline_more_vert_24"
+        android:orderInCategory="140"
+        app:showAsAction="ifRoom|withText"
+        android:title="More"/>
+</menu>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/group_mode"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_pictures"
+            android:icon="@drawable/round_photo_library_24"
+            android:title="Pictures"/>
+        <item
+            android:id="@+id/nav_album"
+            android:icon="@drawable/round_photo_album_24"
+            android:title="Album"/>
+        <item
+            android:id="@+id/nav_favorite"
+            android:icon="@drawable/round_favorite_24"
+            android:title="Favorite" />
+        <item
+            android:id="@+id/nav_category_image"
+            android:icon="@drawable/ic_baseline_category_24"
+            android:title="Category image" />
+    </group>
+
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/round_settings_24"
+        android:title="Settings"/>
+    <item
+        android:id="@+id/nav_feedback"
+        android:icon="@drawable/round_feedback_24"
+        android:title="Send feedback"/>
+    <item
+        android:id="@+id/nav_help"
+        android:icon="@drawable/round_help_outline_24"
+        android:title="Help"/>
+</menu>

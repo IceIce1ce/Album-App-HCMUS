@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_setPin"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:padding="20dp"
+            android:background="@drawable/custom_button"
+            android:text="Set pin"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:textAlignment="viewStart"
+            android:textAllCaps="false">
+        </androidx.appcompat.widget.AppCompatButton>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_deletePin"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:padding="20dp"
+            android:background="@drawable/custom_button"
+            android:text="Delete pin"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:textAlignment="viewStart"
+            android:textAllCaps="false">
+        </androidx.appcompat.widget.AppCompatButton>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_changePin"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:padding="20dp"
+            android:background="@drawable/custom_button"
+            android:text="Change pin"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:textAlignment="viewStart"
+            android:textAllCaps="false">
+        </androidx.appcompat.widget.AppCompatButton>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_about"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:padding="20dp"
+            android:background="@drawable/custom_button"
+            android:text="About us"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:textAlignment="viewStart"
+            android:textAllCaps="false">
+        </androidx.appcompat.widget.AppCompatButton>
+    </LinearLayout>
+</ScrollView>
