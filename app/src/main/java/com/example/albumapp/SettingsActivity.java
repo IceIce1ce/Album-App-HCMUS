@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 public class SettingsActivity extends AppCompatActivity {
     private DataPrefs myPrefs;
-    Button btnAbout, btnSetPin, btnDeletePin, btnChangePin;
+    Button btnSetPin, btnDeletePin, btnChangePin;
     String password;
 
     @Override
@@ -61,13 +61,6 @@ public class SettingsActivity extends AppCompatActivity {
                     startActivity(new Intent(SettingsActivity.this, ChangePasswordActivity.class));
                     finish();
                 }
-            }
-        });
-        btnAbout = findViewById(R.id.btn_about);
-        btnAbout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
             }
         });
     }

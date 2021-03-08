@@ -3,7 +3,8 @@
     package="com.example.albumapp">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- cause permission denied if android version >= 10.0
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
 
     <application
         android:allowBackup="true"
@@ -11,33 +12,32 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AlbumApp">
-        <activity android:name=".AboutActivity"></activity>
-        <activity
-            android:name=".ChangePasswordActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        android:theme="@style/Theme.AlbumApp"
+        android:requestLegacyExternalStorage="true">
+        <activity android:name=".AboutActivity" />
+        <activity android:name=".ChangePasswordActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".SettingsActivity" />
-        <activity
-            android:name=".SetPasswordActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".PasswordActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".GifIntroActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".SplashScreenActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity android:name=".SetPasswordActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".PasswordActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".MainActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".GifIntroActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".SplashScreenActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.mydomain.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>
