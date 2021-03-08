@@ -63,10 +63,12 @@ public class ImageInfo {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.exif_full = "Camera: " + this.exif_camera_model +"\nApeture: " + this.exif_apeture + "\nFocal Length: " + this.exif_focal_length + "mm"
-                + "\nWhite Balance: " + this.exif_WB
-                + "\nISO: " + this.exif_ISO
-                + "\nShutter speed: " + this.exif_shutter_speed + "s";
+        this.exif_full = "Camera: " + ((this.exif_camera_model != null) ? this.exif_camera_model : "unknown")
+                        +"\nApeture: " +  ((this.exif_apeture != null) ? this.exif_apeture : "unknown")
+                        + "\nFocal Length: " + ((this.exif_focal_length != null) ? (this.exif_focal_length + "mm") : "unknown")
+                        + "\nWhite Balance: " + ((this.exif_WB != null) ? this.exif_WB : "unknown")
+                        + "\nISO: " + ((this.exif_ISO != null) ? this.exif_ISO : "unknown")
+                        + "\nShutter speed: " + ((this.exif_shutter_speed != null) ? (this.exif_shutter_speed + "s") : "unknown");
     }
 
     public String getDate() {
@@ -81,7 +83,7 @@ public class ImageInfo {
             return nf.format(tmp) + "MB";
         }
         else {
-            return Long.toString(this.img_size) + "KB";
+            return Long.toString(this.img_size) + "kB";
         }
     }
 
