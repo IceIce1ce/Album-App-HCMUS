@@ -110,10 +110,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else if (id == R.id.nav_settings) {
             startActivity(new Intent(MainActivity.this, SettingsActivity.class));
         }
-        else if (id == R.id.nav_feedback) {
-            Toast.makeText(this, "Give your feedback", Toast.LENGTH_SHORT).show();
+        else if (id == R.id.nav_about) {
+            startActivity(new Intent(MainActivity.this, AboutActivity.class));
         }
-        else if (id == R.id.nav_help) {
+        else if (id == R.id.nav_support) {
             Toast.makeText(this, "Need support", Toast.LENGTH_SHORT).show();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
