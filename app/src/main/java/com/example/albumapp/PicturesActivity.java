@@ -65,7 +65,8 @@ public class PicturesActivity extends Fragment {
                         + "\nFilename: " + s.getFilename()
                         + "\nDate: " + s.getDate()
                         + "\nSize: " + s.getSize()
-                        + "\nResolution: " + s.getResolution(), Toast.LENGTH_SHORT).show();
+                        + "\nResolution: " + s.getResolution()
+                        + "\n" + s.getExif(), Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
