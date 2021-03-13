@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -20,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class PicturesActivity extends Fragment {
     View pictures;
@@ -65,8 +69,20 @@ public class PicturesActivity extends Fragment {
                 //get details of img for displaying in dialog
                 String img_path = images.get(position);
                 ImageInfo s = new ImageInfo(img_path);
-                String DetailsImg = "Name\n" + s.getFilename() + "\n\n" + "Path\n" + img_path + "\n\n" + "Size\n" + s.getSize() + "\n\n"
-                        + "Resolution\n" + s.getResolution() + "\n\n" + "Date\n" + s.getDate() + "\n\n" + "EXIF" + "\n" + s.getExif();
+                //convert lat and long of img location to address
+                Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+                List<Address> addresses;
+                String realAddressImg = "unknown";
+                try{
+                    addresses = geocoder.getFromLocation(s.getLatLocation(), s.getLongLocation(), 1);
+                    realAddressImg = addresses.get(0).getAddressLine(0);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+                String DetailsImg = "Name\n" + s.getFilename() + "\n\nPath\n" + img_path + "\n\nSize\n" + s.getSize() +
+                        "\n\nResolution\n" + s.getResolution() + "\n\nDate\n" + s.getDate() + "\n\nEXIF\n" + s.getExif()
+                        + "\n\nLocation\n" + realAddressImg;
                 TextView title = new TextView(getContext());
                 title.setPadding(60, 30, 0, 0);
                 title.setText("Details");

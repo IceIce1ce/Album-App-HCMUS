@@ -23,6 +23,8 @@ public class ImageInfo {
     private int width = -1;
     private int height = -1;
     private long img_size = -1;
+    //img location
+    private float latImg, longImg;
 
     ImageInfo(String path){
         if (path.equals("")) return;
@@ -60,15 +62,25 @@ public class ImageInfo {
             this.exif_camera_model = exif.getAttribute(ExifInterface.TAG_MODEL);
             this.exif_apeture = exif.getAttribute(ExifInterface.TAG_APERTURE);
             this.exif_focal_length = exif.getAttribute(ExifInterface.TAG_FOCAL_LENGTH);
+            //img location
+            float[] LatLong = new float[2];
+            if(exif.getLatLong(LatLong)){
+                this.latImg = LatLong[0];
+                this.longImg = LatLong[1];
+            }
+            else{
+                this.latImg = 0;
+                this.longImg = 0;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
         this.exif_full = "Camera: " + ((this.exif_camera_model != null) ? this.exif_camera_model : "unknown")
-                        +"\nApeture: " +  ((this.exif_apeture != null) ? this.exif_apeture : "unknown")
-                        + "\nFocal Length: " + ((this.exif_focal_length != null) ? (this.exif_focal_length + "mm") : "unknown")
-                        + "\nWhite Balance: " + ((this.exif_WB != null) ? this.exif_WB : "unknown")
-                        + "\nISO: " + ((this.exif_ISO != null) ? this.exif_ISO : "unknown")
-                        + "\nShutter speed: " + ((this.exif_shutter_speed != null) ? (this.exif_shutter_speed + "s") : "unknown");
+                +"\nApeture: " +  ((this.exif_apeture != null) ? this.exif_apeture : "unknown")
+                + "\nFocal Length: " + ((this.exif_focal_length != null) ? (this.exif_focal_length + "mm") : "unknown")
+                + "\nWhite Balance: " + ((this.exif_WB != null) ? this.exif_WB : "unknown")
+                + "\nISO: " + ((this.exif_ISO != null) ? this.exif_ISO : "unknown")
+                + "\nShutter speed: " + ((this.exif_shutter_speed != null) ? (this.exif_shutter_speed + "s") : "unknown");
     }
 
     public String getDate() {
@@ -83,7 +95,7 @@ public class ImageInfo {
             return nf.format(tmp) + "MB";
         }
         else {
-            return Long.toString(this.img_size) + "kB";
+            return Long.toString(this.img_size) + "KB";
         }
     }
 
@@ -105,5 +117,14 @@ public class ImageInfo {
 
     public String getExif() {
         return this.exif_full;
+    }
+
+    //img location
+    public float getLatLocation(){
+        return this.latImg;
+    }
+
+    public float getLongLocation(){
+        return this.longImg;
     }
 }
