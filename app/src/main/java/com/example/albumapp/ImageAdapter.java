@@ -64,7 +64,7 @@ public class ImageAdapter extends BaseAdapter {
         ArrayList<String> albumList = new ArrayList<>();
         //todo: get MediaStore.Videos
         Cursor cursor = activity.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                new String[]{MediaStore.MediaColumns.DATA}, null, null, null); //sortOrder="DATE_MODIFIED ASC"
+                new String[]{MediaStore.MediaColumns.DATA}, null, null, "DATE_MODIFIED DESC"); //default: null
         if(cursor != null && cursor.getCount() > 0){
             while(cursor.moveToNext()){
                 albumList.add(cursor.getString(0));

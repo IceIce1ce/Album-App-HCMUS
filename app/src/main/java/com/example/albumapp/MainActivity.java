@@ -1,24 +1,40 @@
 package com.example.albumapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.Manifest;
+import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.provider.MediaStore;
+import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private DrawerLayout drawerLayout;
@@ -26,6 +42,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar toolBar;
     FragmentTransaction ft;
     PicturesActivity pictures;
+    //FAB for camera and record
+    FloatingActionButton fabRecord, fabCamera, fabOpenClose;
+    boolean flagFAB = true;
+    //capture image and record video
+    private static final int MY_CAMERA_REQUEST_CODE = 7070, MY_VIDEO_REQUEST_CODE = 7078;
+    private Uri imageUriCapture, videoUriCapture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolBar = findViewById(R.id.nav_actionBar);
         setSupportActionBar(toolBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //todo: add floating action btn for accessing camera
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(drawerToggle);
@@ -49,6 +70,141 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.commit();
             toolBar.setTitle("Image");
         }
+        //FAB for camera and record
+        fabRecord = findViewById(R.id.fabRecord);
+        fabCamera = findViewById(R.id.fabCamera);
+        fabOpenClose = findViewById(R.id.fabOpenClose);
+        fabOpenClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (flagFAB) {
+                    fabRecord.show();
+                    fabCamera.show();
+                    fabRecord.animate().translationY(-(fabCamera.getCustomSize() + fabOpenClose.getCustomSize() + 20));
+                    fabCamera.animate().translationY(-(fabOpenClose.getCustomSize()));
+                    fabRecord.animate().translationX(-12);
+                    fabCamera.animate().translationX(-12);
+                    fabOpenClose.setImageResource(R.drawable.ic_baseline_close_24);
+                    flagFAB = false;
+                }
+                else {
+                    fabRecord.hide();
+                    fabCamera.hide();
+                    fabRecord.animate().translationY(0);
+                    fabCamera.animate().translationY(0);
+                    fabOpenClose.setImageResource(R.drawable.ic_baseline_add_24);
+                    flagFAB = true;
+                }
+            }
+        });
+        fabRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startRecordVideo(v);
+            }
+        });
+        fabCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(MainActivity.this, "Take picture", Toast.LENGTH_SHORT).show();
+                startCaptureImage(v);
+            }
+        });
+    }
+
+    //capture image and record video
+    void startRecordVideo(View view){
+        Dexter.withContext(this).withPermissions(Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION).withListener(new MultiplePermissionsListener() {
+            @Override
+            public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
+                if(multiplePermissionsReport.areAllPermissionsGranted()){
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(MediaStore.Video.Media.TITLE, "New Video");
+                    contentValues.put(MediaStore.Video.Media.DESCRIPTION, "From your camera");
+                    videoUriCapture = getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, contentValues);
+                    Intent intent_video = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                    intent_video.putExtra(MediaStore.EXTRA_OUTPUT, videoUriCapture);
+                    startActivityForResult(intent_video, MY_VIDEO_REQUEST_CODE);
+                }
+                else{
+                    showSettingsPermission(); //show setting camera permission if fail
+                }
+            }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
+                permissionToken.continuePermissionRequest(); //keep settings dialog shown after permission denied
+            }
+        }).check();
+    }
+
+    void startCaptureImage(View view){
+        Dexter.withContext(this).withPermissions(Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION).withListener(new MultiplePermissionsListener() {
+            @Override
+            public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
+                if(multiplePermissionsReport.areAllPermissionsGranted()){
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(MediaStore.Images.Media.TITLE, "New Picture");
+                    contentValues.put(MediaStore.Images.Media.DESCRIPTION, "From your camera");
+                    imageUriCapture = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+                    Intent intent_camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    intent_camera.putExtra(MediaStore.EXTRA_OUTPUT, imageUriCapture);
+                    startActivityForResult(intent_camera, MY_CAMERA_REQUEST_CODE);
+                }
+                else{
+                    showSettingsPermission(); //show setting camera permission if fail
+                }
+            }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
+                permissionToken.continuePermissionRequest(); //keep settings dialog shown after permission denied
+            }
+        }).check();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            if(requestCode == MY_CAMERA_REQUEST_CODE){
+                Toast.makeText(this, "Capture image successfully", Toast.LENGTH_SHORT).show();
+            }
+            else if(requestCode == MY_VIDEO_REQUEST_CODE){
+                Toast.makeText(this, "Record video successfully", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else{
+            Toast.makeText(this, "Capture image or record video failed", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void showSettingsPermission() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("Camera Permission");
+        builder.setMessage("This app needs camera permission to use this feature. You can grant them in app settings");
+        builder.setPositiveButton("GO TO SETTINGS", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                openSettingsPhone();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+
+    }
+
+    private void openSettingsPhone() {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
+        intent.setData(uri);
+        startActivityForResult(intent, 101);
     }
 
     @Override

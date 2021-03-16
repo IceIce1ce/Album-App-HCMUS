@@ -42,4 +42,6 @@ dependencies {
     //glide for showing image
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+    //request permission simplicity
+    implementation 'com.karumi:dexter:6.2.2'
 }
