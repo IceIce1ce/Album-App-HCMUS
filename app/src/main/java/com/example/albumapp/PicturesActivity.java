@@ -1,7 +1,10 @@
 package com.example.albumapp;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -9,7 +12,9 @@ import android.app.RecoverableSecurityException;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.IntentSender;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
@@ -105,15 +110,17 @@ public class PicturesActivity extends Fragment {
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 switch(item.getItemId()){
                     case R.id.share_items:
-                        /*
-                        Intent share_intent = new Intent();
-                        share_intent.setAction(Intent.ACTION_SEND_MULTIPLE);
-                        share_intent.putExtra(Intent.EXTRA_SUBJECT, "Here are some files.");
-                        share_intent.setType("image/*");
-                        share_intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUriArray);
-                        startActivity(share_intent);
-                        */
-                        Toast.makeText(getContext(), "Share item", Toast.LENGTH_SHORT).show();
+                        //share multiple images
+                        Intent share_intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                        ArrayList<Uri> uris = new ArrayList<>();
+                        for(int i = 0; i < imageUriArray.size(); i++){
+                            share_intent.setType("image/*"); //application/pdf/*|image|video/*
+                            File mFile = new File(imageUriArray.get(i).toString());
+                            Uri shareFileUri = FileProvider.getUriForFile(getContext(), "com.mydomain.fileprovider", mFile);
+                            uris.add(shareFileUri);
+                        }
+                        share_intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+                        startActivity(Intent.createChooser(share_intent, "Select app"));
                         mode.finish();
                         return true;
                     case R.id.delete_items:
@@ -182,7 +189,7 @@ public class PicturesActivity extends Fragment {
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
-
+                imageUriArray.clear();
             }
         });
         /*show info of 1 image when perform a long click
