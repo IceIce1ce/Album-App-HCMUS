@@ -5,16 +5,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.Manifest;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -29,11 +30,9 @@ import com.google.android.material.navigation.NavigationView;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -48,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //capture image and record video
     private static final int MY_CAMERA_REQUEST_CODE = 7070, MY_VIDEO_REQUEST_CODE = 7078;
     private Uri imageUriCapture, videoUriCapture;
+    //refresh current gridview image
+    private SwipeRefreshLayout swipeImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,8 +107,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fabCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(MainActivity.this, "Take picture", Toast.LENGTH_SHORT).show();
                 startCaptureImage(v);
+            }
+        });
+        //refresh current gridview image
+        swipeImg = findViewById(R.id.refresh_list_img);
+        swipeImg.setColorSchemeColors(Color.BLUE, Color.YELLOW, Color.BLUE);
+        swipeImg.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            Thread.sleep(300);
+                            ft = getSupportFragmentManager().beginTransaction();
+                            pictures = PicturesActivity.newInstance();
+                            ft.replace(R.id.content_frame, pictures);
+                            ft.commit();
+                        }
+                        catch(InterruptedException e){
+                            e.printStackTrace();
+                        }
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                swipeImg.setRefreshing(false); //avoid swipe infinity
+                            }
+                        });
+                    }
+                }).start();
             }
         });
     }
@@ -168,6 +197,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK){
             if(requestCode == MY_CAMERA_REQUEST_CODE){
+                //update current grid view image after capturing image
+                ft = getSupportFragmentManager().beginTransaction();
+                pictures = PicturesActivity.newInstance();
+                ft.replace(R.id.content_frame, pictures);
+                ft.commit();
                 Toast.makeText(this, "Capture image successfully", Toast.LENGTH_SHORT).show();
             }
             else if(requestCode == MY_VIDEO_REQUEST_CODE){

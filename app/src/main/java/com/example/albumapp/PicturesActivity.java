@@ -4,26 +4,34 @@ import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.app.RecoverableSecurityException;
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.DialogInterface;
+import android.content.IntentSender;
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.location.Address;
-import android.location.Geocoder;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.text.Html;
+import android.provider.MediaStore;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 
 public class PicturesActivity extends Fragment {
     View pictures;
@@ -31,6 +39,8 @@ public class PicturesActivity extends Fragment {
     private DataPrefs myPrefs;
     private float x1, x2;
     private GridView gallery;
+    //store list of multi image
+    ArrayList<Uri> imageUriArray = new ArrayList<Uri>();
 
     public static PicturesActivity newInstance() {
         return new PicturesActivity();
@@ -62,7 +72,120 @@ public class PicturesActivity extends Fragment {
                 Toast.makeText(getContext(), "Image " + position + " is clicked", Toast.LENGTH_SHORT).show();
             }
         });
-        //show info of 1 image when use a long click
+        //select multi images to share and delete
+        gallery.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
+        gallery.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+            @Override
+            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+                int selectCount = gallery.getCheckedItemCount();
+                imageUriArray.add(Uri.parse(images.get(position)));
+                switch (selectCount) {
+                    case 1:
+                        mode.setSubtitle("1 item selected");
+                        break;
+                    default:
+                        mode.setSubtitle("" + selectCount + " items selected");
+                        break;
+                }
+            }
+
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                MenuInflater inflater1 = mode.getMenuInflater();
+                inflater1.inflate(R.menu.menu_multi_images, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                switch(item.getItemId()){
+                    case R.id.share_items:
+                        /*
+                        Intent share_intent = new Intent();
+                        share_intent.setAction(Intent.ACTION_SEND_MULTIPLE);
+                        share_intent.putExtra(Intent.EXTRA_SUBJECT, "Here are some files.");
+                        share_intent.setType("image/*");
+                        share_intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, imageUriArray);
+                        startActivity(share_intent);
+                        */
+                        Toast.makeText(getContext(), "Share item", Toast.LENGTH_SHORT).show();
+                        mode.finish();
+                        return true;
+                    case R.id.delete_items:
+                        AlertDialog dialogDelete = new AlertDialog.Builder(getContext(), R.style.Theme_AppCompat_Light_Dialog_Alert).create();
+                        dialogDelete.setTitle("Delete image");
+                        if(imageUriArray.size() == 1){
+                            dialogDelete.setMessage("Do you want to delete this image?");
+                        }
+                        else{
+                            dialogDelete.setMessage("Do you want to delete " + imageUriArray.size() + " images?");
+                        }
+                        dialogDelete.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                //delete multi images from storage
+                                for(int i = 0; i < imageUriArray.size(); i++) {
+                                    File photoFile = new File(imageUriArray.get(i).toString());
+                                    String selection = MediaStore.Images.Media.DATA + " = ?";
+                                    String[] selectionArgs = new String[]{photoFile.getAbsolutePath()};
+                                    ContentResolver contentResolver = getContext().getContentResolver();
+                                    Cursor cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                            new String[]{MediaStore.Images.Media._ID}, selection, selectionArgs, null);
+                                    if (cursor != null) {
+                                        if (cursor.moveToFirst()) {
+                                            long id = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
+                                            Uri deleteUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+                                            if(Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
+                                                contentResolver.delete(deleteUri, null, null);
+                                            }
+                                            else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+                                                try{
+                                                    contentResolver.delete(deleteUri, null, null);
+                                                }
+                                                catch(RecoverableSecurityException ex){
+                                                    final IntentSender intentSender = ex.getUserAction().getActionIntent().getIntentSender();
+                                                    try {
+                                                        getActivity().startIntentSenderForResult(intentSender, 1111, null, 0, 0, 0, null);
+                                                    }
+                                                    catch (IntentSender.SendIntentException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        cursor.close();
+                                    }
+                                }
+                                //delete multi images from current grid view
+                                for(int i = 0; i < imageUriArray.size(); i++){
+                                    images.remove(imageUriArray.get(i).toString());
+                                }
+                                Toast.makeText(getContext(), "Delete images successfully", Toast.LENGTH_SHORT).show();
+                                mode.finish();
+                            }
+                        });
+                        dialogDelete.setButton(AlertDialog.BUTTON_NEGATIVE, "CANCEL", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        dialogDelete.show();
+                        return true;
+                    default: return false;
+                }
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+
+            }
+        });
+        /*show info of 1 image when perform a long click
         gallery.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -100,7 +223,7 @@ public class PicturesActivity extends Fragment {
                 dialog.show();
                 return true;
             }
-        });
+        });*/
         //todo: use two fingers zoom in and zoom out to change layout of image
         //change layout of image when touch left right and right to left
         int MIN_DISTANCE = 150;

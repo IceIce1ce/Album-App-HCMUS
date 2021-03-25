@@ -44,4 +44,6 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
     //request permission simplicity
     implementation 'com.karumi:dexter:6.2.2'
+    //refresh item in layout
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 }
