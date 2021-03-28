@@ -8,6 +8,10 @@
             android:icon="@drawable/round_photo_library_24"
             android:title="Pictures"/>
         <item
+            android:id="@+id/nav_videos"
+            android:icon="@drawable/ic_baseline_video_library_24"
+            android:title="Videos"/>
+        <item
             android:id="@+id/nav_album"
             android:icon="@drawable/round_photo_album_24"
             android:title="Album"/>

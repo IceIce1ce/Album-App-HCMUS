@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActionBarDrawerToggle drawerToggle;
     private Toolbar toolBar;
     FragmentTransaction ft;
+    //display image fragment
     PicturesActivity pictures;
     //FAB for camera and record
     FloatingActionButton fabRecord, fabCamera, fabOpenClose;
@@ -49,6 +50,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Uri imageUriCapture, videoUriCapture;
     //refresh current gridview image
     private SwipeRefreshLayout swipeImg;
+    //display video fragment
+    videoActivity videos;
+    int currentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,10 +125,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     public void run() {
                         try{
                             Thread.sleep(300);
-                            ft = getSupportFragmentManager().beginTransaction();
-                            pictures = PicturesActivity.newInstance();
-                            ft.replace(R.id.content_frame, pictures);
-                            ft.commit();
+                            if(currentFragment == 1){
+                                ft = getSupportFragmentManager().beginTransaction();
+                                pictures = PicturesActivity.newInstance();
+                                ft.replace(R.id.content_frame, pictures);
+                                ft.commit();
+                            }
+                            else if(currentFragment == 2){
+                                ft = getSupportFragmentManager().beginTransaction();
+                                videos = videoActivity.newInstance();
+                                ft.replace(R.id.content_frame, videos);
+                                ft.commit();
+                            }
                         }
                         catch(InterruptedException e){
                             e.printStackTrace();
@@ -205,6 +217,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(this, "Capture image successfully", Toast.LENGTH_SHORT).show();
             }
             else if(requestCode == MY_VIDEO_REQUEST_CODE){
+                ft = getSupportFragmentManager().beginTransaction();
+                videos = videoActivity.newInstance();
+                ft.replace(R.id.content_frame, videos);
+                ft.commit();
                 Toast.makeText(this, "Record video successfully", Toast.LENGTH_SHORT).show();
             }
         }
@@ -263,6 +279,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else if(id == R.id.action_more_vert){
             Toast.makeText(this, "More option", Toast.LENGTH_SHORT).show();
+            return true;
         }
         return false;
     }
@@ -287,6 +304,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             pictures = PicturesActivity.newInstance();
             ft.replace(R.id.content_frame, pictures);
             ft.commit();
+            currentFragment = 1;
+        }
+        else if(id == R.id.nav_videos){
+            toolBar.setTitle("Video");
+            ft = getSupportFragmentManager().beginTransaction();
+            videos = videoActivity.newInstance();
+            ft.replace(R.id.content_frame, videos);
+            ft.commit();
+            currentFragment = 2;
         }
         else if(id == R.id.nav_album){
             toolBar.setTitle("Album");
@@ -306,7 +332,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else if (id == R.id.nav_support) {
             Toast.makeText(this, "Need support", Toast.LENGTH_SHORT).show();
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
