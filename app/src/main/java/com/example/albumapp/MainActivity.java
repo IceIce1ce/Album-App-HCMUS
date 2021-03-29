@@ -274,12 +274,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return true;
         }
         else if(id == R.id.action_sort){
-            Toast.makeText(this, "Sort image", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Changed image order", Toast.LENGTH_SHORT).show();
+        }
+        else if (id == R.id.sub_asc_order) {
+            Toast.makeText(this, "ASCENDING", Toast.LENGTH_SHORT).show();
+            //Display images by date
+            ft = getSupportFragmentManager().beginTransaction();
+            //pictures2 = Date_PictureActivity.newInstance();
+            ft.replace(R.id.content_frame, new Date_PictureActivity());
+            ft.commit();
             return true;
+        }
+        else if (id == R.id.sub_desc_order) {
+            Toast.makeText(this, "DESCENDING", Toast.LENGTH_SHORT).show();
+            //Display images by date
+            ft = getSupportFragmentManager().beginTransaction();
+            //pictures2 = Date_PictureActivity.newInstance();
+            ft.replace(R.id.content_frame, new Date_PictureActivity());
+            ft.commit();
+            return true;
+        }
+        else if (id == R.id.action_layout_type) {
+            Toast.makeText(this, "Change view type", Toast.LENGTH_SHORT).show();
+        }
+        else if(id == R.id.sub_grid_big){
+            Toast.makeText(this, "GRID", Toast.LENGTH_SHORT).show();
+        }
+        else if (id == R.id.sub_list_big){
+            Toast.makeText(this, "LIST", Toast.LENGTH_SHORT).show();
         }
         else if(id == R.id.action_more_vert){
             Toast.makeText(this, "More option", Toast.LENGTH_SHORT).show();
-            return true;
         }
         return false;
     }

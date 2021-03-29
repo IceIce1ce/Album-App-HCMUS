@@ -17,8 +17,34 @@
         android:icon="@drawable/ic_baseline_sort_24"
         android:orderInCategory="140"
         app:showAsAction="ifRoom|withText"
-        android:title="Sort"/>
+        android:title="Change sort order">
+        <menu>
+            <item
+                android:id="@+id/sub_asc_order"
+                app:showAsAction="never"
+                android:title="Ascending"/>
+            <item
+                android:id="@+id/sub_desc_order"
+                app:showAsAction="never"
+                android:title="Descending"/>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/action_layout_type"
+        app:showAsAction="never"
+        android:title="Layout options">
+        <menu>
+            <item
+                android:id="@+id/sub_grid_big"
+                app:showAsAction="never"
+                android:title="Grid layout"/>
+            <item
+                android:id="@+id/sub_list_big"
+                app:showAsAction="never"
+                android:title="List layout"/>
+        </menu>
 
+    </item>
     <item
         android:id="@+id/action_more_vert"
         android:icon="@drawable/ic_baseline_more_vert_24"
