@@ -9,6 +9,10 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,6 +35,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class videoActivity extends Fragment implements ClickListener{
     videoAdapter obj_adapter;
@@ -82,9 +89,51 @@ public class videoActivity extends Fragment implements ClickListener{
 
     @Override
     public void StartVideoClick(videoModel vid) {
+        Toast.makeText(getContext(), "Video " + vid.getStrPath() + " is clicked", Toast.LENGTH_SHORT).show();
+        VideoInfo s = new VideoInfo(vid.getStrPath());
+        //convert lat and long of img location to address
+        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+        List<Address> addresses;
+        String realAddressImg = "unknown";
+        try{
+            addresses = geocoder.getFromLocation(s.getLatLocation(), s.getLongLocation(), 1);
+            realAddressImg = addresses.get(0).getAddressLine(0);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        String DetailsVid = "Name\n" + s.getFilename()
+                + "\n\nPath\n" + vid.getStrPath()
+                + "\n\nSize\n" + s.getSize()
+                + "\n\nDuration\n" + s.getDuration()
+                + "\n\nResolution\n" + s.getResolution()
+                + "\n\nDate\n" + s.getDate()
+                + "\n\nLocation\n" + realAddressImg;
+        /*
+                + "\n" + s.getLocation()
+                + "\nLat: " + s.getLatLocation()
+                + "\nLong: " + s.getLongLocation();
+
+         */
+        TextView title = new TextView(getContext());
+        title.setPadding(60, 30, 0, 0);
+        title.setText("Properties");
+        title.setTextSize(18.0f);
+        title.setTypeface(null, Typeface.BOLD);
+        title.setTextColor(Color.BLACK);
+        AlertDialog dialog = new AlertDialog.Builder(getContext(), R.style.Theme_AppCompat_Light_Dialog_Alert).create();
+        dialog.setCustomTitle(title);
+        dialog.setMessage(DetailsVid);
+        dialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+        /*
         Intent video_intent = new Intent(getContext(), FullScreenVideoActivity.class);
         video_intent.putExtra("pathVideo", vid.getStrPath());
-        startActivity(video_intent);
+        startActivity(video_intent);*/
     }
 
     @Override
