@@ -1,8 +1,16 @@
 package com.example.albumapp;
 
+import android.app.AlertDialog;
+import android.app.RecoverableSecurityException;
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.ActionMode;
@@ -15,10 +23,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class videoActivity extends Fragment implements ClickListener{
@@ -109,11 +119,91 @@ public class videoActivity extends Fragment implements ClickListener{
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 switch(item.getItemId()){
                     case R.id.action_share_video:
-                        Toast.makeText(getContext(), "Share multiple videos", Toast.LENGTH_SHORT).show();
+                        //share multiple videos
+                        ArrayList<Uri> videoUriArray = new ArrayList<>();
+                        ArrayList<videoModel> checkedVideo = obj_adapter.getCheckedVideos();
+                        if(checkedVideo.size() != 0){
+                            for(videoModel vid: checkedVideo){
+                                videoUriArray.add(Uri.parse(vid.getStrPath()));
+                            }
+                        }
+                        Intent share_intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                        ArrayList<Uri> uris = new ArrayList<>();
+                        for(int i = 0; i < videoUriArray.size(); i++){
+                            share_intent.setType("video/*"); //application/pdf/*|image|video/*
+                            File mFile = new File(videoUriArray.get(i).toString());
+                            Uri shareFileUri = FileProvider.getUriForFile(getContext(), "com.mydomain.fileprovider", mFile);
+                            uris.add(shareFileUri);
+                        }
+                        share_intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+                        startActivity(Intent.createChooser(share_intent, "Select app"));
                         mode.finish();
                         return true;
                     case R.id.action_delete_video:
-                        Toast.makeText(getContext(), "Delete multiple videos", Toast.LENGTH_SHORT).show();
+                        ArrayList<Uri> videoUriArrayDelete = new ArrayList<>();
+                        ArrayList<videoModel> checkedVideoDelete = obj_adapter.getCheckedVideos();
+                        if(checkedVideoDelete.size() != 0){
+                            for(videoModel vidDelete: checkedVideoDelete){
+                                videoUriArrayDelete.add(Uri.parse(vidDelete.getStrPath()));
+                            }
+                        }
+                        AlertDialog dialogDeleteVideo = new AlertDialog.Builder(getContext(), R.style.Theme_AppCompat_Light_Dialog_Alert).create();
+                        dialogDeleteVideo.setTitle("Delete video");
+                        if(checkedVideoDelete.size() == 1){
+                            dialogDeleteVideo.setMessage("Do you want to delete this video?");
+                        }
+                        else{
+                            dialogDeleteVideo.setMessage("Do you want to delete " + checkedVideoDelete.size() + " videos?");
+                        }
+                        dialogDeleteVideo.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                //delete multi videos from storage
+                                for(int i = 0; i < checkedVideoDelete.size(); i++) {
+                                    File photoFile = new File(videoUriArrayDelete.get(i).toString());
+                                    String selection = MediaStore.Video.Media.DATA + " = ?";
+                                    String[] selectionArgs = new String[]{photoFile.getAbsolutePath()};
+                                    ContentResolver contentResolver = getContext().getContentResolver();
+                                    Cursor cursor = contentResolver.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                                            new String[]{MediaStore.Video.Media._ID}, selection, selectionArgs, null);
+                                    if (cursor != null) {
+                                        if (cursor.moveToFirst()) {
+                                            long id = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID));
+                                            Uri deleteUri = ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, id);
+                                            if(Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
+                                                contentResolver.delete(deleteUri, null, null);
+                                            }
+                                            else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+                                                try{
+                                                    contentResolver.delete(deleteUri, null, null);
+                                                }
+                                                catch(RecoverableSecurityException ex){
+                                                    final IntentSender intentSender = ex.getUserAction().getActionIntent().getIntentSender();
+                                                    try {
+                                                        getActivity().startIntentSenderForResult(intentSender, 1111, null, 0, 0, 0, null);
+                                                    }
+                                                    catch (IntentSender.SendIntentException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        cursor.close();
+                                    }
+                                }
+                                //delete multi videos from current recyclerview
+                                obj_adapter = new videoAdapter(getContext(), checkedVideoDelete);
+                                obj_adapter.setItemClickListener(videoActivity.this);
+                                recyclerView.setAdapter(obj_adapter);
+                                Toast.makeText(getContext(), "Delete images successfully", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        dialogDeleteVideo.setButton(AlertDialog.BUTTON_NEGATIVE, "CANCEL", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        dialogDeleteVideo.show();
                         mode.finish();
                         return true;
                     default: return false;

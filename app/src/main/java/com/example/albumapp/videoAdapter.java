@@ -78,8 +78,8 @@ public class videoAdapter extends RecyclerView.Adapter<videoAdapter.ViewHolder> 
         this.listener = itemClickListener;
     }
 
-    public List<videoModel> getCheckedVideos() {
-        List<videoModel> videoListChecked = new ArrayList<>();
+    public ArrayList<videoModel> getCheckedVideos() {
+        ArrayList<videoModel> videoListChecked = new ArrayList<>();
         for (videoModel vid: all_videos) {
             if (vid.isChecked()){
                 videoListChecked.add(vid);
