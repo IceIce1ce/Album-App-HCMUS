@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_image_favorite"
+        android:icon="@drawable/round_favorite_24"
+        android:orderInCategory="140"
+        app:showAsAction="ifRoom"
+        android:title="Favourite"/>
+    <item
+        android:id="@+id/action_image_slideshow"
+        android:orderInCategory="180"
+        app:showAsAction="never"
+        android:title="Slideshow"/>
+    <item
+        android:id="@+id/action_rotate_image_left"
+        android:orderInCategory="180"
+        app:showAsAction="never"
+        android:title="Rotate Left"/>
+    <item
+        android:id="@+id/action_rotate_image_right"
+        android:orderInCategory="180"
+        app:showAsAction="never"
+        android:title="Rotate Right"/>
+    <item
+        android:id="@+id/action_set_image_background"
+        android:orderInCategory="200"
+        app:showAsAction="never"
+        android:title="Set Background"/>
+    <item
+        android:id="@+id/action_details_image"
+        android:orderInCategory="200"
+        app:showAsAction="never"
+        android:title="Details Image"/>
+</menu>

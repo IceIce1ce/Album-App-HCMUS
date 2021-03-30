@@ -5,11 +5,14 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera2" />
     <!-- show location for captured image -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- permission for deleting multiple file -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="29" tools:ignore="ScopedStorage" />
+    <!-- set image wallpaper -->
+    <uses-permission android:name="android.permission.SET_WALLPAPER"/>
 
     <application
         android:allowBackup="true"
@@ -19,7 +22,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AlbumApp">
-        <activity android:name=".FullScreenVideoActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".FullScreenImageActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".FullScreenVideoActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".AboutActivity" />
         <activity android:name=".ChangePasswordActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".SettingsActivity" />

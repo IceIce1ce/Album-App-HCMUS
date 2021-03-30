@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar
+    android:id="@+id/nav_actionBarImage"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#66000000"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+</androidx.appcompat.widget.Toolbar>

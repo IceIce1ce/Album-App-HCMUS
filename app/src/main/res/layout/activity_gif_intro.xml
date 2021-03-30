@@ -5,12 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#262626"
     tools:context=".GifIntroActivity">
 
     <pl.droidsonroids.gif.GifImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/gif_intro"
+        android:src="@drawable/gif_intro2"
         android:layout_centerInParent="true"/>
 
 </RelativeLayout>

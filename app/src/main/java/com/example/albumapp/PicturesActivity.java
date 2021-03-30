@@ -1,20 +1,16 @@
 package com.example.albumapp;
 
-import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.app.RecoverableSecurityException;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
@@ -35,7 +31,6 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class PicturesActivity extends Fragment {
@@ -46,6 +41,8 @@ public class PicturesActivity extends Fragment {
     private GridView gallery;
     //store list of multi image
     ArrayList<Uri> imageUriArray = new ArrayList<Uri>();
+    //0: show toolbar, 1: hide toolbar
+    public static int statusToolbar = 0;
 
     public static PicturesActivity newInstance() {
         return new PicturesActivity();
@@ -74,7 +71,17 @@ public class PicturesActivity extends Fragment {
         gallery.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), "Image " + position + " is clicked", Toast.LENGTH_SHORT).show();
+                ///
+                Intent image_intent = new Intent(getContext(), FullScreenImageActivity.class);
+                image_intent.putExtra("id", position);
+                image_intent.putExtra("path", images.get(position));
+                image_intent.putExtra("allPath", images);
+                String img_path = images.get(position);
+                ImageInfo s = new ImageInfo(img_path);
+                image_intent.putExtra("display_image_name", s.getFilename());
+                startActivity(image_intent);
+                ///
+                //Toast.makeText(getContext(), "Image " + position + " is clicked", Toast.LENGTH_SHORT).show();
             }
         });
         //select multi images to share and delete
