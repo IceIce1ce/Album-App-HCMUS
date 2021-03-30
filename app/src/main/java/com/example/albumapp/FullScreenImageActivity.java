@@ -1,6 +1,7 @@
 package com.example.albumapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -41,6 +42,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.util.List;
@@ -48,12 +51,13 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class FullScreenImageActivity extends AppCompatActivity {
-    Toolbar toolbar;
-    ImageView showImageFullscreen;
-    TextView txtNameImage;
-    int position;
-    BottomNavigationView navBottom;
+    private Toolbar toolbar;
+    private ImageView showImageFullscreen;
+    private TextView txtNameImage;
+    private int position;
+    private BottomNavigationView navBottom;
     private float x1, x2, y1, y2;
+    private String storeNameImageCrop;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -86,7 +90,11 @@ public class FullScreenImageActivity extends AppCompatActivity {
                         Toast.makeText(FullScreenImageActivity.this, "Edit this image", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.nav_crop:
-                        Toast.makeText(FullScreenImageActivity.this, "Crop this image", Toast.LENGTH_SHORT).show();
+                        //crop image
+                        String filePath = Objects.requireNonNull(getIntent().getStringExtra("path"));
+                        storeNameImageCrop = new File(filePath).getName();
+                        CropImage.activity(Uri.fromFile(new File(filePath))).setGuidelines(CropImageView.Guidelines.ON)
+                                .setMultiTouchEnabled(true).start(FullScreenImageActivity.this);
                         return true;
                     case R.id.nav_share:
                         //share single image
@@ -225,6 +233,29 @@ public class FullScreenImageActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        CropImage.ActivityResult result = CropImage.getActivityResult(data);
+        if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
+            Uri resultUri = Objects.requireNonNull(result).getUri();
+            showImageFullscreen.setImageURI(resultUri);
+            showImageFullscreen.setDrawingCacheEnabled(true);
+            Bitmap bmpCrop = showImageFullscreen.getDrawingCache();
+            //insert new image crop to storage
+            MediaStore.Images.Media.insertImage(getContentResolver(), bmpCrop, storeNameImageCrop + "_crop", "");
+            //update picture fragment
+            PicturesActivity.images.add(storeNameImageCrop + "_crop");
+            startActivity(new Intent(FullScreenImageActivity.this, MainActivity.class));
+            Toast.makeText(this, "Crop image successfully!!!", Toast.LENGTH_SHORT).show();
+        }
+        else if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
+            Exception error = Objects.requireNonNull(result).getError();
+            error.printStackTrace();
+            Toast.makeText(this, "Crop image fail!!!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void EnterFullScreenImage() {
