@@ -285,7 +285,9 @@ public class FullScreenImageActivity extends AppCompatActivity {
                 Toast.makeText(this, "Favourite image", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.action_image_slideshow:
-                Toast.makeText(this, "Slideshow image", Toast.LENGTH_SHORT).show();
+                Intent slideshow_intent = new Intent(FullScreenImageActivity.this, SlideshowActivity.class);
+                slideshow_intent.putExtra("position_slideshow", position);
+                startActivity(slideshow_intent);
                 return true;
             case R.id.action_rotate_image_left:
                 showImageFullscreen.setRotation(showImageFullscreen.getRotation() + 90);
