@@ -15,14 +15,19 @@ import android.Manifest;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -34,6 +39,7 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private DrawerLayout drawerLayout;
@@ -73,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             pictures = PicturesActivity.newInstance();
             ft.replace(R.id.content_frame, pictures);
             ft.commit();
-            toolBar.setTitle("Image");
+            toolBar.setTitle(R.string.Pictures);
         }
         //FAB for camera and record
         fabRecord = findViewById(R.id.fabRecord);
@@ -151,6 +157,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }).start();
             }
         });
+        //save current language to sharepreference
+        SharedPreferences settingsMultiLanguage = PreferenceManager.getDefaultSharedPreferences(this);
+        Configuration configuration = getBaseContext().getResources().getConfiguration();
+        String lang = settingsMultiLanguage.getString("LANG", "");
+        if (! "".equals(lang) && ! configuration.locale.getLanguage().equals(lang)) {
+            Locale locale = new Locale(lang);
+            Locale.setDefault(locale);
+            configuration.locale = locale;
+            getBaseContext().getResources().updateConfiguration(configuration, getBaseContext().getResources().getDisplayMetrics());
+        }
     }
 
     //capture image and record video
@@ -307,7 +323,55 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(this, "More option", Toast.LENGTH_SHORT).show();
             return true;
         }
+        else if(id == R.id.action_multi_language){
+            AlertDialog.Builder builderMultiLanguage = new AlertDialog.Builder(this);
+            LayoutInflater inflater = this.getLayoutInflater();
+            final View dialogView = inflater.inflate(R.layout.language_dialog, null);
+            builderMultiLanguage.setView(dialogView);
+            final Spinner spinnerMultiLanguage = dialogView.findViewById(R.id.spinner_multi_language);
+            builderMultiLanguage.setTitle(getResources().getString(R.string.lang_dialog_title));
+            builderMultiLanguage.setPositiveButton("Change", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    switch(spinnerMultiLanguage.getSelectedItemPosition()) {
+                        case 0:
+                            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("LANG", "en").apply();
+                            recreateLanguage("en");
+                            break;
+                        case 1:
+                            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("LANG", "vi").apply();
+                            recreateLanguage("vi");
+                            break;
+                        case 2:
+                            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("LANG", "ko").apply();
+                            recreateLanguage("ko");
+                            break;
+                        case 3:
+                            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("LANG", "zh").apply();
+                            recreateLanguage("zh");
+                            break;
+                    }
+                }
+            });
+            builderMultiLanguage.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    dialog.cancel();
+                }
+            });
+            AlertDialog alert = builderMultiLanguage.create();
+            alert.show();
+            return true;
+        }
         return false;
+    }
+
+    public void recreateLanguage(String language) {
+        Locale locale = new Locale(language);
+        Locale.setDefault(locale);
+        Configuration configuration = getBaseContext().getResources().getConfiguration();
+        configuration.locale = locale;
+        getBaseContext().getResources().updateConfiguration(configuration, getBaseContext().getResources().getDisplayMetrics());
+        recreate();
+        Toast.makeText(this, "Change language successfully", Toast.LENGTH_SHORT).show();
     }
 
     /*come back to previous activity without loss data
@@ -325,7 +389,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.nav_pictures) {
-            toolBar.setTitle("Image");
+            toolBar.setTitle(R.string.Pictures);
             ft = getSupportFragmentManager().beginTransaction();
             pictures = PicturesActivity.newInstance();
             ft.replace(R.id.content_frame, pictures);
@@ -333,7 +397,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             currentFragment = 1;
         }
         else if(id == R.id.nav_videos){
-            toolBar.setTitle("Video");
+            toolBar.setTitle(R.string.Videos);
             ft = getSupportFragmentManager().beginTransaction();
             videos = videoActivity.newInstance();
             ft.replace(R.id.content_frame, videos);
@@ -341,13 +405,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             currentFragment = 2;
         }
         else if(id == R.id.nav_album){
-            toolBar.setTitle("Album");
+            toolBar.setTitle(R.string.Album);
         }
         else if(id == R.id.nav_favorite){
-            toolBar.setTitle("Favourite");
+            toolBar.setTitle(R.string.Favourite);
         }
         else if(id == R.id.nav_category_image){
-            toolBar.setTitle("Category image");
+            toolBar.setTitle(R.string.Category_Image);
         }
         else if (id == R.id.nav_settings) {
             startActivity(new Intent(MainActivity.this, SettingsActivity.class));

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Album App</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <!--vietnamese language nav_drawer-->
+    <string name="Pictures">Hình ảnh</string>
+    <string name="Videos">Videos</string>
+    <string name="Album">Album</string>
+    <string name="Favourite">Yêu thích</string>
+    <string name="Category_Image">Phân loại ảnh</string>
+    <string name="Settings">Cài đặt</string>
+    <string name="Support">Hỗ trợ</string>
+    <string name="About">Về chúng tôi</string>
+    <string name="lang_dialog_title">Thay đổi ngôn ngữ</string>
+    <!--vietnamese language status_bar-->
+    <string name="search">Tìm kiếm</string>
+    <string name="sort">Sắp xếp</string>
+    <string name="ascending">Tăng dần</string>
+    <string name="descending">Giảm dần</string>
+    <string name="layout_options">Thay đổi layout</string>
+    <string name="grid_big">Dạng grid</string>
+    <string name="list_big">Dạng list</string>
+    <string name="change_lang">Thay đổi ngôn ngữ</string>
+    <string name="more">Mở rộng</string>
+    <!--vietnamese language settings_menu-->
+    <string name="set_pin">Thiết lập mã pin</string>
+    <string name="delete_pin">Xóa mã pin</string>
+    <string name="change_pin">Thay đổi mã pin</string>
+    <!--language select dialog spinner-->
+    <string-array name="language_select">
+        <item>Tiếng Anh</item>
+        <item>Tiếng Việt</item>
+        <item>Tiếng Hàn</item>
+        <item>Tiếng Trung</item>
+    </string-array>
+</resources>

@@ -1,40 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="nav_view_multi_language">
     <group
         android:id="@+id/group_mode"
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_pictures"
             android:icon="@drawable/round_photo_library_24"
-            android:title="Pictures"/>
+            android:title="@string/Pictures"/>
         <item
             android:id="@+id/nav_videos"
             android:icon="@drawable/ic_baseline_video_library_24"
-            android:title="Videos"/>
+            android:title="@string/Videos"/>
         <item
             android:id="@+id/nav_album"
             android:icon="@drawable/round_photo_album_24"
-            android:title="Album"/>
+            android:title="@string/Album"/>
         <item
             android:id="@+id/nav_favorite"
             android:icon="@drawable/round_favorite_24"
-            android:title="Favorite" />
+            android:title="@string/Favourite" />
         <item
             android:id="@+id/nav_category_image"
             android:icon="@drawable/ic_baseline_category_24"
-            android:title="Category image" />
+            android:title="@string/Category_Image" />
     </group>
 
     <item
         android:id="@+id/nav_settings"
         android:icon="@drawable/round_settings_24"
-        android:title="Settings"/>
+        android:title="@string/Settings"/>
     <item
         android:id="@+id/nav_support"
         android:icon="@drawable/round_help_outline_24"
-        android:title="Support"/>
+        android:title="@string/Support"/>
     <item
         android:id="@+id/nav_about"
         android:icon="@drawable/ic_baseline_info_24"
-        android:title="About"/>
+        android:title="@string/About"/>
 </menu>

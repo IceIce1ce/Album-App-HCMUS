@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Album App</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <!--vietnamese language nav_drawer-->
+    <string name="Pictures">图片</string>
+    <string name="Videos">视频</string>
+    <string name="Album">专辑</string>
+    <string name="Favourite">最喜欢的</string>
+    <string name="Category_Image">类别图片</string>
+    <string name="Settings">环境</string>
+    <string name="Support">支持</string>
+    <string name="About">关于我们</string>
+    <string name="lang_dialog_title">改变语言</string>
+    <!--vietnamese language status_bar-->
+    <string name="search">搜索</string>
+    <string name="sort">种类</string>
+    <string name="ascending">上升</string>
+    <string name="descending">降序</string>
+    <string name="layout_options">变更版面</string>
+    <string name="grid_big">网格布局</string>
+    <string name="list_big">列表布局</string>
+    <string name="change_lang">改变语言</string>
+    <string name="more">扩张</string>
+    <!--vietnamese language settings_menu-->
+    <string name="set_pin">定位销</string>
+    <string name="delete_pin">删除图钉</string>
+    <string name="change_pin">换针</string>
+    <!--language select dialog spinner-->
+    <string-array name="language_select">
+        <item>英语</item>
+        <item>越南文</item>
+        <item>韩国人</item>
+        <item>中国人</item>
+    </string-array>
+</resources>

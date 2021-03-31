@@ -10,40 +10,46 @@
         android:icon="@drawable/baseline_search_24"
         android:orderInCategory="140"
         app:showAsAction="ifRoom|withText"
-        android:title="Search"/>
+        android:title="@string/search"/>
 
     <item
         android:id="@+id/action_sort"
         android:icon="@drawable/ic_baseline_sort_24"
         android:orderInCategory="140"
         app:showAsAction="ifRoom|withText"
-        android:title="Sort">
+        android:title="@string/sort">
         <menu>
             <item
                 android:id="@+id/sub_asc_order"
                 app:showAsAction="never"
-                android:title="Ascending"/>
+                android:title="@string/ascending"/>
             <item
                 android:id="@+id/sub_desc_order"
                 app:showAsAction="never"
-                android:title="Descending"/>
+                android:title="@string/descending"/>
         </menu>
     </item>
 
     <item
         android:id="@+id/action_layout_type"
         app:showAsAction="never"
-        android:title="Layout options">
+        android:title="@string/layout_options">
         <menu>
             <item
                 android:id="@+id/sub_grid_big"
                 app:showAsAction="never"
-                android:title="Grid layout"/>
+                android:title="@string/grid_big"/>
             <item
                 android:id="@+id/sub_list_big"
                 app:showAsAction="never"
-                android:title="List layout"/>
+                android:title="@string/list_big"/>
         </menu>
+    </item>
+
+    <item
+        android:id="@+id/action_multi_language"
+        app:showAsAction="never"
+        android:title="@string/change_lang">
     </item>
 
     <item
@@ -51,6 +57,6 @@
         android:icon="@drawable/ic_baseline_more_vert_24"
         android:orderInCategory="140"
         app:showAsAction="ifRoom|withText"
-        android:title="More"/>
+        android:title="@string/more"/>
 
 </menu>

@@ -20,7 +20,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.settings_menu);
         myPrefs = new DataPrefs(this);
         password = myPrefs.getPassword();
-        getSupportActionBar().setTitle("Settings");
+        getSupportActionBar().setTitle(R.string.Settings);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         btnSetPin = findViewById(R.id.btn_setPin);

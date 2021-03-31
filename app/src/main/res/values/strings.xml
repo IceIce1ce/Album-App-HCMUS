@@ -2,4 +2,35 @@
     <string name="app_name">Album App</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <!--default language nav_drawer-->
+    <string name="Pictures">Pictures</string>
+    <string name="Videos">Videos</string>
+    <string name="Album">Album</string>
+    <string name="Favourite">Favourite</string>
+    <string name="Category_Image">Category Image</string>
+    <string name="Settings">Settings</string>
+    <string name="Support">Support</string>
+    <string name="About">About Us</string>
+    <string name="lang_dialog_title">Change language</string>
+    <!--default language status_bar-->
+    <string name="search">Search</string>
+    <string name="sort">Sort</string>
+    <string name="ascending">Ascending</string>
+    <string name="descending">Descending</string>
+    <string name="layout_options">Layout Options</string>
+    <string name="grid_big">Grid Layout</string>
+    <string name="list_big">List Layout</string>
+    <string name="change_lang">Change Language</string>
+    <string name="more">More</string>
+    <!--default language settings_menu-->
+    <string name="set_pin">Set Pin</string>
+    <string name="delete_pin">Delete Pin</string>
+    <string name="change_pin">Change Pin</string>
+    <!--language select dialog spinner-->
+    <string-array name="language_select">
+        <item>English</item>
+        <item>Vietnamese</item>
+        <item>Korean</item>
+        <item>Chinese</item>
+    </string-array>
 </resources>
