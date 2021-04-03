@@ -53,6 +53,7 @@ public class videoActivity extends Fragment implements ClickListener{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        MainActivity.swipeImg.setEnabled(true);
         videos = inflater.inflate(R.layout.content_video, container, false);
         recyclerView = videos.findViewById(R.id.video_recyclerview);
         //change layout video in landscape and portrait

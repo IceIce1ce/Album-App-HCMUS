@@ -51,6 +51,7 @@ public class PicturesActivity extends Fragment {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        MainActivity.swipeImg.setEnabled(true);
         pictures = inflater.inflate(R.layout.activity_pictures, container, false);
         myPrefs = new DataPrefs(getContext());
         gallery = pictures.findViewById(R.id.galleryGridView);
@@ -71,7 +72,6 @@ public class PicturesActivity extends Fragment {
         gallery.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ///
                 Intent image_intent = new Intent(getContext(), FullScreenImageActivity.class);
                 image_intent.putExtra("id", position);
                 image_intent.putExtra("path", images.get(position));
@@ -80,8 +80,6 @@ public class PicturesActivity extends Fragment {
                 ImageInfo s = new ImageInfo(img_path);
                 image_intent.putExtra("display_image_name", s.getFilename());
                 startActivity(image_intent);
-                ///
-                //Toast.makeText(getContext(), "Image " + position + " is clicked", Toast.LENGTH_SHORT).show();
             }
         });
         //select multi images to share and delete

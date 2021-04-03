@@ -11,16 +11,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
 public class ChildItemAdapter extends RecyclerView.Adapter<ChildItemAdapter.ChildViewHolder> {
     private List<ChildItem> ChildItemList;
-    private Context mContext;
+    private Context context;
 
     ChildItemAdapter(Context context, List<ChildItem> childItemList) {
-        this.mContext = context;
+        this.context = context;
         this.ChildItemList = childItemList;
     }
 
@@ -34,14 +35,16 @@ public class ChildItemAdapter extends RecyclerView.Adapter<ChildItemAdapter.Chil
     @Override
     public void onBindViewHolder(@NonNull ChildViewHolder childViewHolder, int position) {
         ChildItem childItem = ChildItemList.get(position);
-        Glide.with(mContext)
+        Glide.with(context)
                 .load(childItem.getChildItemPath())
                 .apply(RequestOptions.centerCropTransform())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .override(800, 800)
                 .into(childViewHolder.ChildItemTitle);
         childViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "Image " + childItem.getChildItemPath() + " is clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Path: " + childItem.getChildItemPath(), Toast.LENGTH_SHORT).show();
             }
         });
     }

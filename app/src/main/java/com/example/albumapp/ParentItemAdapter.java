@@ -34,7 +34,7 @@ public class ParentItemAdapter extends RecyclerView.Adapter<ParentItemAdapter.Pa
         ParentItem parentItem = date_list.get(position);
         parentViewHolder.ParentItemTitle.setText(parentItem.getParentDateHeader());
         GridLayoutManager layoutManager = new GridLayoutManager(parentViewHolder.ChildRecyclerView.getContext(),3);
-        layoutManager.setInitialPrefetchItemCount( parentItem.getChildItemList().size());
+        layoutManager.setInitialPrefetchItemCount(parentItem.getChildItemList().size());
         ChildItemAdapter childItemAdapter = new ChildItemAdapter(mContext, parentItem.getChildItemList());
         parentViewHolder.ChildRecyclerView.setLayoutManager(layoutManager);
         parentViewHolder.ChildRecyclerView.setAdapter(childItemAdapter);

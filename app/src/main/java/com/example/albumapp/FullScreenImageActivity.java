@@ -87,7 +87,11 @@ public class FullScreenImageActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.nav_edit:
-                        Toast.makeText(FullScreenImageActivity.this, "Edit this image", Toast.LENGTH_SHORT).show();
+                        //edit image
+                        String pathImageFilter = Objects.requireNonNull(getIntent().getStringExtra("path"));
+                        Intent filter_intent = new Intent(FullScreenImageActivity.this, FilterActivity.class);
+                        filter_intent.putExtra("pathFilter", pathImageFilter);
+                        startActivity(filter_intent);
                         return true;
                     case R.id.nav_crop:
                         //crop image

@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int MY_CAMERA_REQUEST_CODE = 7070, MY_VIDEO_REQUEST_CODE = 7078;
     private Uri imageUriCapture, videoUriCapture;
     //refresh current gridview image
-    private SwipeRefreshLayout swipeImg;
+    public static SwipeRefreshLayout swipeImg; //default disable in nested recyclerview
     //display video fragment
     videoActivity videos;
     int currentFragment;

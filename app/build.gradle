@@ -48,4 +48,8 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     //crop image
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
+    //filter image
+    implementation 'ja.burhanrashid52:photoeditor:1.1.1'
+    //color picker
+    implementation 'com.divyanshu.colorseekbar:colorseekbar:1.0.2'
 }

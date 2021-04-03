@@ -95,6 +95,7 @@ public class Date_PictureActivity extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        MainActivity.swipeImg.setEnabled(false);
         this.path_list = loadHeader(this.getActivity());
         this.group = groupPhotos(this.path_list);
         View rootView = inflater.inflate(R.layout.date_fragment, container, false);

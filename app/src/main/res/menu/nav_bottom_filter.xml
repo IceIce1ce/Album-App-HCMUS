@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/nav_brush"
+        android:icon="@drawable/ic_baseline_brush_24"
+        android:title="Brush"/>
+    <item
+        android:id="@+id/nav_text_fields"
+        android:icon="@drawable/ic_baseline_text_fields_24"
+        android:title="Text Fields"/>
+    <item
+        android:id="@+id/nav_eraser"
+        android:icon="@drawable/ic_baseline_delete_24"
+        android:title="Eraser"/>
+    <item
+        android:id="@+id/nav_emoji"
+        android:icon="@drawable/ic_baseline_insert_emoticon_24"
+        android:title="Emoji"/>
+    <item
+        android:id="@+id/nav_filter"
+        android:icon="@drawable/ic_baseline_photo_filter_24"
+        android:title="Filter"/>
+</menu>
