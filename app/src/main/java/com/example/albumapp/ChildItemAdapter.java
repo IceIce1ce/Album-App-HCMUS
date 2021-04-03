@@ -1,6 +1,7 @@
 package com.example.albumapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +45,13 @@ public class ChildItemAdapter extends RecyclerView.Adapter<ChildItemAdapter.Chil
         childViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Path: " + childItem.getChildItemPath(), Toast.LENGTH_SHORT).show();
+                Intent intent_img_date_header = new Intent(context, FullScreenImageActivity.class);
+                intent_img_date_header.putExtra("id", childItem.getPos());
+                intent_img_date_header.putExtra("path", childItem.getChildItemPath());
+                String img_path = childItem.getChildItemPath();
+                ImageInfo s = new ImageInfo(img_path);
+                intent_img_date_header.putExtra("display_image_name", s.getFilename());
+                context.startActivity(intent_img_date_header);
             }
         });
     }
