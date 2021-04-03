@@ -25,9 +25,10 @@ public class Date_PictureActivity extends Fragment {
     private ArrayList<String> path_list = null, date_order;
     private HashMap<String, ArrayList<String>> group = null;
     ParentItemAdapter parentItemAdapter;
+    public static String sort_order_date_header = "DATE_MODIFIED DESC";
 
     public String date_string(Date time) {
-        SimpleDateFormat f = new SimpleDateFormat("EEE, dd MMM yyyy", Locale.US);  // 'at' hh:mm aaa");
+        SimpleDateFormat f = new SimpleDateFormat("EEE, dd MMM yyyy", Locale.US);  //'at' hh:mm aaa"
         return f.format(time);
     }
 
@@ -76,7 +77,7 @@ public class Date_PictureActivity extends Fragment {
     private ArrayList<String> loadHeader(Activity activity) {
         ArrayList<String> list = new ArrayList<>();
         Cursor cursor = activity.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                new String[]{MediaStore.MediaColumns.DATA}, null, null, "DATE_MODIFIED DESC"); //default: null
+                new String[]{MediaStore.MediaColumns.DATA}, null, null, sort_order_date_header); //default: null
         if(cursor != null && cursor.getCount() > 0){
             while(cursor.moveToNext()){
                 if (cursor.getString(0) != null) {
@@ -108,19 +109,23 @@ public class Date_PictureActivity extends Fragment {
 
     private List<ParentItem> ParentItemList(HashMap<String, ArrayList<String>> g) {
         ArrayList<ParentItem> itemList = new ArrayList<>();
-        ArrayList<String> dl = new ArrayList<>(g.keySet());
         System.out.println(g);
-        for (String i : this.date_order){
-            itemList.add(new ParentItem(i, ChildItemList(g.get(i))));
+        int cnt1 = 0, cnt2 = PicturesActivity.images.size() - 1;
+        for(String i: this.date_order){
+            ArrayList<String> paths = g.get(i);
+            List<ChildItem> ChildItemList = new ArrayList<>();
+            for(String j: paths){
+                if(sort_order_date_header.equals("DATE_MODIFIED DESC")){
+                    ChildItemList.add(new ChildItem(j, cnt1));
+                    cnt1++;
+                }
+                else if(sort_order_date_header.equals("DATE_MODIFIED ASC")){
+                    ChildItemList.add(new ChildItem(j, cnt2));
+                    cnt2--;
+                }
+            }
+            itemList.add(new ParentItem(i, ChildItemList));
         }
         return itemList;
-    }
-
-    private List<ChildItem> ChildItemList(ArrayList<String> paths) {
-        List<ChildItem> ChildItemList = new ArrayList<>();
-        for (String i : paths){
-            ChildItemList.add(new ChildItem(i));
-        }
-        return ChildItemList;
     }
 }

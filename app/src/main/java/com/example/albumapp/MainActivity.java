@@ -294,14 +294,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return true;
         }
         else if (id == R.id.sub_asc_order) {
-            Toast.makeText(this, "ASCENDING", Toast.LENGTH_SHORT).show();
+            Date_PictureActivity.sort_order_date_header = "DATE_MODIFIED ASC";
             ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, new Date_PictureActivity());
             ft.commit();
             return true;
         }
         else if (id == R.id.sub_desc_order) {
-            Toast.makeText(this, "DESCENDING", Toast.LENGTH_SHORT).show();
+            Date_PictureActivity.sort_order_date_header = "DATE_MODIFIED DESC";
             ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, new Date_PictureActivity());
             ft.commit();
