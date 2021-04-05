@@ -18,9 +18,13 @@
             android:icon="@drawable/round_photo_album_24"
             android:title="@string/Album"/>
         <item
-            android:id="@+id/nav_favorite"
+            android:id="@+id/nav_favorite_images"
             android:icon="@drawable/round_favorite_24"
-            android:title="@string/Favourite" />
+            android:title="@string/Favourite_Image" />
+        <item
+            android:id="@+id/nav_favorite_videos"
+            android:icon="@drawable/round_favorite_24"
+            android:title="@string/Favourite_Video" />
         <item
             android:id="@+id/nav_category_image"
             android:icon="@drawable/ic_baseline_category_24"

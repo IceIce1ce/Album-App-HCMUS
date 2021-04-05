@@ -8,14 +8,17 @@ import android.app.AlertDialog;
 import android.app.RecoverableSecurityException;
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -29,6 +32,8 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -63,12 +68,11 @@ public class PicturesActivity extends Fragment {
         if (screenWidth > screenHeight) {
             gallery.setNumColumns(columns[1]);
         }
-        //display 3 pictures if phone is portrait
+        //display 5 pictures if phone is portrait
         else {
             gallery.setNumColumns(columns[0]);
         }
         gallery.setAdapter(new ImageAdapter(this.getActivity()));
-        //todo: open image in full-screen when click
         gallery.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -114,6 +118,50 @@ public class PicturesActivity extends Fragment {
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 switch(item.getItemId()){
+                    case R.id.favourite_items:
+                        //add multiple images to wishlist
+                        boolean isAdded = false;
+                        for(int i = 0; i < imageUriArray.size(); i++){
+                            if (FavouriteActivity.favoriteImages != null && !FavouriteActivity.favoriteImages.isEmpty()){
+                                if(FavouriteActivity.favoriteImages.contains(imageUriArray.get(i).toString())){
+                                    isAdded = false;
+                                }
+                                else{
+                                    FavouriteActivity.favoriteImages.add(imageUriArray.get(i).toString());
+                                    isAdded = true;
+                                }
+                            }
+                            else{
+                                FavouriteActivity.favoriteImages = new ArrayList<>();
+                                FavouriteActivity.favoriteImages.add(imageUriArray.get(i).toString());
+                                isAdded = true;
+                            }
+                            FullScreenImageActivity.isFavouriteImage = true;
+                        }
+                        if(isAdded){
+                            if(imageUriArray.size() == 1){
+                                Toast.makeText(getContext(), "Add 1 image to wishlist successfully!!!", Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(getContext(), "Add " + imageUriArray.size() + " images to wishlist successfully", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        else{
+                            if(imageUriArray.size() == 1){
+                                Toast.makeText(getContext(), "This image had already added to wishlist!!!", Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(getContext(), "These image had already added to wishlist!!!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        Gson gson = new Gson();
+                        String json = gson.toJson(FavouriteActivity.favoriteImages);
+                        editor.putString("savedFavoriteImages", json);
+                        editor.apply();
+                        mode.finish();
+                        return true;
                     case R.id.share_items:
                         //share multiple images
                         Intent share_intent = new Intent(Intent.ACTION_SEND_MULTIPLE);

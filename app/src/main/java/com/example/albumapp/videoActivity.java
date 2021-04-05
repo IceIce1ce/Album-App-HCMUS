@@ -7,6 +7,7 @@ import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -16,6 +17,7 @@ import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -33,13 +35,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class videoActivity extends Fragment implements ClickListener{
-    videoAdapter obj_adapter;
+    videoAdapter vid_adapter;
     ArrayList<videoModel> all_videos = new ArrayList<>();
     RecyclerView recyclerView;
     View videos;
@@ -83,9 +87,9 @@ public class videoActivity extends Fragment implements ClickListener{
             all_videos.add(myVideoModel);
         }
         cursor.close();
-        obj_adapter = new videoAdapter(getContext(), all_videos);
-        obj_adapter.setItemClickListener(this);
-        recyclerView.setAdapter(obj_adapter);
+        vid_adapter = new videoAdapter(getContext(), all_videos);
+        vid_adapter.setItemClickListener(this);
+        recyclerView.setAdapter(vid_adapter);
     }
 
     @Override
@@ -131,8 +135,8 @@ public class videoActivity extends Fragment implements ClickListener{
     public void StartVideoLongClick(videoModel vid) {
         vid.setChecked(true);
         checkedCount = 1;
-        obj_adapter.setMultiCheckMode(true);
-        obj_adapter.setItemClickListener(new ClickListener() {
+        vid_adapter.setMultiCheckMode(true);
+        vid_adapter.setItemClickListener(new ClickListener() {
             @Override
             public void StartVideoClick(videoModel vid) {
                 vid.setChecked(!vid.isChecked());
@@ -146,7 +150,7 @@ public class videoActivity extends Fragment implements ClickListener{
                     actionModeCallback.getAction().finish();
                 }
                 actionModeCallback.setCount(checkedCount + "/" + all_videos.size());
-                obj_adapter.notifyDataSetChanged();
+                vid_adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -158,10 +162,62 @@ public class videoActivity extends Fragment implements ClickListener{
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 switch(item.getItemId()){
+                    case R.id.action_favourite_video:
+                        //add multiple videos to wishlist
+                        ArrayList<Uri> videoUriArrayFavourite = new ArrayList<>();
+                        ArrayList<videoModel> checkedVideoFavourite = vid_adapter.getCheckedVideos();
+                        if(checkedVideoFavourite.size() != 0){
+                            for(videoModel vidFavourite: checkedVideoFavourite){
+                                videoUriArrayFavourite.add(Uri.parse(vidFavourite.getStrPath()));
+                            }
+                        }
+                        boolean isAdded = false;
+                        for(int i = 0; i < videoUriArrayFavourite.size(); i++){
+                            if (FavouriteVideoActivity.favoriteVideos != null && !FavouriteVideoActivity.favoriteVideos.isEmpty()){
+                                if(FavouriteVideoActivity.favoriteVideos.contains(videoUriArrayFavourite.get(i).toString())){
+                                    isAdded = false;
+                                }
+                                else{
+                                    FavouriteVideoActivity.favoriteVideos.add(videoUriArrayFavourite.get(i).toString());
+                                    isAdded = true;
+                                }
+                            }
+                            else{
+                                FavouriteVideoActivity.favoriteVideos = new ArrayList<>();
+                                FavouriteVideoActivity.favoriteVideos.add(videoUriArrayFavourite.get(i).toString());
+                                isAdded = true;
+                            }
+                            //todo: uncomment if open full-screen video
+                            //FullScreenImageActivity.isFavouriteImage = true;
+                        }
+                        if(isAdded){
+                            if(videoUriArrayFavourite.size() == 1){
+                                Toast.makeText(getContext(), "Add 1 video to wishlist successfully!!!", Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(getContext(), "Add " + videoUriArrayFavourite.size() + " videos to wishlist successfully", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        else{
+                            if(videoUriArrayFavourite.size() == 1){
+                                Toast.makeText(getContext(), "This video had already added to wishlist!!!", Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(getContext(), "These video had already added to wishlist!!!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        SharedPreferences sharedPreferencesVideo = PreferenceManager.getDefaultSharedPreferences(getContext());
+                        SharedPreferences.Editor editorVideo = sharedPreferencesVideo.edit();
+                        Gson gsonVideo = new Gson();
+                        String jsonVideo = gsonVideo.toJson(FavouriteVideoActivity.favoriteVideos);
+                        editorVideo.putString("savedFavoriteVideos", jsonVideo);
+                        editorVideo.apply();
+                        mode.finish();
+                        return true;
                     case R.id.action_share_video:
                         //share multiple videos
                         ArrayList<Uri> videoUriArray = new ArrayList<>();
-                        ArrayList<videoModel> checkedVideo = obj_adapter.getCheckedVideos();
+                        ArrayList<videoModel> checkedVideo = vid_adapter.getCheckedVideos();
                         if(checkedVideo.size() != 0){
                             for(videoModel vid: checkedVideo){
                                 videoUriArray.add(Uri.parse(vid.getStrPath()));
@@ -181,7 +237,7 @@ public class videoActivity extends Fragment implements ClickListener{
                         return true;
                     case R.id.action_delete_video:
                         ArrayList<Uri> videoUriArrayDelete = new ArrayList<>();
-                        ArrayList<videoModel> checkedVideoDelete = obj_adapter.getCheckedVideos();
+                        ArrayList<videoModel> checkedVideoDelete = vid_adapter.getCheckedVideos();
                         if(checkedVideoDelete.size() != 0){
                             for(videoModel vidDelete: checkedVideoDelete){
                                 videoUriArrayDelete.add(Uri.parse(vidDelete.getStrPath()));
@@ -231,9 +287,9 @@ public class videoActivity extends Fragment implements ClickListener{
                                     }
                                 }
                                 //delete multi videos from current recyclerview
-                                obj_adapter = new videoAdapter(getContext(), checkedVideoDelete);
-                                obj_adapter.setItemClickListener(videoActivity.this);
-                                recyclerView.setAdapter(obj_adapter);
+                                vid_adapter = new videoAdapter(getContext(), checkedVideoDelete);
+                                vid_adapter.setItemClickListener(videoActivity.this);
+                                recyclerView.setAdapter(vid_adapter);
                                 Toast.makeText(getContext(), "Delete images successfully", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -257,8 +313,8 @@ public class videoActivity extends Fragment implements ClickListener{
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
-                obj_adapter.setMultiCheckMode(false);
-                obj_adapter.setItemClickListener(videoActivity.this);
+                vid_adapter.setMultiCheckMode(false);
+                vid_adapter.setItemClickListener(videoActivity.this);
                 mode.finish();
             }
         };

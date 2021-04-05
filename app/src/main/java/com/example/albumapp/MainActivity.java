@@ -32,12 +32,16 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -167,6 +171,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             configuration.locale = locale;
             getBaseContext().getResources().updateConfiguration(configuration, getBaseContext().getResources().getDisplayMetrics());
         }
+        //get favourite images from sharedpreferences
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        Gson gson = new Gson();
+        String key_response = sharedPreferences.getString("savedFavoriteImages","");
+        FavouriteActivity.favoriteImages = gson.fromJson(key_response, new TypeToken<ArrayList<String>>(){}.getType());
+        ///
+        SharedPreferences sharedPreferencesVideo = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        Gson gsonVideo = new Gson();
+        String key_response_video = sharedPreferencesVideo.getString("savedFavoriteVideos","");
+        FavouriteVideoActivity.favoriteVideos = gsonVideo.fromJson(key_response_video, new TypeToken<ArrayList<String>>(){}.getType());
+        ///
     }
 
     //capture image and record video
@@ -407,8 +422,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else if(id == R.id.nav_album){
             toolBar.setTitle(R.string.Album);
         }
-        else if(id == R.id.nav_favorite){
-            toolBar.setTitle(R.string.Favourite);
+        else if(id == R.id.nav_favorite_images){
+            toolBar.setTitle(R.string.Favourite_Image);
+            ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, new FavouriteActivity());
+            ft.commit();
+        }
+        else if(id == R.id.nav_favorite_videos){
+            toolBar.setTitle(R.string.Favourite_Video);
+            ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, new FavouriteVideoActivity());
+            ft.commit();
         }
         else if(id == R.id.nav_category_image){
             toolBar.setTitle(R.string.Category_Image);

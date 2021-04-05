@@ -1,9 +1,11 @@
 package com.example.albumapp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -24,6 +26,11 @@ public class ImageAdapter extends BaseAdapter {
     ImageAdapter(Activity applicationContext){
         this.context = applicationContext;
         PicturesActivity.images = loadAlbum(context);
+    }
+
+    ImageAdapter(Activity applicationContext, ArrayList<String> favouriteImageList){
+        context = applicationContext;
+        PicturesActivity.images = favouriteImageList;
     }
 
     public int getCount() {

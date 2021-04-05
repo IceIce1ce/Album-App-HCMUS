@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Album App</string>
+    <string name="app_name">Ứng dụng ảnh</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
     <!--vietnamese language nav_drawer-->
     <string name="Pictures">Hình ảnh</string>
     <string name="Videos">Videos</string>
     <string name="Album">Album</string>
-    <string name="Favourite">Yêu thích</string>
+    <string name="Favourite_Image">Hình Ảnh Yêu thích</string>
+    <string name="Favourite_Video">Video Yêu Thích</string>
     <string name="Category_Image">Phân loại ảnh</string>
     <string name="Settings">Cài đặt</string>
     <string name="Support">Hỗ trợ</string>

@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import android.annotation.SuppressLint;
@@ -15,6 +17,7 @@ import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -26,6 +29,7 @@ import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,10 +46,12 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -58,6 +64,8 @@ public class FullScreenImageActivity extends AppCompatActivity {
     private BottomNavigationView navBottom;
     private float x1, x2, y1, y2;
     private String storeNameImageCrop;
+    //check current image is favourite or not
+    public static boolean isFavouriteImage = false;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -278,6 +286,15 @@ public class FullScreenImageActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.image_main, menu);
+        isFavouriteImage = false;
+        String pathImageFavourite = Objects.requireNonNull(getIntent().getStringExtra("path"));
+        if(FavouriteActivity.favoriteImages != null && !FavouriteActivity.favoriteImages.isEmpty()) {
+            if(FavouriteActivity.favoriteImages.contains(pathImageFavourite)){
+                MenuItem menuItem = menu.findItem(R.id.action_image_favorite);
+                menuItem.setIcon(ContextCompat.getDrawable(getApplicationContext(), R.drawable.round_favorite_24_clicked));
+                isFavouriteImage = true;
+            }
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -286,7 +303,33 @@ public class FullScreenImageActivity extends AppCompatActivity {
         setFullScreen();
         switch(item.getItemId()){
             case R.id.action_image_favorite:
-                Toast.makeText(this, "Favourite image", Toast.LENGTH_SHORT).show();
+                if(isFavouriteImage){
+                    MenuView.ItemView favorite_btn;
+                    favorite_btn = findViewById(R.id.action_image_favorite);
+                    favorite_btn.setIcon(ContextCompat.getDrawable(getApplicationContext(), R.drawable.round_favorite_24));
+                    FavouriteActivity.favoriteImages.remove(PicturesActivity.images.get(position));
+                    isFavouriteImage = false;
+                }
+                else{
+                    MenuView.ItemView favorite_btn;
+                    favorite_btn = findViewById(R.id.action_image_favorite);
+                    favorite_btn.setIcon(ContextCompat.getDrawable(getApplicationContext(), R.drawable.round_favorite_24_clicked));
+                    if(FavouriteActivity.favoriteImages != null && !FavouriteActivity.favoriteImages.isEmpty()) {
+                        FavouriteActivity.favoriteImages.add(PicturesActivity.images.get(position));
+                    }
+                    else
+                    {
+                        FavouriteActivity.favoriteImages = new ArrayList<>();
+                        FavouriteActivity.favoriteImages.add(PicturesActivity.images.get(position));
+                    }
+                    isFavouriteImage = true;
+                }
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                Gson gson = new Gson();
+                String json = gson.toJson(FavouriteActivity.favoriteImages);
+                editor.putString("savedFavoriteImages", json);
+                editor.apply();
                 return true;
             case R.id.action_image_slideshow:
                 Intent slideshow_intent = new Intent(FullScreenImageActivity.this, SlideshowActivity.class);

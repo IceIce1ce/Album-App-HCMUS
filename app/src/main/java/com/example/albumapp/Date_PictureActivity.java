@@ -109,7 +109,6 @@ public class Date_PictureActivity extends Fragment {
 
     private List<ParentItem> ParentItemList(HashMap<String, ArrayList<String>> g) {
         ArrayList<ParentItem> itemList = new ArrayList<>();
-<<<<<<< HEAD
         System.out.println(g);
         int cnt1 = 0, cnt2 = PicturesActivity.images.size() - 1;
         for(String i: this.date_order){
@@ -129,29 +128,4 @@ public class Date_PictureActivity extends Fragment {
         }
         return itemList;
     }
-=======
-        //ArrayList<String> dl = new ArrayList<>(g.keySet());
-        System.out.println(g);
-        int count = 0;
-        for (String i : this.date_order){
-            //itemList.add(new ParentItem(i, ChildItemList(g.get(i), count)));
-            ArrayList<String> paths = g.get(i);
-            List<ChildItem> ChildItemList = new ArrayList<>();
-            for (String j : paths){
-                ChildItemList.add(new ChildItem(j, count));
-                count++;
-            }
-            itemList.add(new ParentItem(i,ChildItemList));
-        }
-        return itemList;
-    }
-    /*
-    private List<ChildItem> ChildItemList(ArrayList<String> paths, int pos) {
-        List<ChildItem> ChildItemList = new ArrayList<>();
-        for (String i : paths){
-            ChildItemList.add(new ChildItem(i, pos));
-        }
-        return ChildItemList;
-    }*/
->>>>>>> b3ac5e550e9fc04f0e354f147d211670c80fddd5
 }

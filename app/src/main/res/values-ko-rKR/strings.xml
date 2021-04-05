@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Album App</string>
+    <string name="app_name">앨범 신청</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
     <!--korea language nav_drawer-->
     <string name="Pictures">그림</string>
     <string name="Videos">비디오</string>
     <string name="Album">앨범</string>
-    <string name="Favourite">특히 잘하는</string>
+    <string name="Favourite_Image">좋아하는 이미지</string>
+    <string name="Favourite_Video">좋아하는 비디오</string>
     <string name="Category_Image">카테고리 이미지</string>
     <string name="Settings">환경</string>
     <string name="Support">지원하다</string>

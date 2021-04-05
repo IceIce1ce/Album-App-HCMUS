@@ -6,7 +6,8 @@
     <string name="Pictures">Pictures</string>
     <string name="Videos">Videos</string>
     <string name="Album">Album</string>
-    <string name="Favourite">Favourite</string>
+    <string name="Favourite_Image">Favourite Images</string>
+    <string name="Favourite_Video">Favourite Videos</string>
     <string name="Category_Image">Category Image</string>
     <string name="Settings">Settings</string>
     <string name="Support">Support</string>

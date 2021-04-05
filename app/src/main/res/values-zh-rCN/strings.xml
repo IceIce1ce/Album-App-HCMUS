@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Album App</string>
+    <string name="app_name">专辑申请</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
     <!--vietnamese language nav_drawer-->
     <string name="Pictures">图片</string>
     <string name="Videos">视频</string>
     <string name="Album">专辑</string>
-    <string name="Favourite">最喜欢的</string>
+    <string name="Favourite_Image">最喜欢的图像</string>
+    <string name="Favourite_Video">最喜欢的影片</string>
     <string name="Category_Image">类别图片</string>
     <string name="Settings">环境</string>
     <string name="Support">支持</string>
