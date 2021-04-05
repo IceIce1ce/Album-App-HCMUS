@@ -5,19 +5,30 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
 public class FavouriteActivity extends Fragment {
     View favorite;
     public static ArrayList<String> favoriteImages = new ArrayList<>();
+    ArrayList<Uri> imgFavouriteUri = new ArrayList<>();
 
     @Nullable
     @Override
@@ -45,6 +56,59 @@ public class FavouriteActivity extends Fragment {
                     ImageInfo s = new ImageInfo(img_path);
                     favourite_intent.putExtra("display_image_name", s.getFilename());
                     startActivity(favourite_intent);
+                }
+            });
+            favoriteGallery.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
+            favoriteGallery.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+                @Override
+                public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+                    int selectCount = favoriteGallery.getCheckedItemCount();
+                    imgFavouriteUri.add(Uri.parse(favoriteImages.get(position)));
+                    switch (selectCount) {
+                        case 1:
+                            mode.setSubtitle("1 item selected");
+                            break;
+                        default:
+                            mode.setSubtitle("" + selectCount + " items selected");
+                            break;
+                    }
+                }
+
+                @Override
+                public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                    MenuInflater inflater1 = mode.getMenuInflater();
+                    inflater1.inflate(R.menu.menu_remove_images_wishlist, menu);
+                    return true;
+                }
+
+                @Override
+                public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                    return false;
+                }
+
+                @Override
+                public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                    switch(item.getItemId()){
+                        case R.id.remove_favorite_items:
+                            for(int i = 0; i < imgFavouriteUri.size(); i++){
+                                favoriteImages.remove(imgFavouriteUri.get(i).toString());
+                                //remove from sharedpreference after removing from wishlist
+                                SharedPreferences sharedPreferencesExcludeWishList = PreferenceManager.getDefaultSharedPreferences(getContext());
+                                SharedPreferences.Editor editorExcludeWishList = sharedPreferencesExcludeWishList.edit();
+                                Gson gsonExcludeWishList = new Gson();
+                                String jsonExcludeWishList = gsonExcludeWishList.toJson(favoriteImages);
+                                editorExcludeWishList.putString("savedFavoriteImages", jsonExcludeWishList);
+                                editorExcludeWishList.apply();
+                            }
+                            mode.finish();
+                            return true;
+                        default: return false;
+                    }
+                }
+
+                @Override
+                public void onDestroyActionMode(ActionMode mode) {
+                    imgFavouriteUri.clear();
                 }
             });
         }

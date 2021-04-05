@@ -8,7 +8,6 @@ import android.app.AlertDialog;
 import android.app.RecoverableSecurityException;
 import android.content.ContentResolver;
 import android.content.ContentUris;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -223,6 +222,16 @@ public class PicturesActivity extends Fragment {
                                 //delete multi images from current grid view
                                 for(int i = 0; i < imageUriArray.size(); i++){
                                     images.remove(imageUriArray.get(i).toString());
+                                }
+                                //also delete multi images from wishlist
+                                for(int i = 0; i < imageUriArray.size(); i++){
+                                    FavouriteActivity.favoriteImages.remove(imageUriArray.get(i).toString());
+                                    SharedPreferences sharedPreferencesRemoveWishList = PreferenceManager.getDefaultSharedPreferences(getContext());
+                                    SharedPreferences.Editor editorRemoveWishList = sharedPreferencesRemoveWishList.edit();
+                                    Gson gsonRemoveWishList = new Gson();
+                                    String jsonRemoveWishList = gsonRemoveWishList.toJson(FavouriteActivity.favoriteImages);
+                                    editorRemoveWishList.putString("savedFavoriteImages", jsonRemoveWishList);
+                                    editorRemoveWishList.apply();
                                 }
                                 Toast.makeText(getContext(), "Delete images successfully", Toast.LENGTH_SHORT).show();
                                 mode.finish();

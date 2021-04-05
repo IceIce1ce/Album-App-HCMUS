@@ -160,6 +160,16 @@ public class FullScreenImageActivity extends AppCompatActivity {
                                     }
                                     cursor.close();
                                 }
+                                //also delete single images from wishlist
+                                if(isFavouriteImage){
+                                    FavouriteActivity.favoriteImages.remove(single_uri_del.toString());
+                                    SharedPreferences sharedPreferencesRemoveSingleWishList = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                    SharedPreferences.Editor editorRemoveSingleWishList = sharedPreferencesRemoveSingleWishList.edit();
+                                    Gson gsonRemoveSingleWishList = new Gson();
+                                    String jsonRemoveSingleWishList = gsonRemoveSingleWishList.toJson(FavouriteActivity.favoriteImages);
+                                    editorRemoveSingleWishList.putString("savedFavoriteImages", jsonRemoveSingleWishList);
+                                    editorRemoveSingleWishList.apply();
+                                }
                             }
                         });
                         dialogDeleteSingle.setButton(android.app.AlertDialog.BUTTON_NEGATIVE, "CANCEL", new DialogInterface.OnClickListener() {

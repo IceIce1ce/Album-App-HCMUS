@@ -176,12 +176,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Gson gson = new Gson();
         String key_response = sharedPreferences.getString("savedFavoriteImages","");
         FavouriteActivity.favoriteImages = gson.fromJson(key_response, new TypeToken<ArrayList<String>>(){}.getType());
-        ///
+        //get favourite videos from sharedpreferences
         SharedPreferences sharedPreferencesVideo = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         Gson gsonVideo = new Gson();
         String key_response_video = sharedPreferencesVideo.getString("savedFavoriteVideos","");
         FavouriteVideoActivity.favoriteVideos = gsonVideo.fromJson(key_response_video, new TypeToken<ArrayList<String>>(){}.getType());
-        ///
     }
 
     //capture image and record video
