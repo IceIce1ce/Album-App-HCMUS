@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -100,6 +101,7 @@ public class FavouriteActivity extends Fragment {
                                 editorExcludeWishList.putString("savedFavoriteImages", jsonExcludeWishList);
                                 editorExcludeWishList.apply();
                             }
+                            Toast.makeText(getContext(), "Remove image from wishlist successfully!!!", Toast.LENGTH_SHORT).show();
                             mode.finish();
                             return true;
                         default: return false;

@@ -290,7 +290,20 @@ public class videoActivity extends Fragment implements ClickListener{
                                 vid_adapter = new videoAdapter(getContext(), checkedVideoDelete);
                                 vid_adapter.setItemClickListener(videoActivity.this);
                                 recyclerView.setAdapter(vid_adapter);
+                                //
+                                //also delete multi videos from wishlist
+                                for(int i = 0; i < videoUriArrayDelete.size(); i++){
+                                    FavouriteVideoActivity.favoriteVideos.remove(videoUriArrayDelete.get(i).toString());
+                                    SharedPreferences sharedPreferencesRemoveVideoWishList = PreferenceManager.getDefaultSharedPreferences(getContext());
+                                    SharedPreferences.Editor editorRemoveVideoWishList = sharedPreferencesRemoveVideoWishList.edit();
+                                    Gson gsonRemoveVideoWishList = new Gson();
+                                    String jsonRemoveVideoWishList = gsonRemoveVideoWishList.toJson(FavouriteVideoActivity.favoriteVideos);
+                                    editorRemoveVideoWishList.putString("savedFavoriteVideos", jsonRemoveVideoWishList);
+                                    editorRemoveVideoWishList.apply();
+                                }
+                                //
                                 Toast.makeText(getContext(), "Delete images successfully", Toast.LENGTH_SHORT).show();
+                                mode.finish();
                             }
                         });
                         dialogDeleteVideo.setButton(AlertDialog.BUTTON_NEGATIVE, "CANCEL", new DialogInterface.OnClickListener() {
@@ -300,7 +313,7 @@ public class videoActivity extends Fragment implements ClickListener{
                             }
                         });
                         dialogDeleteVideo.show();
-                        mode.finish();
+                        //mode.finish();
                         return true;
                     default: return false;
                 }
