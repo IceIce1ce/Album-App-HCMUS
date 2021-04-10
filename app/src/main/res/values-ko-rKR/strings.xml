@@ -28,6 +28,7 @@
     <string name="set_pin">핀 설정</string>
     <string name="delete_pin">핀 삭제</string>
     <string name="change_pin">핀 변경</string>
+    <string name="album_img_number">이미지 </string>
     <!--language select dialog spinner-->
     <string-array name="language_select">
         <item>영어</item>

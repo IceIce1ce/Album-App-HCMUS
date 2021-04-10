@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,12 +21,69 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class Date_PictureActivity extends Fragment {
+public class Date_PictureFragment extends Fragment {
     private RecyclerView recyclerView = null;
     private ArrayList<String> path_list = null, date_order;
     private HashMap<String, ArrayList<String>> group = null;
     ParentItemAdapter parentItemAdapter;
     public static String sort_order_date_header = "DATE_MODIFIED DESC";
+
+
+
+    public static Date_PictureFragment newInstance() {
+        return new Date_PictureFragment();
+    }
+    public static Date_PictureFragment newInstance(ArrayList<String> img_list){
+        System.out.println(img_list);
+        Date_PictureFragment f = new Date_PictureFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("STR_LIST", (Serializable)img_list);
+        f.setArguments(args);
+        return f;
+    }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Bundle args = getArguments();
+        if (args == null)
+            this.path_list = loadHeader(this.getActivity());
+        else {
+            this.path_list = (ArrayList<String>) args.getSerializable("STR_LIST");
+        }
+        //System.out.println(path_list);
+        //----
+        this.group = groupPhotos(this.path_list);
+        //----
+        MainActivity.swipeImg.setEnabled(false);
+        View rootView = inflater.inflate(R.layout.date_fragment, container, false);
+        recyclerView = rootView.findViewById(R.id.parent_recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
+        parentItemAdapter = new ParentItemAdapter(getContext() , ParentItemList(this.group));
+        recyclerView.setAdapter(parentItemAdapter);
+        return rootView;
+    }
+
+    private List<ParentItem> ParentItemList(HashMap<String, ArrayList<String>> g) {
+        ArrayList<ParentItem> itemList = new ArrayList<>();
+        System.out.println(g);
+        int cnt1 = 0, cnt2 = PicturesActivity.images.size() - 1;
+        for(String i: this.date_order){
+            ArrayList<String> paths = g.get(i);
+            List<ChildItem> ChildItemList = new ArrayList<>();
+            for(String j: paths){
+                if(sort_order_date_header.equals("DATE_MODIFIED DESC")){
+                    ChildItemList.add(new ChildItem(j, cnt1));
+                    cnt1++;
+                }
+                else if(sort_order_date_header.equals("DATE_MODIFIED ASC")){
+                    ChildItemList.add(new ChildItem(j, cnt2));
+                    cnt2--;
+                }
+            }
+            itemList.add(new ParentItem(i, ChildItemList));
+        }
+        return itemList;
+    }
+
 
     public String date_string(Date time) {
         SimpleDateFormat f = new SimpleDateFormat("EEE, dd MMM yyyy", Locale.US);  //'at' hh:mm aaa"
@@ -88,44 +146,5 @@ public class Date_PictureActivity extends Fragment {
         assert cursor != null;
         cursor.close();
         return list;
-    }
-
-    public static Date_PictureActivity newInstance() {
-        return new Date_PictureActivity();
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        MainActivity.swipeImg.setEnabled(false);
-        this.path_list = loadHeader(this.getActivity());
-        this.group = groupPhotos(this.path_list);
-        View rootView = inflater.inflate(R.layout.date_fragment, container, false);
-        recyclerView = rootView.findViewById(R.id.parent_recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
-        parentItemAdapter = new ParentItemAdapter(getContext() , ParentItemList(this.group));
-        recyclerView.setAdapter(parentItemAdapter);
-        return rootView;
-    }
-
-    private List<ParentItem> ParentItemList(HashMap<String, ArrayList<String>> g) {
-        ArrayList<ParentItem> itemList = new ArrayList<>();
-        System.out.println(g);
-        int cnt1 = 0, cnt2 = PicturesActivity.images.size() - 1;
-        for(String i: this.date_order){
-            ArrayList<String> paths = g.get(i);
-            List<ChildItem> ChildItemList = new ArrayList<>();
-            for(String j: paths){
-                if(sort_order_date_header.equals("DATE_MODIFIED DESC")){
-                    ChildItemList.add(new ChildItem(j, cnt1));
-                    cnt1++;
-                }
-                else if(sort_order_date_header.equals("DATE_MODIFIED ASC")){
-                    ChildItemList.add(new ChildItem(j, cnt2));
-                    cnt2--;
-                }
-            }
-            itemList.add(new ParentItem(i, ChildItemList));
-        }
-        return itemList;
     }
 }

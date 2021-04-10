@@ -40,7 +40,6 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -62,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static SwipeRefreshLayout swipeImg; //default disable in nested recyclerview
     //display video fragment
     videoActivity videos;
+    Date_PictureFragment date_pictureFragment;
     int currentFragment;
 
     @Override
@@ -308,16 +308,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return true;
         }
         else if (id == R.id.sub_asc_order) {
-            Date_PictureActivity.sort_order_date_header = "DATE_MODIFIED ASC";
+            Date_PictureFragment.sort_order_date_header = "DATE_MODIFIED ASC";
             ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, new Date_PictureActivity());
+            date_pictureFragment = Date_PictureFragment.newInstance();
+            ft.replace(R.id.content_frame, date_pictureFragment);
             ft.commit();
             return true;
         }
         else if (id == R.id.sub_desc_order) {
-            Date_PictureActivity.sort_order_date_header = "DATE_MODIFIED DESC";
+            Date_PictureFragment.sort_order_date_header = "DATE_MODIFIED DESC";
             ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, new Date_PictureActivity());
+            date_pictureFragment = Date_PictureFragment.newInstance();
+            ft.replace(R.id.content_frame, date_pictureFragment);
             ft.commit();
             return true;
         }
@@ -420,6 +422,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else if(id == R.id.nav_album){
             toolBar.setTitle(R.string.Album);
+            ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, new AlbumActivity());
+            //Toast.makeText(this, "Album", Toast.LENGTH_SHORT).show();
+            ft.commit();
         }
         else if(id == R.id.nav_favorite_images){
             toolBar.setTitle(R.string.Favourite_Image);

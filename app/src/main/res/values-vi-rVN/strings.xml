@@ -28,6 +28,7 @@
     <string name="set_pin">Thiết lập mã pin</string>
     <string name="delete_pin">Xóa mã pin</string>
     <string name="change_pin">Thay đổi mã pin</string>
+    <string name="album_img_number">Ảnh</string>
     <!--language select dialog spinner-->
     <string-array name="language_select">
         <item>Tiếng Anh</item>

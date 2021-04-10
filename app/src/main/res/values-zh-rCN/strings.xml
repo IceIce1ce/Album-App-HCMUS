@@ -28,6 +28,7 @@
     <string name="set_pin">定位销</string>
     <string name="delete_pin">删除图钉</string>
     <string name="change_pin">换针</string>
+    <string name="album_img_number">张图片 </string>
     <!--language select dialog spinner-->
     <string-array name="language_select">
         <item>英语</item>
