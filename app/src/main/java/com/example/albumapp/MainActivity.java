@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar toolBar;
     FragmentTransaction ft;
     //display image fragment
-    PicturesActivity pictures;
+    static PicturesActivity pictures;
     //FAB for camera and record
     FloatingActionButton fabRecord, fabCamera, fabOpenClose;
     boolean flagFAB = true;
@@ -401,6 +401,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }*/
 
+    void refresh_picture(){
+        ft = getSupportFragmentManager().beginTransaction();
+        pictures = PicturesActivity.newInstance();
+        //ft.replace(R.id.content_frame, pictures);
+        ft.commit();
+        currentFragment = 1;
+    }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();

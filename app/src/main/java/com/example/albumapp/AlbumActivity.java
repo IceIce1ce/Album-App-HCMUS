@@ -21,12 +21,9 @@ import java.util.TreeMap;
 
 public class AlbumActivity extends Fragment {
     private RecyclerView rv;
-    ArrayList<AlbumItem> album_list;
+    public static ArrayList<AlbumItem> album_list = null;
     public static String album_sort_order = "DATE_MODIFIED DESC"; // DATE_MODIFIED ASC
     ArrayList<String> img_dir = null;
-
-
-
 
     public static AlbumActivity newInstance() { return new AlbumActivity();}
 
@@ -34,7 +31,10 @@ public class AlbumActivity extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         MainActivity.swipeImg.setEnabled(false);
-        loadAlbumItem(process_loaded_paths());
+        if(this.img_dir == null){
+            this.img_dir = load_paths(this.getActivity());
+        }
+        this.album_list = loadAlbumItem(process_loaded_paths(this.img_dir));
         View rootView = inflater.inflate(R.layout.album_layout, container, false);
         rv = rootView.findViewById(R.id.album_recyclerview);
         rv.setLayoutManager(new GridLayoutManager(rootView.getContext(), 2));
@@ -43,11 +43,12 @@ public class AlbumActivity extends Fragment {
         return rootView;
     }
 
-
-    private void loadAlbumItem(TreeMap<String, ArrayList<String>> input){
-        //System.out.println(input);
+    public static ArrayList<AlbumItem> exportAlbumList(Activity activity){
+        return loadAlbumItem(process_loaded_paths(load_paths(activity)));
+    }
+    private  static ArrayList<AlbumItem> loadAlbumItem(TreeMap<String, ArrayList<String>> input){
         Set<String> keys = input.keySet();
-        this.album_list = new ArrayList<>();
+        ArrayList<AlbumItem> result = new ArrayList<>();
         for(String i : keys){
             ArrayList<String> list = input.get(i);
             if(list.isEmpty())
@@ -57,22 +58,19 @@ public class AlbumActivity extends Fragment {
                 String delims = "[/]";
                 String[] tokens = item.trim().split(delims);
                 String sec_dir = tokens[2];
-                //System.out.println(sec_dir);
                 AlbumItem new_album = new AlbumItem(i, input.get(i));
                 if (!sec_dir.equals("emulated"))
                     new_album.setIs_sd(true);
-                this.album_list.add(new_album);
+                result.add(new_album);
             }
         }
+        return result;
     }
 
 
-    private TreeMap<String, ArrayList<String>> process_loaded_paths(){
-        if(this.img_dir == null){
-            load_paths(this.getActivity());
-        }
+    private  static TreeMap<String, ArrayList<String>> process_loaded_paths(ArrayList<String> input){
         TreeMap<String, ArrayList<String>> result = new TreeMap<>();
-        for(String i : this.img_dir){
+        for(String i : input){
             String delims = "[/]";
             String[] tokens = i.trim().split(delims);
             String img_folder = tokens[tokens.length - 2];
@@ -90,9 +88,8 @@ public class AlbumActivity extends Fragment {
         }
         return result;
     }
-    private void load_paths(Activity activity) {
-        this.img_dir = new ArrayList<>();
-
+    private static ArrayList<String> load_paths(Activity activity) {
+        /*
         Cursor cursor = activity.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 new String[]{MediaStore.MediaColumns.DATA}, null, null, album_sort_order); //default: null
         if(cursor != null && cursor.getCount() > 0){
@@ -104,5 +101,28 @@ public class AlbumActivity extends Fragment {
         }
         assert cursor != null;
         cursor.close();
+        */
+        ArrayList<String> list = new ArrayList<>();
+        //MixedItem[] list;
+
+        Cursor cursor = activity.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                new String[]{MediaStore.MediaColumns.DATA}, null, null, null); //default: null
+        if(cursor != null && cursor.getCount() > 0){
+            while(cursor.moveToNext()){
+                if (cursor.getString(0) != null) {
+                    list.add(cursor.getString(0));
+                }
+            }
+        }
+        assert cursor != null;
+        cursor.close();
+        //
+        cursor = activity.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                new String[]{MediaStore.MediaColumns.DATA}, null, null,null);
+        while(cursor.moveToNext()) {
+            list.add(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)));
+        }
+        cursor.close();
+        return list;
     }
 }

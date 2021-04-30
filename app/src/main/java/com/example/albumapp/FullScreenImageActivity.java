@@ -8,8 +8,15 @@ import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Dialog;
 import android.app.RecoverableSecurityException;
 import android.app.WallpaperManager;
 import android.content.ContentResolver;
@@ -39,6 +46,7 @@ import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,11 +74,25 @@ public class FullScreenImageActivity extends AppCompatActivity {
     private String storeNameImageCrop;
     //check current image is favourite or not
     public static boolean isFavouriteImage = false;
+    //private ArrayList<AlbumItem> album_list = null;
+    public static Dialog dialog;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Load albums list
+        /*
+        if(AlbumActivity.album_list != null){
+            this.album_list = AlbumActivity.album_list;
+        }
+        else
+            this.album_list = AlbumActivity.exportAlbumList(this);
+        for (AlbumItem i : this.album_list){
+            System.out.println(i.getAlbum_folder());
+        }
+
+         */
         //hide status bar
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -403,12 +425,55 @@ public class FullScreenImageActivity extends AppCompatActivity {
                 });
                 dialog.show();
                 return true;
+            case R.id.action_move_image:
+                String filePath = Objects.requireNonNull(getIntent().getStringExtra("path"));
+                showDialog(FullScreenImageActivity.this, filePath);
+
+
+
+                //FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                //MainActivity.ft.commit();
+                return true;
+            //
             case android.R.id.home:
                 finish();
                 return true;
             default: return false;
         }
     }
+
+    public void showDialog(Activity activity, String target){
+
+        dialog = new Dialog(activity);
+        // dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.dialog_recycler);
+
+        Button btndialog = (Button) dialog.findViewById(R.id.btndialog);
+        btndialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+            }
+        });
+
+        RecyclerView recyclerView = dialog.findViewById(R.id.recycler);
+        AlbumPickerAdapter albumPickerAdapter = new AlbumPickerAdapter(this,AlbumActivity.exportAlbumList(this), target);
+        recyclerView.setAdapter(albumPickerAdapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+
+        recyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        dialog.show();
+
+    }
+
 
     private void setFullScreen(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){

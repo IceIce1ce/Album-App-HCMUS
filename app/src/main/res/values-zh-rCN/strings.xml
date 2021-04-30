@@ -36,4 +36,6 @@
         <item>韩国人</item>
         <item>中国人</item>
     </string-array>
+    <string name="Cancel">Cancel</string>
+    <string name="album_picker">选择一个要复制文件的相册</string>
 </resources>

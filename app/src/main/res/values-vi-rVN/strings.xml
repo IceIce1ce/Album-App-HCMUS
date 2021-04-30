@@ -36,4 +36,6 @@
         <item>Tiếng Hàn</item>
         <item>Tiếng Trung</item>
     </string-array>
+    <string name="Cancel">Cancel</string>
+    <string name="album_picker">Chọn album để copy ảnh</string>
 </resources>

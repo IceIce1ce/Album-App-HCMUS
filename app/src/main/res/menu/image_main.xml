@@ -33,4 +33,9 @@
         android:orderInCategory="200"
         app:showAsAction="never"
         android:title="Details Image"/>
+    <item
+        android:id="@+id/action_move_image"
+        android:orderInCategory="200"
+        app:showAsAction="never"
+        android:title="Move Image"/>
 </menu>

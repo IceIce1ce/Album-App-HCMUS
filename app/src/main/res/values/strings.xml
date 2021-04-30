@@ -28,6 +28,8 @@
     <string name="delete_pin">Delete Pin</string>
     <string name="change_pin">Change Pin</string>
     <string name="album_img_number">Images</string>
+    <string name="Cancel">Cancel</string>
+    <string name="album_picker">Choose an album to copy file</string>
     <!--language select dialog spinner-->
     <string-array name="language_select">
         <item>English</item>
