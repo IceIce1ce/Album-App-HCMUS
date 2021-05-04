@@ -33,10 +33,9 @@ import java.util.List;
 public class NewChildItemAdapter extends RecyclerView.Adapter {
     private List<MixedItem> ChildItemList;
     private Context context;
-    private boolean multiSelect = false;
+    //private boolean multiSelect = false;
     private ArrayList<String> selectlist = new ArrayList<>();
-    //private ActionModeCallback actionModeCallback = new ActionModeCallback();
-    //private ActionMode actionMode;
+
     public NewChildItemAdapter(Context context, List<MixedItem> childItemList) {
         this.context = context;
         this.ChildItemList = childItemList;
@@ -48,8 +47,6 @@ public class NewChildItemAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        //View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.date_child_item, viewGroup, false);
-        //return new NewChildItemAdapter.NewChildViewHolder(view);
         View itemView;
         switch (viewType){
             case MixedItem.TYPE_IMAGE:
@@ -71,13 +68,15 @@ public class NewChildItemAdapter extends RecyclerView.Adapter {
                 holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
+                        /*
                         if(!multiSelect){
                             multiSelect = true;
                             ((ImageViewHolder) holder).ImgCheckbox.setVisibility(View.VISIBLE);
                             ((ImageViewHolder) holder).ImgCheckbox.setChecked(true);
                             ((ImageViewHolder) holder).ImgTitle.setAlpha(0.3f);
                             selectlist.add(cur.getPath());
-                        }
+                        }*/
+                        Toast.makeText(context,cur.getPath(),Toast.LENGTH_SHORT).show();
                         return true;
                     }
                 });
@@ -92,24 +91,6 @@ public class NewChildItemAdapter extends RecyclerView.Adapter {
                         ImageInfo s = new ImageInfo(img_path);
                         intent_img_date_header.putExtra("display_image_name", s.getFilename());
                         context.startActivity(intent_img_date_header);
-                        /*
-                        if (multiSelect) {
-                            if (!selectlist.contains(cur.getPath())) {
-                                ((ImageViewHolder) holder).ImgCheckbox.setVisibility(View.VISIBLE);
-                                ((ImageViewHolder) holder).ImgCheckbox.setChecked(true);
-                                ((ImageViewHolder) holder).ImgTitle.setAlpha(0.3f);
-                                selectlist.add(cur.getPath());
-                            } else {
-                                ((ImageViewHolder) holder).ImgCheckbox.setVisibility(View.INVISIBLE);
-                                ((ImageViewHolder) holder).ImgCheckbox.setChecked(false);
-                                ((ImageViewHolder) holder).ImgTitle.setAlpha(1f);
-                                selectlist.remove(cur.getPath());
-                            }
-                        }
-                        else {
-
-                            Toast.makeText(context, cur.getPath() + "\nPos: "+ cur.getPos(),Toast.LENGTH_SHORT).show();
-                        }*/
                     }
                 });
                 break;
@@ -119,6 +100,7 @@ public class NewChildItemAdapter extends RecyclerView.Adapter {
                 holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
+                        /*
                         if(!multiSelect){
                             multiSelect = true;
                             ((VideoViewHolder) holder).VideoCheckbox.setVisibility(View.VISIBLE);
@@ -126,6 +108,8 @@ public class NewChildItemAdapter extends RecyclerView.Adapter {
                             ((VideoViewHolder) holder).VideoTitle.setAlpha(0.3f);
                             selectlist.add(cur_vid.getPath());
                         }
+                         */
+                        Toast.makeText(context,cur_vid.getPath(),Toast.LENGTH_SHORT).show();
                         return true;
                     }
                 });
@@ -135,25 +119,6 @@ public class NewChildItemAdapter extends RecyclerView.Adapter {
                         Intent video_intent = new Intent(context, FullScreenVideoActivity.class);
                         video_intent.putExtra("pathVideo", cur_vid.getPath());
                         context.startActivity(video_intent);
-                        /*
-                        if(multiSelect) {
-                            if (!selectlist.contains(cur_vid.getPath())) {
-                                ((VideoViewHolder) holder).VideoCheckbox.setVisibility(View.VISIBLE);
-                                ((VideoViewHolder) holder).VideoCheckbox.setChecked(true);
-                                ((VideoViewHolder) holder).VideoTitle.setAlpha(0.3f);
-                                selectlist.add(cur_vid.getPath());
-                            } else {
-                                ((VideoViewHolder) holder).VideoCheckbox.setVisibility(View.INVISIBLE);
-                                ((VideoViewHolder) holder).VideoCheckbox.setChecked(false);
-                                ((VideoViewHolder) holder).VideoTitle.setAlpha(1f);
-                                selectlist.remove(cur_vid.getPath());
-                            }
-                        }
-                        else{
-                            Toast.makeText(context, cur_vid.getThumbnail() + "\nPos: "+ cur_vid.getPos(),Toast.LENGTH_SHORT).show();
-                        }
-
-                         */
                     }
                 });
                 break;
@@ -164,64 +129,6 @@ public class NewChildItemAdapter extends RecyclerView.Adapter {
     ArrayList<String> getSelectedList(){
         return this.selectlist;
     }
-/*
-    @Override
-    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-        return false;
-    }
-
-    @Override
-    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-        return false;
-    }
-
-    @Override
-    public void onDestroyActionMode(ActionMode mode) {
-        this.multiSelect = false;
-        this.selectlist.clear();
-        notifyDataSetChanged();
-    }
-
-    private class ActionModeCallback implements ActionMode.Callback {
-
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            MenuInflater inflater = mode.getMenuInflater();
-            inflater.inflate(R.menu.new_multiselect_menu, menu);
-            multiSelect = true;
-            return true;
-        }
-
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false;
-        }
-
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-
-            switch (item.getItemId()) {
-                case R.id.favorite:
-                    // TODO: actually remove items
-                    Log.d(TAG, "menu_remove");
-                    mode.finish();
-                    return true;
-
-                default:
-                    return false;
-            }
-
-            return false;
-        }
-
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            multiSelect = false;
-            selectlist.clear();
-            notifyDataSetChanged();
-        }
-    }
-    */
 
     @Override
     public int getItemCount() {

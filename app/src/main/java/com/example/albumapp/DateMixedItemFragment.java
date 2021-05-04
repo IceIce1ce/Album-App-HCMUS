@@ -185,7 +185,7 @@ public class DateMixedItemFragment extends Fragment {
         List<String> list1 = Arrays.asList(listOfFiles);
         ArrayList <MixedItem> result = new ArrayList<>();
         for (String i: list1){
-            if(i.endsWith(".png")||i.endsWith(".jpg")||i.endsWith(".jpeg")||i.endsWith(".gif")||i.endsWith(".PNG")||i.endsWith(".JPG")||i.endsWith(".JPEG")||i.endsWith(".GIF")){
+            if(i.endsWith(".webp")||i.endsWith(".WEBP")||i.endsWith(".png")||i.endsWith(".jpg")||i.endsWith(".jpeg")||i.endsWith(".gif")||i.endsWith(".PNG")||i.endsWith(".JPG")||i.endsWith(".JPEG")||i.endsWith(".GIF")){
                 result.add(new ImageItem(i));
             }
             else{

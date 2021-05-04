@@ -130,7 +130,7 @@ public class MixedItemFragment extends Fragment implements MixedItemClickListene
         List<String> list1 = Arrays.asList(listOfFiles);
         ArrayList <MixedItem> result = new ArrayList<>();
         for (String i: list1){
-            if(i.endsWith(".png")||i.endsWith(".jpg")||i.endsWith(".jpeg")||i.endsWith(".gif")||i.endsWith(".PNG")||i.endsWith(".JPG")||i.endsWith(".JPEG")||i.endsWith(".GIF")){
+            if(i.endsWith(".webp")||i.endsWith(".WEBP")||i.endsWith(".png")||i.endsWith(".jpg")||i.endsWith(".jpeg")||i.endsWith(".gif")||i.endsWith(".PNG")||i.endsWith(".JPG")||i.endsWith(".JPEG")||i.endsWith(".GIF")){
                 result.add(new ImageItem(i));
             }
             else{
@@ -202,7 +202,7 @@ public class MixedItemFragment extends Fragment implements MixedItemClickListene
                         if(checkedFavouriteItemList.size() != 0){
                             for(MixedItem item_: checkedFavouriteItemList){
                                 String i = item_.getPath();
-                                if(i.endsWith(".png")||i.endsWith(".jpg")||i.endsWith(".jpeg")||i.endsWith(".gif")||i.endsWith(".PNG")||i.endsWith(".JPG")||i.endsWith(".JPEG")||i.endsWith(".GIF")) {
+                                if(i.endsWith(".webp")||i.endsWith(".WEBP")||i.endsWith(".png")||i.endsWith(".jpg")||i.endsWith(".jpeg")||i.endsWith(".gif")||i.endsWith(".PNG")||i.endsWith(".JPG")||i.endsWith(".JPEG")||i.endsWith(".GIF")) {
                                     UriArrayFavouriteImage.add(Uri.parse(i));
                                 }
                                 else
@@ -326,7 +326,7 @@ public class MixedItemFragment extends Fragment implements MixedItemClickListene
                         if(checkedItemDelete.size() != 0){
                             for(MixedItem item_: checkedItemDelete){
                                 String i = item_.getPath();
-                                if(i.endsWith(".png")||i.endsWith(".jpg")||i.endsWith(".jpeg")||i.endsWith(".gif")||i.endsWith(".PNG")||i.endsWith(".JPG")||i.endsWith(".JPEG")||i.endsWith(".GIF"))
+                                if(i.endsWith(".webp")||i.endsWith(".WEBP")||i.endsWith(".png")||i.endsWith(".jpg")||i.endsWith(".jpeg")||i.endsWith(".gif")||i.endsWith(".PNG")||i.endsWith(".JPG")||i.endsWith(".JPEG")||i.endsWith(".GIF"))
                                     UriDeleteImages.add(Uri.parse(i));
                                 else
                                     UriDeleteVideos.add(Uri.parse(i));

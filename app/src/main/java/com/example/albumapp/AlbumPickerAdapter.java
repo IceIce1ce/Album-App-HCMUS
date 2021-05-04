@@ -33,11 +33,14 @@ public class AlbumPickerAdapter extends RecyclerView.Adapter<AlbumPickerAdapter.
     ArrayList<AlbumItem> albumItemlist;
     public static String target_path;
     Context context;
+    private String file_extension;
     public AlbumPickerAdapter(Context context, ArrayList<AlbumItem> albumItemlist, String target) {
         this.albumItemlist = albumItemlist;
         this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.target_path = target;
+        int index = target.lastIndexOf('.');
+        this.file_extension = target.substring(index);
     }
 
     @Override
@@ -110,7 +113,7 @@ public class AlbumPickerAdapter extends RecyclerView.Adapter<AlbumPickerAdapter.
         }
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String path = dst.getPath() + File.separator + "IMG_" + timeStamp + "_copied.jpg";
+        String path = dst.getPath() + File.separator + "IMG_" + timeStamp + "_copied" + file_extension;
         System.out.println(path);
         File expFile = new File(path);
         FileChannel inChannel = null;

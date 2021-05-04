@@ -13,6 +13,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.Manifest;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -79,15 +80,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerToggle.syncState();
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        sort_order_date_header = sharedPref.getString("ITEM_SORT_ORDER", "DATE_MODIFIED DESC");
+        view_mode_has_date = sharedPref.getBoolean("ITEM_HAS_DATE", false);
         //set default state when app start
         if(savedInstanceState == null){
-            /*
-            ft = getSupportFragmentManager().beginTransaction();
-            pictures = PicturesActivity.newInstance();
-            ft.replace(R.id.content_frame, pictures);
-            ft.commit();
-            toolBar.setTitle(R.string.Pictures);
-            */
             refresh_all();
             toolBar.setTitle(R.string.all);
         }
@@ -320,11 +317,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else if (id == R.id.sub_asc_order) {
             this.sort_order_date_header = "DATE_MODIFIED ASC";
+            SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+            sharedPref.edit().putString("ITEM_SORT_ORDER", this.sort_order_date_header).apply();
             refresh_all();
             return true;
         }
         else if (id == R.id.sub_desc_order) {
             this.sort_order_date_header = "DATE_MODIFIED DESC";
+            SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+            sharedPref.edit().putString("ITEM_SORT_ORDER", this.sort_order_date_header).apply();
             refresh_all();
             return true;
         }
@@ -334,11 +335,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else if(id == R.id.sub_has_date){
             this.view_mode_has_date = true;
+            SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+            sharedPref.edit().putBoolean("ITEM_HAS_DATE", this.view_mode_has_date).apply();
             refresh_all();
             return true;
         }
         else if (id == R.id.sub_no_date){
             this.view_mode_has_date = false;
+            SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+            sharedPref.edit().putBoolean("ITEM_HAS_DATE", this.view_mode_has_date).apply();
             refresh_all();
             return true;
         }
