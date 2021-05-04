@@ -10,7 +10,14 @@
     <VideoView
         android:id="@+id/video_play"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="match_parent"
         android:layout_centerVertical="true"/>
+
+    <include
+        layout="@layout/nav_actionbar_video"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"/>
 
 </RelativeLayout>

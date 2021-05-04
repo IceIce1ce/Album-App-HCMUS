@@ -443,7 +443,6 @@ public class FullScreenImageActivity extends AppCompatActivity {
     }
 
     public void showDialog(Activity activity, String target){
-
         dialog = new Dialog(activity);
         // dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
@@ -473,7 +472,6 @@ public class FullScreenImageActivity extends AppCompatActivity {
         dialog.show();
 
     }
-
 
     private void setFullScreen(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){

@@ -94,6 +94,7 @@ public class videoActivity extends Fragment implements ClickListener{
 
     @Override
     public void StartVideoClick(videoModel vid) {
+        /*
         VideoInfo s = new VideoInfo(vid.getStrPath());
         //convert lat and long of video location to address
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
@@ -124,11 +125,10 @@ public class videoActivity extends Fragment implements ClickListener{
                 dialog.dismiss();
             }
         });
-        dialog.show();
-        /*
+        dialog.show();*/
         Intent video_intent = new Intent(getContext(), FullScreenVideoActivity.class);
         video_intent.putExtra("pathVideo", vid.getStrPath());
-        startActivity(video_intent);*/
+        startActivity(video_intent);
     }
 
     @Override
@@ -301,8 +301,8 @@ public class videoActivity extends Fragment implements ClickListener{
                                     editorRemoveVideoWishList.putString("savedFavoriteVideos", jsonRemoveVideoWishList);
                                     editorRemoveVideoWishList.apply();
                                 }
-                                //
-                                Toast.makeText(getContext(), "Delete images successfully", Toast.LENGTH_SHORT).show();
+                                //refresh video fragment when delete successfully
+                                getActivity().getSupportFragmentManager().beginTransaction().replace(videoActivity.this.getId(), new videoActivity()).commit();
                                 mode.finish();
                             }
                         });
