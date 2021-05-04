@@ -36,13 +36,13 @@
         android:title="@string/layout_options">
         <menu>
             <item
-                android:id="@+id/sub_grid_big"
+                android:id="@+id/sub_has_date"
                 app:showAsAction="never"
-                android:title="@string/grid_big"/>
+                android:title="@string/has_date"/>
             <item
-                android:id="@+id/sub_list_big"
+                android:id="@+id/sub_no_date"
                 app:showAsAction="never"
-                android:title="@string/list_big"/>
+                android:title="@string/no_date"/>
         </menu>
     </item>
 

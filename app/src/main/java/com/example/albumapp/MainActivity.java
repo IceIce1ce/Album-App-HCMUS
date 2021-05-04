@@ -61,11 +61,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static SwipeRefreshLayout swipeImg; //default disable in nested recyclerview
     //display video fragment
     videoActivity videos;
-    static String sort_order_date_header = "DATE_MODIFIED ASC";
-    Date_PictureFragment date_pictureFragment;
+    static String sort_order_date_header = "DATE_MODIFIED DESC";
+    DateMixedItemFragment date_mix_frag;
     MixedItemFragment mix_frag;
     int currentFragment;
-
+    boolean view_mode_has_date = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,11 +81,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
         //set default state when app start
         if(savedInstanceState == null){
+            /*
             ft = getSupportFragmentManager().beginTransaction();
             pictures = PicturesActivity.newInstance();
             ft.replace(R.id.content_frame, pictures);
             ft.commit();
             toolBar.setTitle(R.string.Pictures);
+            */
+            refresh_all();
+            toolBar.setTitle(R.string.all);
         }
         //FAB for camera and record
         fabRecord = findViewById(R.id.fabRecord);
@@ -137,17 +141,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     public void run() {
                         try{
                             Thread.sleep(300);
+                            if(currentFragment == 0){
+                                refresh_all();
+                            }
                             if(currentFragment == 1){
                                 ft = getSupportFragmentManager().beginTransaction();
                                 pictures = PicturesActivity.newInstance();
                                 ft.replace(R.id.content_frame, pictures);
                                 ft.commit();
+                                //toolBar.setTitle(R.string.Pictures);
                             }
                             else if(currentFragment == 2){
                                 ft = getSupportFragmentManager().beginTransaction();
                                 videos = videoActivity.newInstance();
                                 ft.replace(R.id.content_frame, videos);
                                 ft.commit();
+                                //toolBar.setTitle(R.string.Videos);
                             }
                         }
                         catch(InterruptedException e){
@@ -306,50 +315,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return true;
         }
         else if(id == R.id.action_sort){
-            Toast.makeText(this, "Changed image order", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Changed image order", Toast.LENGTH_SHORT).show();
             return true;
         }
         else if (id == R.id.sub_asc_order) {
-            /*
-            Date_PictureFragment.sort_order_date_header = "DATE_MODIFIED ASC";
-            ft = getSupportFragmentManager().beginTransaction();
-            date_pictureFragment = Date_PictureFragment.newInstance();
-            ft.replace(R.id.content_frame, date_pictureFragment);
-            ft.commit();
-            return true;
-            */
             this.sort_order_date_header = "DATE_MODIFIED ASC";
-            ft = getSupportFragmentManager().beginTransaction();
-            mix_frag = MixedItemFragment.newInstance();
-            ft.replace(R.id.content_frame, mix_frag);
-            ft.commit();
+            refresh_all();
             return true;
         }
         else if (id == R.id.sub_desc_order) {
-            /*
-            Date_PictureFragment.sort_order_date_header = "DATE_MODIFIED DESC";
-            ft = getSupportFragmentManager().beginTransaction();
-            date_pictureFragment = Date_PictureFragment.newInstance();
-            ft.replace(R.id.content_frame, date_pictureFragment);
-            ft.commit();
-            */
             this.sort_order_date_header = "DATE_MODIFIED DESC";
-            ft = getSupportFragmentManager().beginTransaction();
-            mix_frag = MixedItemFragment.newInstance();
-            ft.replace(R.id.content_frame, mix_frag);
-            ft.commit();
+            refresh_all();
             return true;
         }
         else if (id == R.id.action_layout_type) {
             Toast.makeText(this, "Change view type", Toast.LENGTH_SHORT).show();
             return true;
         }
-        else if(id == R.id.sub_grid_big){
-            Toast.makeText(this, "GRID", Toast.LENGTH_SHORT).show();
+        else if(id == R.id.sub_has_date){
+            this.view_mode_has_date = true;
+            refresh_all();
             return true;
         }
-        else if (id == R.id.sub_list_big){
-            Toast.makeText(this, "LIST", Toast.LENGTH_SHORT).show();
+        else if (id == R.id.sub_no_date){
+            this.view_mode_has_date = false;
+            refresh_all();
             return true;
         }
         else if(id == R.id.action_more_vert){
@@ -417,18 +407,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
         }
     }*/
-
-    void refresh_picture(){
+    private void refresh_all(){
         ft = getSupportFragmentManager().beginTransaction();
-        pictures = PicturesActivity.newInstance();
-        //ft.replace(R.id.content_frame, pictures);
+        if(this.view_mode_has_date){
+            date_mix_frag = DateMixedItemFragment.newInstance();
+            ft.replace(R.id.content_frame, date_mix_frag);
+        }
+        else{
+            mix_frag = MixedItemFragment.newInstance();
+            ft.replace(R.id.content_frame, mix_frag);
+        }
         ft.commit();
-        currentFragment = 1;
+        //toolBar.setTitle(R.string.all);
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.nav_pictures) {
+        if (id == R.id.nav_mixed_item){
+            toolBar.setTitle(R.string.all);
+            refresh_all();
+            currentFragment = 0;
+        }
+        else if (id == R.id.nav_pictures) {
             toolBar.setTitle(R.string.Pictures);
             ft = getSupportFragmentManager().beginTransaction();
             pictures = PicturesActivity.newInstance();

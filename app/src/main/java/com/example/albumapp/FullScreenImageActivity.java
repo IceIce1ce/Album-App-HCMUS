@@ -8,9 +8,6 @@ import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,7 +37,6 @@ import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowInsets;
@@ -415,9 +411,9 @@ public class FullScreenImageActivity extends AppCompatActivity {
                 });
                 dialog.show();
                 return true;
-            case R.id.action_move_image:
+            case R.id.action_copy_image:
                 String filePath = Objects.requireNonNull(getIntent().getStringExtra("path"));
-                showDialog(FullScreenImageActivity.this, filePath);
+                showCopyFileDialog(FullScreenImageActivity.this, filePath);
                 return true;
             //
             case android.R.id.home:
@@ -427,7 +423,7 @@ public class FullScreenImageActivity extends AppCompatActivity {
         }
     }
 
-    public void showDialog(Activity activity, String target){
+    private void showCopyFileDialog(Activity activity, String target){
         dialog = new Dialog(activity);
         // dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);

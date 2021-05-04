@@ -15,6 +15,7 @@
         android:scaleType="centerInside"
         android:clickable="true"
         android:focusable="true"
+        android:src="@drawable/background2"
         tools:ignore="ContentDescription"/>
 
     <include
@@ -24,28 +25,27 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"/>
 
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/nav_bottom"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        app:menu="@menu/nav_bottom"
-        android:background="#66000000"
-        app:itemTextColor="@color/white"
-        app:itemIconTint="@color/white"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"/>
-
-    <TextView
-        android:id="@+id/txtNameImage"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="70dp"
-        android:background="#66000000"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="16sp"/>
-
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/txtNameImage"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="#66000000"
+            android:textAlignment="center"
+            android:text="IMG_PATH"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/nav_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menu="@menu/nav_bottom"
+            android:background="#66000000"
+            app:itemTextColor="@color/white"
+            app:itemIconTint="@color/white"/>
+    </LinearLayout>
 </RelativeLayout>

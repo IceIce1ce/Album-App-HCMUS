@@ -38,4 +38,7 @@
     </string-array>
     <string name="Cancel">Cancel</string>
     <string name="album_picker">"파일을 복사 할 앨범 선택 "</string>
+    <string name="has_date">"날짜 헤더 포함 "</string>
+    <string name="no_date">날짜 헤더 없음</string>
+    <string name="all" >모든 파일</string>
 </resources>

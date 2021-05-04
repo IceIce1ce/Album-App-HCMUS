@@ -2,7 +2,6 @@ package com.example.albumapp;
 
 import android.app.Activity;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -13,12 +12,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.albumapp.item.ChildItem;
 import com.example.albumapp.item.ImageItem;
 import com.example.albumapp.item.MixedItem;
 import com.example.albumapp.item.NewParentItem;
 import com.example.albumapp.item.NewParentItemAdapter;
-import com.example.albumapp.item.ParentItemAdapter;
 import com.example.albumapp.item.VideoItem;
 
 import java.io.File;
@@ -67,7 +64,7 @@ public class DateMixedItemFragment extends Fragment {
         //----
         this.group = groupPhotos(this.item_list);
         //----
-        MainActivity.swipeImg.setEnabled(false);
+        //MainActivity.swipeImg.setEnabled(false);
         View rootView = inflater.inflate(R.layout.date_fragment, container, false);
         rv = rootView.findViewById(R.id.parent_recyclerview);
         rv.setLayoutManager(new LinearLayoutManager(rootView.getContext()));

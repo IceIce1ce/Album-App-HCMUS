@@ -37,4 +37,7 @@
         <item>Korean</item>
         <item>Chinese</item>
     </string-array>
+    <string name="has_date">With Date Header</string>
+    <string name="no_date">No Date Header</string>
+    <string name="all" >All Files</string>
 </resources>

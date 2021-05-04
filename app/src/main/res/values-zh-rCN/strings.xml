@@ -38,4 +38,7 @@
     </string-array>
     <string name="Cancel">Cancel</string>
     <string name="album_picker">选择一个要复制文件的相册</string>
+    <string name="has_date">"带日期标题 "</string>
+    <string name="no_date">没有日期标题</string>
+    <string name="all" >全部文件</string>
 </resources>

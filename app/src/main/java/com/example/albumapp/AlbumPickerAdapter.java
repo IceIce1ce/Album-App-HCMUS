@@ -68,9 +68,9 @@ public class AlbumPickerAdapter extends RecyclerView.Adapter<AlbumPickerAdapter.
             public void onClick(View v) {
                 //MainActivity.textView.setText("You have selected : "+myImageNameList[getAdapterPosition()]);
                 if (proceed(AlbumPickerAdapter.target_path, item.getAlbum_folder()))
-                    Toast.makeText(context, "Move image successfully!!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Copy file successfully!!!", Toast.LENGTH_SHORT).show();
                 else
-                    Toast.makeText(context, "Move image fail!!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Copy file fail!!!", Toast.LENGTH_SHORT).show();
                 FullScreenImageActivity.dialog.dismiss();
             }
         });

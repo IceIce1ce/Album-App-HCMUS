@@ -34,8 +34,8 @@
         app:showAsAction="never"
         android:title="Details Image"/>
     <item
-        android:id="@+id/action_move_image"
+        android:id="@+id/action_copy_image"
         android:orderInCategory="200"
         app:showAsAction="never"
-        android:title="Move Image"/>
+        android:title="Copy Image"/>
 </menu>

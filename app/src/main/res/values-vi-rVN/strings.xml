@@ -38,4 +38,7 @@
     </string-array>
     <string name="Cancel">Cancel</string>
     <string name="album_picker">Chọn album để copy ảnh</string>
+    <string name="has_date">Với tiêu đề ngày</string>
+    <string name="no_date">"Không có tiêu đề ngày "</string>
+    <string name="all" >Tất cả các tệp</string>
 </resources>

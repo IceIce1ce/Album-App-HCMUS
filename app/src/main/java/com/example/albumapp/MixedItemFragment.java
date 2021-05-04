@@ -70,7 +70,7 @@ public class MixedItemFragment extends Fragment implements MixedItemClickListene
             ArrayList<String> _list = (ArrayList<String>) args.getSerializable("PATH_LIST");
             this.item_list = load_mixed_item(_list);
         }
-        MainActivity.swipeImg.setEnabled(false);
+        //MainActivity.swipeImg.setEnabled(false);
         View rootView = inflater.inflate(R.layout.date_fragment, container, false);
         rv = rootView.findViewById(R.id.parent_recyclerview);
         int currentColumnLandscape = 6, currentColumnPortrait = 3;
@@ -301,9 +301,9 @@ public class MixedItemFragment extends Fragment implements MixedItemClickListene
                     case R.id.action_share_video:
                         //share multiple mixedItem
                         ArrayList<Uri> mixedUriArray = new ArrayList<>();
-                        ArrayList<MixedItem> checkedVideo = itemAdapter.getCheckedMixedItems();
-                        if(checkedVideo.size() != 0){
-                            for(MixedItem vid: checkedVideo){
+                        ArrayList<MixedItem> checkedMixedItem = itemAdapter.getCheckedMixedItems();
+                        if(checkedMixedItem.size() != 0){
+                            for(MixedItem vid: checkedMixedItem){
                                 mixedUriArray.add(Uri.parse(vid.getPath()));
                             }
                         }
@@ -343,7 +343,7 @@ public class MixedItemFragment extends Fragment implements MixedItemClickListene
                         dialogDeleteMixedItem.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 //delete multi Video items from storage
-                                for(int i = 0; i < checkedItemDelete.size(); i++) {
+                                for(int i = 0; i < UriDeleteVideos.size(); i++) {
                                     File photoFile = new File(UriDeleteVideos.get(i).toString());
                                     String selection = MediaStore.Video.Media.DATA + " = ?";
                                     String[] selectionArgs = new String[]{photoFile.getAbsolutePath()};
@@ -382,14 +382,16 @@ public class MixedItemFragment extends Fragment implements MixedItemClickListene
                                 rv.setAdapter(itemAdapter);*/
                                 //
                                 //also delete multi videos from wishlist
-                                for(int i = 0; i < UriDeleteVideos.size(); i++){
-                                    FavouriteVideoActivity.favoriteVideos.remove(UriDeleteVideos.get(i).toString());
-                                    SharedPreferences sharedPreferencesRemoveVideoWishList = PreferenceManager.getDefaultSharedPreferences(getContext());
-                                    SharedPreferences.Editor editorRemoveVideoWishList = sharedPreferencesRemoveVideoWishList.edit();
-                                    Gson gsonRemoveVideoWishList = new Gson();
-                                    String jsonRemoveVideoWishList = gsonRemoveVideoWishList.toJson(FavouriteVideoActivity.favoriteVideos);
-                                    editorRemoveVideoWishList.putString("savedFavoriteVideos", jsonRemoveVideoWishList);
-                                    editorRemoveVideoWishList.apply();
+                                if (FavouriteVideoActivity.favoriteVideos != null) {
+                                    for (int i = 0; i < UriDeleteVideos.size() && !FavouriteVideoActivity.favoriteVideos.isEmpty(); i++) {
+                                        FavouriteVideoActivity.favoriteVideos.remove(UriDeleteVideos.get(i).toString());
+                                        SharedPreferences sharedPreferencesRemoveVideoWishList = PreferenceManager.getDefaultSharedPreferences(getContext());
+                                        SharedPreferences.Editor editorRemoveVideoWishList = sharedPreferencesRemoveVideoWishList.edit();
+                                        Gson gsonRemoveVideoWishList = new Gson();
+                                        String jsonRemoveVideoWishList = gsonRemoveVideoWishList.toJson(FavouriteVideoActivity.favoriteVideos);
+                                        editorRemoveVideoWishList.putString("savedFavoriteVideos", jsonRemoveVideoWishList);
+                                        editorRemoveVideoWishList.apply();
+                                    }
                                 }
                                 //
                                 Toast.makeText(getContext(), "Delete images successfully", Toast.LENGTH_SHORT).show();
@@ -436,14 +438,16 @@ public class MixedItemFragment extends Fragment implements MixedItemClickListene
 
                                  */
                                 //also delete multi images from wishlist
-                                for(int i = 0; i < UriDeleteImages.size(); i++){
-                                    FavouriteActivity.favoriteImages.remove(UriDeleteImages.get(i).toString());
-                                    SharedPreferences sharedPreferencesRemoveWishList = PreferenceManager.getDefaultSharedPreferences(getContext());
-                                    SharedPreferences.Editor editorRemoveWishList = sharedPreferencesRemoveWishList.edit();
-                                    Gson gsonRemoveWishList = new Gson();
-                                    String jsonRemoveWishList = gsonRemoveWishList.toJson(FavouriteActivity.favoriteImages);
-                                    editorRemoveWishList.putString("savedFavoriteImages", jsonRemoveWishList);
-                                    editorRemoveWishList.apply();
+                                if (FavouriteActivity.favoriteImages != null) {
+                                    for (int i = 0; i < UriDeleteImages.size() && !FavouriteActivity.favoriteImages.isEmpty(); i++) {
+                                        FavouriteActivity.favoriteImages.remove(UriDeleteImages.get(i).toString());
+                                        SharedPreferences sharedPreferencesRemoveWishList = PreferenceManager.getDefaultSharedPreferences(getContext());
+                                        SharedPreferences.Editor editorRemoveWishList = sharedPreferencesRemoveWishList.edit();
+                                        Gson gsonRemoveWishList = new Gson();
+                                        String jsonRemoveWishList = gsonRemoveWishList.toJson(FavouriteActivity.favoriteImages);
+                                        editorRemoveWishList.putString("savedFavoriteImages", jsonRemoveWishList);
+                                        editorRemoveWishList.apply();
+                                    }
                                 }
                                 Toast.makeText(getContext(), "Delete images successfully", Toast.LENGTH_SHORT).show();
                                 getActivity().getSupportFragmentManager().beginTransaction().replace(MixedItemFragment.this.getId(), new MixedItemFragment()).commit();

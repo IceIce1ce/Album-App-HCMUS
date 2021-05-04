@@ -4,7 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -14,6 +18,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,7 +33,38 @@ public class FullScreenVideoActivity extends AppCompatActivity {
     private VideoView videoView;
     private Toolbar toolbar;
     private String pathVid;
+    public static Dialog dialog;
 
+    private void showCopyFileDialog(Activity activity, String target){
+        dialog = new Dialog(activity);
+        // dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.dialog_recycler);
+
+        Button btndialog = (Button) dialog.findViewById(R.id.btndialog);
+        btndialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+            }
+        });
+
+        RecyclerView recyclerView = dialog.findViewById(R.id.recycler);
+        AlbumPickerAdapter albumPickerAdapter = new AlbumPickerAdapter(this,AlbumActivity.exportAlbumList(this), target);
+        recyclerView.setAdapter(albumPickerAdapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+
+        recyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        dialog.show();
+
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,8 +126,9 @@ public class FullScreenVideoActivity extends AppCompatActivity {
                 });
                 dialog.show();
                 return true;
-            case R.id.action_move_video:
-                Toast.makeText(this, "Move video", Toast.LENGTH_SHORT).show();
+            case R.id.action_copy_video:
+                String filePath = Objects.requireNonNull(getIntent().getStringExtra("pathVideo"));
+                showCopyFileDialog(FullScreenVideoActivity.this, filePath);
                 return true;
             case android.R.id.home:
                 finish();

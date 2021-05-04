@@ -6,6 +6,10 @@
         android:id="@+id/group_mode"
         android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_mixed_item"
+            android:icon="@drawable/round_photo_library_24"
+            android:title="@string/all"/>
+        <item
             android:id="@+id/nav_pictures"
             android:icon="@drawable/round_photo_library_24"
             android:title="@string/Pictures"/>
