@@ -1,4 +1,4 @@
-package com.example.albumapp;
+package com.example.albumapp.item;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.albumapp.FullScreenImageActivity;
+import com.example.albumapp.ImageInfo;
+import com.example.albumapp.R;
 
 import java.util.List;
 
@@ -20,7 +23,7 @@ public class ChildItemAdapter extends RecyclerView.Adapter<ChildItemAdapter.Chil
     private List<ChildItem> ChildItemList;
     private Context context;
 
-    ChildItemAdapter(Context context, List<ChildItem> childItemList) {
+    public ChildItemAdapter(Context context, List<ChildItem> childItemList) {
         this.context = context;
         this.ChildItemList = childItemList;
     }

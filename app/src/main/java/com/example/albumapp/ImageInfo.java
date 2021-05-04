@@ -26,7 +26,7 @@ public class ImageInfo {
     //img location
     private float latImg, longImg;
 
-    ImageInfo(String path){
+    public ImageInfo(String path){
         if (path.equals("")) return;
         img_path = path;
         File file = null;

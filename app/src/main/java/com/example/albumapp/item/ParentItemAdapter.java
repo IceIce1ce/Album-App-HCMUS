@@ -1,4 +1,4 @@
-package com.example.albumapp;
+package com.example.albumapp.item;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.albumapp.R;
+
 import java.util.List;
 
 public class ParentItemAdapter extends RecyclerView.Adapter<ParentItemAdapter.ParentViewHolder> {
@@ -17,7 +19,7 @@ public class ParentItemAdapter extends RecyclerView.Adapter<ParentItemAdapter.Pa
     private List<ParentItem> date_list;
     private Context mContext;
 
-    ParentItemAdapter(Context context, List<ParentItem> date_list) {
+    public ParentItemAdapter(Context context, List<ParentItem> date_list) {
         this.mContext = context;
         this.date_list = date_list;
     }

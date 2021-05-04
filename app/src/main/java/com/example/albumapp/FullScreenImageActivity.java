@@ -81,18 +81,6 @@ public class FullScreenImageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Load albums list
-        /*
-        if(AlbumActivity.album_list != null){
-            this.album_list = AlbumActivity.album_list;
-        }
-        else
-            this.album_list = AlbumActivity.exportAlbumList(this);
-        for (AlbumItem i : this.album_list){
-            System.out.println(i.getAlbum_folder());
-        }
-
-         */
         //hide status bar
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -213,11 +201,12 @@ public class FullScreenImageActivity extends AppCompatActivity {
                 .apply(new RequestOptions().placeholder(null).fitCenter())
                 .into(showImageFullscreen);*/
         //load image as bitmap to set wallpaper
-        Glide.with(getApplicationContext()).asBitmap().load(PicturesActivity.images.get(position))
+        Glide.with(getApplicationContext()).asBitmap().load(Objects.requireNonNull(getIntent().getStringExtra("path"))/*PicturesActivity.images.get(position)*/)
                 .apply(new RequestOptions().placeholder(null).fitCenter())
                 .into(showImageFullscreen);
         txtNameImage.setText(getIntent().getStringExtra("display_image_name"));
         //swipe left and right to show new image in gallery
+        /*
         showImageFullscreen.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -277,6 +266,7 @@ public class FullScreenImageActivity extends AppCompatActivity {
                 return false;
             }
         });
+         */
     }
 
     @Override
@@ -428,11 +418,6 @@ public class FullScreenImageActivity extends AppCompatActivity {
             case R.id.action_move_image:
                 String filePath = Objects.requireNonNull(getIntent().getStringExtra("path"));
                 showDialog(FullScreenImageActivity.this, filePath);
-
-
-
-                //FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                //MainActivity.ft.commit();
                 return true;
             //
             case android.R.id.home:

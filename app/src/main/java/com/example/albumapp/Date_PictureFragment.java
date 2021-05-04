@@ -12,6 +12,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.albumapp.item.ChildItem;
+import com.example.albumapp.item.ParentItem;
+import com.example.albumapp.item.ParentItemAdapter;
+
 import java.io.File;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -26,7 +30,7 @@ public class Date_PictureFragment extends Fragment {
     private ArrayList<String> path_list = null, date_order;
     private HashMap<String, ArrayList<String>> group = null;
     ParentItemAdapter parentItemAdapter;
-    public static String sort_order_date_header = "DATE_MODIFIED DESC";
+    //public static String sort_order_date_header = "DATE_MODIFIED DESC";
 
 
 
@@ -37,7 +41,7 @@ public class Date_PictureFragment extends Fragment {
         System.out.println(img_list);
         Date_PictureFragment f = new Date_PictureFragment();
         Bundle args = new Bundle();
-        args.putSerializable("STR_LIST", (Serializable)img_list);
+        args.putSerializable("MIXED_STR_LIST", (Serializable)img_list);
         f.setArguments(args);
         return f;
     }
@@ -47,7 +51,7 @@ public class Date_PictureFragment extends Fragment {
         if (args == null)
             this.path_list = loadHeader(this.getActivity());
         else {
-            this.path_list = (ArrayList<String>) args.getSerializable("STR_LIST");
+            this.path_list = (ArrayList<String>) args.getSerializable("MIXED_STR_LIST");
         }
         //System.out.println(path_list);
         //----
@@ -70,11 +74,11 @@ public class Date_PictureFragment extends Fragment {
             ArrayList<String> paths = g.get(i);
             List<ChildItem> ChildItemList = new ArrayList<>();
             for(String j: paths){
-                if(sort_order_date_header.equals("DATE_MODIFIED DESC")){
+                if(MainActivity.sort_order_date_header.equals("DATE_MODIFIED DESC")){
                     ChildItemList.add(new ChildItem(j, cnt1));
                     cnt1++;
                 }
-                else if(sort_order_date_header.equals("DATE_MODIFIED ASC")){
+                else if(MainActivity.sort_order_date_header.equals("DATE_MODIFIED ASC")){
                     ChildItemList.add(new ChildItem(j, cnt2));
                     cnt2--;
                 }
@@ -135,7 +139,7 @@ public class Date_PictureFragment extends Fragment {
     private ArrayList<String> loadHeader(Activity activity) {
         ArrayList<String> list = new ArrayList<>();
         Cursor cursor = activity.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                new String[]{MediaStore.MediaColumns.DATA}, null, null, sort_order_date_header); //default: null
+                new String[]{MediaStore.MediaColumns.DATA}, null, null, MainActivity.sort_order_date_header); //default: null
         if(cursor != null && cursor.getCount() > 0){
             while(cursor.moveToNext()){
                 if (cursor.getString(0) != null) {

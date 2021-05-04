@@ -20,7 +20,7 @@ public class AlbumDateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.date_album_activity);
 
-        currentFragment = Date_PictureFragment.newInstance(img_list);
+        currentFragment = DateMixedItemFragment.newInstance(img_list);
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fragmentHolder, currentFragment)

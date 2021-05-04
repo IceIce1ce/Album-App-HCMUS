@@ -1,4 +1,4 @@
-package com.example.albumapp;
+package com.example.albumapp.item;
 
 import java.util.List;
 

@@ -61,7 +61,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static SwipeRefreshLayout swipeImg; //default disable in nested recyclerview
     //display video fragment
     videoActivity videos;
+    static String sort_order_date_header = "DATE_MODIFIED ASC";
     Date_PictureFragment date_pictureFragment;
+    MixedItemFragment mix_frag;
     int currentFragment;
 
     @Override
@@ -308,18 +310,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return true;
         }
         else if (id == R.id.sub_asc_order) {
+            /*
             Date_PictureFragment.sort_order_date_header = "DATE_MODIFIED ASC";
             ft = getSupportFragmentManager().beginTransaction();
             date_pictureFragment = Date_PictureFragment.newInstance();
             ft.replace(R.id.content_frame, date_pictureFragment);
             ft.commit();
             return true;
+            */
+            this.sort_order_date_header = "DATE_MODIFIED ASC";
+            ft = getSupportFragmentManager().beginTransaction();
+            mix_frag = MixedItemFragment.newInstance();
+            ft.replace(R.id.content_frame, mix_frag);
+            ft.commit();
+            return true;
         }
         else if (id == R.id.sub_desc_order) {
+            /*
             Date_PictureFragment.sort_order_date_header = "DATE_MODIFIED DESC";
             ft = getSupportFragmentManager().beginTransaction();
             date_pictureFragment = Date_PictureFragment.newInstance();
             ft.replace(R.id.content_frame, date_pictureFragment);
+            ft.commit();
+            */
+            this.sort_order_date_header = "DATE_MODIFIED DESC";
+            ft = getSupportFragmentManager().beginTransaction();
+            mix_frag = MixedItemFragment.newInstance();
+            ft.replace(R.id.content_frame, mix_frag);
             ft.commit();
             return true;
         }

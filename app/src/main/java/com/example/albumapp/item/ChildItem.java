@@ -1,4 +1,4 @@
-package com.example.albumapp;
+package com.example.albumapp.item;
 
 public class ChildItem {
     private String ChildItemPath;
