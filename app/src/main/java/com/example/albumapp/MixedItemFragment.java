@@ -245,7 +245,7 @@ public class MixedItemFragment extends Fragment implements MixedItemClickListene
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 switch(item.getItemId()){
                     case R.id.action_favourite_video:
-                        //add multiple mixed item to wishlist
+                        //add multiple mixed item to favourite list
                         ArrayList<Uri> UriArrayFavouriteVideo = new ArrayList<>(),
                                 UriArrayFavouriteImage = new ArrayList<>();
                         ArrayList<MixedItem> checkedFavouriteItemList = itemAdapter.getCheckedMixedItems();
@@ -283,18 +283,18 @@ public class MixedItemFragment extends Fragment implements MixedItemClickListene
                         }
                         if(isAdded){
                             if(UriArrayFavouriteVideo.size() == 1){
-                                Toast.makeText(getContext(), "Add 1 video to wishlist successfully!!!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Add 1 video to favourite list successfully!!!", Toast.LENGTH_SHORT).show();
                             }
                             else{
-                                Toast.makeText(getContext(), "Add " + UriArrayFavouriteVideo.size() + " videos to wishlist successfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Add " + UriArrayFavouriteVideo.size() + " videos to favourite list successfully", Toast.LENGTH_SHORT).show();
                             }
                         }
                         else{
                             if(UriArrayFavouriteVideo.size() == 1){
-                                Toast.makeText(getContext(), "This video had already added to wishlist!!!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "This video had already added to favourite list!!!", Toast.LENGTH_SHORT).show();
                             }
                             else{
-                                Toast.makeText(getContext(), "These video had already added to wishlist!!!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "These video had already added to favourite list!!!", Toast.LENGTH_SHORT).show();
                             }
                         }
                         SharedPreferences sharedPreferencesVideo = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -305,7 +305,7 @@ public class MixedItemFragment extends Fragment implements MixedItemClickListene
                         editorVideo.apply();
                         //mode.finish();
                         //return true;
-                        //add multiple images to wishlist
+                        //add multiple images to favourite list
                         boolean isAdded2 = false;
                         for(int i = 0; i < UriArrayFavouriteImage.size(); i++){
                             if (FavouriteActivity.favoriteImages != null && !FavouriteActivity.favoriteImages.isEmpty()){
@@ -326,18 +326,18 @@ public class MixedItemFragment extends Fragment implements MixedItemClickListene
                         }
                         if(isAdded2){
                             if(UriArrayFavouriteImage.size() == 1){
-                                Toast.makeText(getContext(), "Add 1 image to wishlist successfully!!!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Add 1 image to favourite list successfully!!!", Toast.LENGTH_SHORT).show();
                             }
                             else{
-                                Toast.makeText(getContext(), "Add " + UriArrayFavouriteImage.size() + " images to wishlist successfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Add " + UriArrayFavouriteImage.size() + " images to favourite list successfully", Toast.LENGTH_SHORT).show();
                             }
                         }
                         else{
                             if(UriArrayFavouriteImage.size() == 1){
-                                Toast.makeText(getContext(), "This image had already added to wishlist!!!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "This image had already added to favourite list!!!", Toast.LENGTH_SHORT).show();
                             }
                             else{
-                                Toast.makeText(getContext(), "These image had already added to wishlist!!!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "These image had already added to favourite list!!!", Toast.LENGTH_SHORT).show();
                             }
                         }
                         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -431,7 +431,7 @@ public class MixedItemFragment extends Fragment implements MixedItemClickListene
                                 itemAdapter.setItemClickListener(MixedItemFragment.this);
                                 rv.setAdapter(itemAdapter);*/
                                 //
-                                //also delete multi videos from wishlist
+                                //also delete multi videos from favourite list
                                 if (FavouriteVideoActivity.favoriteVideos != null) {
                                     for (int i = 0; i < UriDeleteVideos.size() && !FavouriteVideoActivity.favoriteVideos.isEmpty(); i++) {
                                         FavouriteVideoActivity.favoriteVideos.remove(UriDeleteVideos.get(i).toString());
@@ -487,7 +487,7 @@ public class MixedItemFragment extends Fragment implements MixedItemClickListene
                                 }
 
                                  */
-                                //also delete multi images from wishlist
+                                //also delete multi images from favourite list
                                 if (FavouriteActivity.favoriteImages != null) {
                                     for (int i = 0; i < UriDeleteImages.size() && !FavouriteActivity.favoriteImages.isEmpty(); i++) {
                                         FavouriteActivity.favoriteImages.remove(UriDeleteImages.get(i).toString());

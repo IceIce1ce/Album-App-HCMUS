@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         view_mode_has_date = sharedPref.getBoolean("ITEM_HAS_DATE", false);
         //set default state when app start
         if(savedInstanceState == null){
+            pictures = PicturesActivity.newInstance();
             refresh_all();
             toolBar.setTitle(R.string.all);
         }

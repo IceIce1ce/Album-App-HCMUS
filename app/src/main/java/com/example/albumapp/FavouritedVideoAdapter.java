@@ -1,11 +1,9 @@
 package com.example.albumapp;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.provider.MediaStore;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -19,27 +17,24 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 
-public class ImageAdapter extends BaseAdapter {
+
+public class FavouritedVideoAdapter extends BaseAdapter {
     DataPrefs myPrefs;
     private Activity context;
     private ImageView picturesView;
+    ArrayList<String> FavouriteList;
 
-    ImageAdapter(Activity applicationContext){
-        this.context = applicationContext;
-        PicturesActivity.images = loadAlbum(context);
-    }
-
-    ImageAdapter(Activity applicationContext, ArrayList<String> favouriteImageList){
+    FavouritedVideoAdapter(Activity applicationContext, ArrayList<String> favouriteList){
         context = applicationContext;
-        PicturesActivity.images = favouriteImageList;
+        FavouriteList = favouriteList;
     }
 
     public int getCount() {
-        return PicturesActivity.images.size();
+        return FavouriteList.size();
     }
 
     public Object getItem(int position) {
-        return null;
+        return FavouriteList.get(position);
     }
 
     public long getItemId(int position) {
@@ -62,7 +57,7 @@ public class ImageAdapter extends BaseAdapter {
             picturesView = (ImageView) convertView;
         }
         Glide.with(context)
-                .load(PicturesActivity.images.get(position))
+                .load(FavouriteList.get(position))
                 .transition(new DrawableTransitionOptions().crossFade())
                 .apply(new RequestOptions().centerCropTransform())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -72,18 +67,4 @@ public class ImageAdapter extends BaseAdapter {
         return picturesView;
     }
 
-    private ArrayList<String> loadAlbum(Activity activity) {
-        ArrayList<String> albumList = new ArrayList<>();
-        //todo: get MediaStore.Videos
-        Cursor cursor = activity.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                new String[]{MediaStore.MediaColumns.DATA}, null, null, "DATE_MODIFIED DESC"); //default: null
-        if(cursor != null && cursor.getCount() > 0){
-            while(cursor.moveToNext()){
-                albumList.add(cursor.getString(0));
-            }
-        }
-        assert cursor != null;
-        cursor.close();
-        return albumList;
-    }
 }

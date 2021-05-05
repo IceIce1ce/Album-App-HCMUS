@@ -74,7 +74,26 @@ public class AlbumPickerAdapter extends RecyclerView.Adapter<AlbumPickerAdapter.
                     Toast.makeText(context, "Copy file successfully!!!", Toast.LENGTH_SHORT).show();
                 else
                     Toast.makeText(context, "Copy file fail!!!", Toast.LENGTH_SHORT).show();
-                FullScreenImageActivity.dialog.dismiss();
+                try{
+                    FullScreenImageActivity.dialog.dismiss();
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
+                try{
+                    OpenImageFileActivity.dialog.dismiss();
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
+                try{
+                    OpenVideoFileActivity.dialog.dismiss();
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
+                try{
+                    FullScreenVideoActivity.dialog.dismiss();
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {

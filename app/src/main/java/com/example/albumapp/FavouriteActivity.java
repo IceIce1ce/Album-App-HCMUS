@@ -44,7 +44,7 @@ public class FavouriteActivity extends Fragment {
                 favoriteGallery.setNumColumns(6);
             }
             else {
-                favoriteGallery.setNumColumns(5);
+                favoriteGallery.setNumColumns(3);
             }
             favoriteGallery.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -101,7 +101,7 @@ public class FavouriteActivity extends Fragment {
                                 editorExcludeWishList.putString("savedFavoriteImages", jsonExcludeWishList);
                                 editorExcludeWishList.apply();
                             }
-                            Toast.makeText(getContext(), "Remove image from wishlist successfully!!!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Remove image from favourite list successfully!!!", Toast.LENGTH_SHORT).show();
                             mode.finish();
                             return true;
                         default: return false;
