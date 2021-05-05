@@ -1,5 +1,6 @@
 package com.example.albumapp;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.RecoverableSecurityException;
@@ -20,6 +21,8 @@ import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -28,6 +31,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.TransitionManager;
 
 import com.example.albumapp.item.ImageItem;
 import com.example.albumapp.item.MixedItem;
@@ -49,6 +53,8 @@ public class MixedItemFragment extends Fragment implements MixedItemClickListene
     MixedItemAdapter itemAdapter;
     private int checkedCount = 0;
     private MainActionModeCallback actionModeCallback;
+    private ScaleGestureDetector mScaleGestureDetector;
+    private int cur_grid_span_size = 0, max_grid_span_size = 1;
     //public static String sort_order_date_header = "DATE_MODIFIED DESC";
     public static MixedItemFragment newInstance() {
         return new MixedItemFragment();
@@ -61,6 +67,7 @@ public class MixedItemFragment extends Fragment implements MixedItemClickListene
         f.setArguments(args);
         return f;
     }
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle args = getArguments();
@@ -78,12 +85,55 @@ public class MixedItemFragment extends Fragment implements MixedItemClickListene
         int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
         //display 6 videos if phone is landscape
         if (screenWidth > screenHeight) {
+            cur_grid_span_size = currentColumnLandscape;
+            max_grid_span_size = cur_grid_span_size + 2;
             rv.setLayoutManager(new GridLayoutManager(getContext(), currentColumnLandscape));
         }
         //display 3 videos if phone is portrait
         else {
+            cur_grid_span_size = currentColumnPortrait;
+            max_grid_span_size = cur_grid_span_size + 2;
             rv.setLayoutManager(new GridLayoutManager(getContext(), currentColumnPortrait));
         }
+        mScaleGestureDetector = new ScaleGestureDetector(this.getContext(), new ScaleGestureDetector.SimpleOnScaleGestureListener() {
+            @Override
+            public boolean onScale(ScaleGestureDetector detector) {
+                if (detector.getCurrentSpan() > 200 && detector.getTimeDelta() > 200) {
+                    GridLayoutManager cur_layout_manager = (GridLayoutManager) rv.getLayoutManager();
+                    if (detector.getCurrentSpan() - detector.getPreviousSpan() < -1) {
+                        // ZOOM BIGGER
+                        if (cur_grid_span_size + 1 <= max_grid_span_size){
+                            cur_grid_span_size += 1;
+                            cur_layout_manager.setSpanCount(cur_grid_span_size);
+                            TransitionManager.beginDelayedTransition(rv);
+                            itemAdapter.notifyDataSetChanged();
+                        }
+                        else Toast.makeText(getContext(), "You have reach maximum span size!",Toast.LENGTH_SHORT).show();
+
+                    } else if(detector.getCurrentSpan() - detector.getPreviousSpan() > 1) {
+                       // ZOOM SMALLER
+                        if(cur_grid_span_size - 1 >= 2) {
+                            cur_grid_span_size -= 1;
+                            cur_layout_manager.setSpanCount(cur_grid_span_size);
+                            TransitionManager.beginDelayedTransition(rv);
+                            itemAdapter.notifyDataSetChanged();
+                        }
+                        else Toast.makeText(getContext(), "You have reach minimum span size!",Toast.LENGTH_SHORT).show();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        //set touch listener on recycler view
+        rv.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mScaleGestureDetector.onTouchEvent(event);
+                return false;
+            }
+        });
         //rv.setLayoutManager(new GridLayoutManager(rootView.getContext(), 3));
         itemAdapter = new MixedItemAdapter(getContext(), this.item_list);
         itemAdapter.setItemClickListener(this);

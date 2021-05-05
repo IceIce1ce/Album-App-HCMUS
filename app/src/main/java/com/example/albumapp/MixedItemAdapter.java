@@ -28,8 +28,6 @@ public class MixedItemAdapter extends RecyclerView.Adapter{
     private ArrayList<String> selectlist = new ArrayList<>();
     private MixedItemClickListener listener;
 
-    //private ActionModeCallback actionModeCallback = new ActionModeCallback();
-    //private ActionMode actionMode;
     public MixedItemAdapter(Context context, List<MixedItem> childItemList) {
         this.context = context;
         this.ChildItemList = childItemList;
@@ -74,9 +72,14 @@ public class MixedItemAdapter extends RecyclerView.Adapter{
                 if(multiSelectMode){
                     ((ImageHolder) holder).ImgCheckbox.setVisibility(View.VISIBLE);
                     ((ImageHolder) holder).ImgCheckbox.setChecked(ChildItemList.get(position).isChecked());
+                    if(ChildItemList.get(position).isChecked())
+                        ((ImageHolder) holder).ImgTitle.setAlpha(0.3f);
+                    else
+                        ((ImageHolder) holder).ImgTitle.setAlpha(1f);
                 }
                 else{
                     ((ImageHolder) holder).ImgCheckbox.setVisibility(View.GONE);
+                    ((ImageHolder) holder).ImgTitle.setAlpha(1f);
                 }
                 break;
             default:
@@ -85,9 +88,14 @@ public class MixedItemAdapter extends RecyclerView.Adapter{
                 if(multiSelectMode){
                     ((VideoHolder) holder).VideoCheckbox.setVisibility(View.VISIBLE);
                     ((VideoHolder) holder).VideoCheckbox.setChecked(ChildItemList.get(position).isChecked());
+                    if(ChildItemList.get(position).isChecked())
+                        ((VideoHolder) holder).VideoTitle.setAlpha(0.3f);
+                    else
+                        ((VideoHolder) holder).VideoTitle.setAlpha(1f);
                 }
                 else{
                     ((VideoHolder) holder).VideoCheckbox.setVisibility(View.GONE);
+                    ((VideoHolder) holder).VideoTitle.setAlpha(1f);
                 }
         }
     }
