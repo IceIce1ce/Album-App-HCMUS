@@ -197,8 +197,7 @@ public class MixedItemFragment extends Fragment implements MixedItemClickListene
     public void StartItemClick(MixedItem item) {
         switch (item.getType()){
             case MixedItem.TYPE_IMAGE:
-                Intent intent_img_date_header = new Intent(getContext(), FullScreenImageActivity.class);
-                intent_img_date_header.putExtra("id", 0);//childItem.getPos()
+                Intent intent_img_date_header = new Intent(getContext(), FullScreenImageActivity2.class);
                 intent_img_date_header.putExtra("path", item.getPath());
                 String img_path = item.getPath();
                 ImageInfo s = new ImageInfo(img_path);

@@ -40,6 +40,7 @@
                 <data android:mimeType="video/*"/>
             </intent-filter>
         </activity>
+        <activity android:name=".FullScreenImageActivity2" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".FullScreenVideoActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".AboutActivity" />
         <activity android:name=".ChangePasswordActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -48,7 +49,7 @@
         <activity android:name=".PasswordActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".MainActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".GifIntroActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".AlbumDateActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".AlbumDateActivity" />
         <activity android:name=".SplashScreenActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

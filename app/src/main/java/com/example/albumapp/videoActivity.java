@@ -79,7 +79,7 @@ public class videoActivity extends Fragment implements ClickListener{
 
     public void loadVideo() {
         Cursor cursor = getContext().getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-                new String[]{MediaStore.MediaColumns.DATA}, null, null,"DATE_MODIFIED DESC");
+                new String[]{MediaStore.MediaColumns.DATA}, null, null,MainActivity.sort_order_date_header);
         while(cursor.moveToNext()) {
             videoModel myVideoModel = new videoModel();
             myVideoModel.setStrPath(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)));

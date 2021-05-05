@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DateMixedItemFragment date_mix_frag;
     MixedItemFragment mix_frag;
     int currentFragment;
-    boolean view_mode_has_date = false;
+    public static boolean view_mode_has_date = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

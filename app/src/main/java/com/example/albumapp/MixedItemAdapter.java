@@ -138,12 +138,18 @@ public class MixedItemAdapter extends RecyclerView.Adapter{
         }
         void bindView(int pos){
             ImageItem img = (ImageItem) ChildItemList.get(pos);
+            try{
             Glide.with(context)
                     .load(img.getPath())
                     .apply(RequestOptions.centerCropTransform())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .override(800, 800)
                     .into(ImgTitle);
+            }catch (Exception e){
+                e.printStackTrace();
+                ChildItemList.remove(pos);
+                notifyDataSetChanged();
+            }
         }
     }
     class VideoHolder extends RecyclerView.ViewHolder {
@@ -158,12 +164,18 @@ public class MixedItemAdapter extends RecyclerView.Adapter{
             VideoItem vid = (VideoItem) ChildItemList.get(pos);
             String vid_path = vid.getPath(),
                     thumbnail_path = vid.getThumbnail();
-            Glide.with(context)
-                    .load(thumbnail_path)
-                    .apply(RequestOptions.centerCropTransform())
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .override(800, 800)
-                    .into(VideoTitle);
+            try {
+                Glide.with(context)
+                        .load(thumbnail_path)
+                        .apply(RequestOptions.centerCropTransform())
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .override(800, 800)
+                        .into(VideoTitle);
+            }catch (Exception e){
+                e.printStackTrace();
+                ChildItemList.remove(pos);
+                notifyDataSetChanged();
+            }
         }
     }
 }

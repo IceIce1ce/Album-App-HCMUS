@@ -19,8 +19,10 @@ public class AlbumDateActivity extends AppCompatActivity {
         System.out.println(img_list);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.date_album_activity);
-
-        currentFragment = DateMixedItemFragment.newInstance(img_list);
+        if(MainActivity.view_mode_has_date)
+            currentFragment = DateMixedItemFragment.newInstance(img_list);
+        else
+            currentFragment = MixedItemFragment.newInstance(img_list);
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fragmentHolder, currentFragment)

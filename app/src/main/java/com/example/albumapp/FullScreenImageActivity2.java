@@ -26,6 +26,7 @@ import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowInsets;
@@ -60,12 +61,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import static com.example.albumapp.OpenVideoFileActivity.getPathFromUri;
-
-public class OpenImageFileActivity  extends AppCompatActivity {
+public class FullScreenImageActivity2 extends AppCompatActivity {
     private Toolbar toolbar;
     private ImageView showImageFullscreen;
     private TextView txtNameImage;
+    private int position;
     private BottomNavigationView navBottom;
     private String storeNameImageCrop;
     //check current image is favourite or not
@@ -77,7 +77,7 @@ public class OpenImageFileActivity  extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //hide status bar
-        cur_img_path = getPathFromUri(this ,getIntent().getData());
+        cur_img_path = Objects.requireNonNull(getIntent().getStringExtra("path"));
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_full_screen_image);
@@ -102,7 +102,7 @@ public class OpenImageFileActivity  extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     case R.id.nav_edit:
                         //edit image
-                        Intent filter_intent = new Intent(OpenImageFileActivity.this, FilterActivity.class);
+                        Intent filter_intent = new Intent(FullScreenImageActivity2.this, FilterActivity.class);
                         filter_intent.putExtra("pathFilter", cur_img_path);
                         startActivity(filter_intent);
                         return true;
@@ -110,7 +110,7 @@ public class OpenImageFileActivity  extends AppCompatActivity {
                         //crop image
                         storeNameImageCrop = new File(cur_img_path).getName();
                         CropImage.activity(Uri.fromFile(new File(cur_img_path))).setGuidelines(CropImageView.Guidelines.ON)
-                                .setMultiTouchEnabled(true).start(OpenImageFileActivity.this);
+                                .setMultiTouchEnabled(true).start(FullScreenImageActivity2.this);
                         return true;
                     case R.id.nav_share:
                         //share single image
@@ -124,7 +124,7 @@ public class OpenImageFileActivity  extends AppCompatActivity {
                         return true;
                     case R.id.nav_delete:
                         //delete single image
-                        android.app.AlertDialog dialogDeleteSingle = new android.app.AlertDialog.Builder(OpenImageFileActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert).create();
+                        android.app.AlertDialog dialogDeleteSingle = new android.app.AlertDialog.Builder(FullScreenImageActivity2.this, R.style.Theme_AppCompat_Light_Dialog_Alert).create();
                         dialogDeleteSingle.setTitle("Delete image");
                         dialogDeleteSingle.setButton(android.app.AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -142,14 +142,14 @@ public class OpenImageFileActivity  extends AppCompatActivity {
                                         Uri deleteUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
                                         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
                                             contentResolver.delete(deleteUri, null, null);
-                                            Toast.makeText(OpenImageFileActivity.this, "Delete image successfully!!!", Toast.LENGTH_SHORT).show();
-                                            startActivity(new Intent(OpenImageFileActivity.this, MainActivity.class));
+                                            Toast.makeText(FullScreenImageActivity2.this, "Delete image successfully!!!", Toast.LENGTH_SHORT).show();
+                                            startActivity(new Intent(FullScreenImageActivity2.this, MainActivity.class));
                                         }
                                         else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
                                             try{
                                                 contentResolver.delete(deleteUri, null, null);
-                                                Toast.makeText(OpenImageFileActivity.this, "Delete image successfully!!!", Toast.LENGTH_SHORT).show();
-                                                startActivity(new Intent(OpenImageFileActivity.this, MainActivity.class));
+                                                Toast.makeText(FullScreenImageActivity2.this, "Delete image successfully!!!", Toast.LENGTH_SHORT).show();
+                                                startActivity(new Intent(FullScreenImageActivity2.this, MainActivity.class));
                                             }
                                             catch(RecoverableSecurityException ex){
                                                 final IntentSender intentSender = ex.getUserAction().getActionIntent().getIntentSender();
@@ -188,11 +188,19 @@ public class OpenImageFileActivity  extends AppCompatActivity {
                 return false;
             }
         });
+        //position = Objects.requireNonNull(getIntent().getExtras()).getInt("id");
+        /*
+        Glide.with(getApplicationContext()).load(cur_img_path)
+                .transition(new DrawableTransitionOptions().crossFade())
+                .apply(new RequestOptions().placeholder(null).fitCenter())
+                .into(showImageFullscreen);*/
+        //load image as bitmap to set wallpaper
         Glide.with(getApplicationContext()).asBitmap().load(cur_img_path)
                 .apply(new RequestOptions().placeholder(null).fitCenter())
                 .into(showImageFullscreen);
         txtNameImage.setText(getIntent().getStringExtra("display_image_name"));
         //swipe left and right to show new image in gallery
+
     }
 
     @Override
@@ -208,7 +216,7 @@ public class OpenImageFileActivity  extends AppCompatActivity {
             MediaStore.Images.Media.insertImage(getContentResolver(), bmpCrop, storeNameImageCrop + "_crop", "");
             //update picture fragment
             PicturesActivity.images.add(storeNameImageCrop + "_crop");
-            startActivity(new Intent(OpenImageFileActivity.this, MainActivity.class));
+            startActivity(new Intent(FullScreenImageActivity2.this, MainActivity.class));
             Toast.makeText(this, "Crop image successfully!!!", Toast.LENGTH_SHORT).show();
         }
         else if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
@@ -279,7 +287,10 @@ public class OpenImageFileActivity  extends AppCompatActivity {
                 editor.apply();
                 return true;
             case R.id.action_image_slideshow:
-                Toast.makeText(this, "Slide show function is not a vailable for single file mode", Toast.LENGTH_SHORT).show();
+                Intent slideshow_intent = new Intent(FullScreenImageActivity2.this, SlideshowActivity.class);
+                position = PicturesActivity.images.indexOf(cur_img_path);
+                slideshow_intent.putExtra("position_slideshow", position);
+                startActivity(slideshow_intent);
                 return true;
             case R.id.action_rotate_image_left:
                 showImageFullscreen.setRotation(showImageFullscreen.getRotation() + 90);
@@ -308,7 +319,7 @@ public class OpenImageFileActivity  extends AppCompatActivity {
                 //get details of img for displaying in dialog
                 ImageInfo s = new ImageInfo(cur_img_path);
                 //convert lat and long of img location to address
-                Geocoder geocoder = new Geocoder(OpenImageFileActivity.this, Locale.getDefault());
+                Geocoder geocoder = new Geocoder(FullScreenImageActivity2.this, Locale.getDefault());
                 List<Address> addresses;
                 String realAddressImg = "unknown";
                 try{
@@ -321,13 +332,13 @@ public class OpenImageFileActivity  extends AppCompatActivity {
                 String DetailsImg = "Name\n" + s.getFilename() + "\n\nPath\n" + cur_img_path + "\n\nSize\n" + s.getSize() +
                         "\n\nResolution\n" + s.getResolution() + "\n\nDate\n" + s.getDate() + "\n\nEXIF\n" + s.getExif()
                         + "\n\nLocation\n" + realAddressImg;
-                TextView title = new TextView(OpenImageFileActivity.this);
+                TextView title = new TextView(FullScreenImageActivity2.this);
                 title.setPadding(60, 30, 0, 0);
                 title.setText("Properties");
                 title.setTextSize(18.0f);
                 title.setTypeface(null, Typeface.BOLD);
                 title.setTextColor(Color.BLACK);
-                AlertDialog dialog = new AlertDialog.Builder(OpenImageFileActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert).create();
+                AlertDialog dialog = new AlertDialog.Builder(FullScreenImageActivity2.this, R.style.Theme_AppCompat_Light_Dialog_Alert).create();
                 dialog.setCustomTitle(title);
                 dialog.setMessage(DetailsImg);
                 dialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
@@ -338,7 +349,7 @@ public class OpenImageFileActivity  extends AppCompatActivity {
                 dialog.show();
                 return true;
             case R.id.action_copy_image:
-                showCopyFileDialog(OpenImageFileActivity.this, cur_img_path);
+                showCopyFileDialog(FullScreenImageActivity2.this, cur_img_path);
                 return true;
             //
             case android.R.id.home:

@@ -94,6 +94,11 @@ public class AlbumPickerAdapter extends RecyclerView.Adapter<AlbumPickerAdapter.
                 }catch (Exception e) {
                     e.printStackTrace();
                 }
+                try{
+                    FullScreenImageActivity2.dialog.dismiss();
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {

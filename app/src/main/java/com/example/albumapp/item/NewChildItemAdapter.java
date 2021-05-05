@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.albumapp.FullScreenImageActivity;
+import com.example.albumapp.FullScreenImageActivity2;
 import com.example.albumapp.FullScreenVideoActivity;
 import com.example.albumapp.ImageInfo;
 import com.example.albumapp.MainActivity;
@@ -84,7 +85,7 @@ public class NewChildItemAdapter extends RecyclerView.Adapter {
                     @Override
                     public void onClick(View v) {
                         MixedItem childItem = ChildItemList.get(position);
-                        Intent intent_img_date_header = new Intent(context, FullScreenImageActivity.class);
+                        Intent intent_img_date_header = new Intent(context, FullScreenImageActivity2.class);
                         intent_img_date_header.putExtra("id", childItem.getPos());
                         intent_img_date_header.putExtra("path", childItem.getPath());
                         String img_path = childItem.getPath();
@@ -145,12 +146,19 @@ public class NewChildItemAdapter extends RecyclerView.Adapter {
         }
         void bindView(int pos){
             ImageItem img = (ImageItem) ChildItemList.get(pos);
-            Glide.with(context)
-                    .load(img.getPath())
-                    .apply(RequestOptions.centerCropTransform())
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .override(800, 800)
-                    .into(ImgTitle);
+            try {
+                Glide.with(context)
+                        .load(img.getPath())
+                        .apply(RequestOptions.centerCropTransform())
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .override(800, 800)
+                        .into(ImgTitle);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                ChildItemList.remove(pos);
+                notifyDataSetChanged();
+            }
         }
     }
     class VideoViewHolder extends RecyclerView.ViewHolder {
@@ -165,12 +173,19 @@ public class NewChildItemAdapter extends RecyclerView.Adapter {
             VideoItem vid = (VideoItem) ChildItemList.get(pos);
             String vid_path = vid.getPath(),
                     thumbnail_path = vid.getThumbnail();
-            Glide.with(context)
-                    .load(thumbnail_path)
-                    .apply(RequestOptions.centerCropTransform())
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .override(800, 800)
-                    .into(VideoTitle);
+            try {
+                Glide.with(context)
+                        .load(thumbnail_path)
+                        .apply(RequestOptions.centerCropTransform())
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .override(800, 800)
+                        .into(VideoTitle);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                ChildItemList.remove(pos);
+                notifyDataSetChanged();
+            }
         }
     }
 }
