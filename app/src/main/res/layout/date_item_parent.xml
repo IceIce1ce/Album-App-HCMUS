@@ -2,8 +2,9 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/parent_date_stamp"
@@ -11,7 +12,8 @@
         android:layout_height="wrap_content"
         android:padding="12sp"
         android:textSize="18sp"
-        android:text="DATE_HEADER"/>
+        android:text="DATE_HEADER"
+        android:textColor="@color/black"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -19,6 +21,7 @@
         android:layout_margin="12dp"
         android:orientation="horizontal">
         <androidx.recyclerview.widget.RecyclerView
+            android:background="@color/white"
             android:id="@+id/child_recyclerview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

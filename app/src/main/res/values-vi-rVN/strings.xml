@@ -41,4 +41,5 @@
     <string name="has_date">Với tiêu đề ngày</string>
     <string name="no_date">"Không có tiêu đề ngày "</string>
     <string name="all" >Tất cả các tệp</string>
+    <string name="dark_mode_switch" >Chế độ tối</string>
 </resources>

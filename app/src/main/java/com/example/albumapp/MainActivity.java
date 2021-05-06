@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -28,7 +29,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -66,9 +69,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DateMixedItemFragment date_mix_frag;
     MixedItemFragment mix_frag;
     int currentFragment;
+    Switch dark_mode_switch;
+    boolean dark_mode = false;
     public static boolean view_mode_has_date = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        sort_order_date_header = sharedPref.getString("ITEM_SORT_ORDER", "DATE_MODIFIED DESC");
+        view_mode_has_date = sharedPref.getBoolean("ITEM_HAS_DATE", false);
+        dark_mode = sharedPref.getBoolean("APP_DARK_MODE", false);
+        if(dark_mode)
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        else
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolBar = findViewById(R.id.nav_actionBar);
@@ -80,9 +95,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerToggle.syncState();
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-        sort_order_date_header = sharedPref.getString("ITEM_SORT_ORDER", "DATE_MODIFIED DESC");
-        view_mode_has_date = sharedPref.getBoolean("ITEM_HAS_DATE", false);
+        navigationView.getMenu().findItem(R.id.nav_dark_mode_switch).setActionView(new Switch(this));
+        dark_mode_switch = (Switch) navigationView.getMenu().findItem(R.id.nav_dark_mode_switch).getActionView();
+        dark_mode_switch.setChecked(dark_mode);
+        dark_mode_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(dark_mode_switch.isChecked()) {
+                        dark_mode = true;
+                        sharedPref.edit().putBoolean("APP_DARK_MODE", dark_mode).apply();
+                    }
+                else {
+                        Toast.makeText(getBaseContext(), "Dark mode: OFF", Toast.LENGTH_LONG).show();
+                        dark_mode = false;
+                        sharedPref.edit().putBoolean("APP_DARK_MODE", dark_mode).apply();
+                    }
+                if(dark_mode) {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                        Toast.makeText(getBaseContext(), "Dark mode: ON", Toast.LENGTH_LONG).show();
+                    }
+               else {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                        Toast.makeText(getBaseContext(), "Dark mode: OFF", Toast.LENGTH_LONG).show();
+                    }
+                MainActivity.this.recreate();
+            }
+        });
         //set default state when app start
         if(savedInstanceState == null){
             pictures = PicturesActivity.newInstance();

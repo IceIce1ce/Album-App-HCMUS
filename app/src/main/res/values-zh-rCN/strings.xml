@@ -41,4 +41,5 @@
     <string name="has_date">"带日期标题 "</string>
     <string name="no_date">没有日期标题</string>
     <string name="all" >全部文件</string>
+    <string name="dark_mode_switch" >暗模式</string>
 </resources>

@@ -40,4 +40,5 @@
     <string name="has_date">With Date Header</string>
     <string name="no_date">No Date Header</string>
     <string name="all" >All Files</string>
+    <string name="dark_mode_switch" >Dark Mode</string>
 </resources>
