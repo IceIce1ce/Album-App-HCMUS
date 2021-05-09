@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static boolean view_mode_has_date = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getApplication().setTheme(R.style.Theme_AlbumApp);
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         sort_order_date_header = sharedPref.getString("ITEM_SORT_ORDER", "DATE_MODIFIED DESC");
         view_mode_has_date = sharedPref.getBoolean("ITEM_HAS_DATE", false);
@@ -82,7 +83,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         else
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -101,24 +101,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         dark_mode_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(dark_mode_switch.isChecked()) {
-                        dark_mode = true;
-                        sharedPref.edit().putBoolean("APP_DARK_MODE", dark_mode).apply();
-                    }
-                else {
-                        Toast.makeText(getBaseContext(), "Dark mode: OFF", Toast.LENGTH_LONG).show();
-                        dark_mode = false;
-                        sharedPref.edit().putBoolean("APP_DARK_MODE", dark_mode).apply();
-                    }
+                if(dark_mode_switch.isChecked())
+                    dark_mode = true;
+                else
+                    dark_mode = false;
+
                 if(dark_mode) {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                        Toast.makeText(getBaseContext(), "Dark mode: ON", Toast.LENGTH_LONG).show();
-                    }
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    recreate();
+                    Toast.makeText(getBaseContext(), "Dark mode: ON", Toast.LENGTH_SHORT).show();
+                }
                else {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                        Toast.makeText(getBaseContext(), "Dark mode: OFF", Toast.LENGTH_LONG).show();
-                    }
-                MainActivity.this.recreate();
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    recreate();
+                    Toast.makeText(getBaseContext(), "Dark mode: OFF", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         //set default state when app start
@@ -235,6 +232,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Gson gsonVideo = new Gson();
         String key_response_video = sharedPreferencesVideo.getString("savedFavoriteVideos","");
         FavouriteVideoActivity.favoriteVideos = gsonVideo.fromJson(key_response_video, new TypeToken<ArrayList<String>>(){}.getType());
+    }
+
+    @Override
+    protected void onDestroy() {
+        SharedPreferences p = getPreferences(Context.MODE_PRIVATE);
+        p.edit().putBoolean("APP_DARK_MODE", dark_mode).commit();
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        SharedPreferences p = getPreferences(Context.MODE_PRIVATE);
+        p.edit().putBoolean("APP_DARK_MODE", dark_mode).commit();
+        super.onPause();
     }
 
     //capture image and record video

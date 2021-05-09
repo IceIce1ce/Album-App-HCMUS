@@ -151,7 +151,7 @@ public class NewChildItemAdapter extends RecyclerView.Adapter {
                         .load(img.getPath())
                         .apply(RequestOptions.centerCropTransform())
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .override(800, 800)
+                        .override(500, 500)
                         .into(ImgTitle);
             }
             catch (Exception e){
@@ -178,7 +178,7 @@ public class NewChildItemAdapter extends RecyclerView.Adapter {
                         .load(thumbnail_path)
                         .apply(RequestOptions.centerCropTransform())
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .override(800, 800)
+                        .override(500, 500)
                         .into(VideoTitle);
             }
             catch (Exception e){

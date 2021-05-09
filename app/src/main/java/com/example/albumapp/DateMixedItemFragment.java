@@ -44,7 +44,7 @@ public class DateMixedItemFragment extends Fragment {
         return new DateMixedItemFragment();
     }
     public static DateMixedItemFragment newInstance(ArrayList<String> img_list){
-        System.out.println(img_list);
+        //System.out.println(img_list);
         DateMixedItemFragment f = new DateMixedItemFragment();
         Bundle args = new Bundle();
         args.putSerializable("PATH_LIST", (Serializable)img_list);

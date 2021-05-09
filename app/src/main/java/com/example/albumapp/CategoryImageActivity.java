@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -30,11 +31,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class CategoryImageActivity extends AppCompatActivity{
@@ -61,7 +62,12 @@ public class CategoryImageActivity extends AppCompatActivity{
                 String result = readFileAsString("CATEGORY_IMAGE_DATA.txt");
                 Type type = new TypeToken<HashMap<String, String>>() {}.getType();
                 HashMap<String, String> backup_result = gson.fromJson(result, type);
-                Toast.makeText(CategoryImageActivity.this, backup_result.toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(CategoryImageActivity.this, backup_result.toString(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(CategoryImageActivity.this, ShowingCategoryActivity.class);
+                Bundle args = new Bundle();
+                args.putSerializable("RESULT_HASHMAP", (Serializable)backup_result);
+                intent.putExtra("BUNDLE",args);
+                startActivity(intent);
             }
         });
     }

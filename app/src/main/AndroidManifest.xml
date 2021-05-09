@@ -52,6 +52,7 @@
         <activity android:name=".MainActivity" android:process=":location" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".GifIntroActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".AlbumDateActivity" />
+        <activity android:name=".ShowingCategoryActivity"/>
         <activity android:name=".SplashScreenActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
