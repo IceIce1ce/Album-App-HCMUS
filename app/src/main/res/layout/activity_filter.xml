@@ -42,7 +42,8 @@
         app:itemTextColor="@color/black"
         app:itemIconTint="@color/black"
         android:layout_alignParentStart="true"
-        android:layout_above="@id/cancel_edit_image_btn"/>
+        android:layout_above="@id/cancel_edit_image_btn"
+        app:labelVisibilityMode="labeled"/>
 
     <ImageView
         android:id="@+id/redo_edit_image"
@@ -95,7 +96,8 @@
         android:layout_above="@id/undo_edit_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="invisible">
+        android:visibility="invisible"
+        android:background="@color/white">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -105,7 +107,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Brightness"
-                android:background="@color/white"
                 android:textColor="@color/black"
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp"
@@ -115,7 +116,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Black White"
-                android:background="@color/white"
                 android:textColor="@color/black"
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp"
@@ -125,7 +125,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Due Tone"
-                android:background="@color/white"
                 android:textColor="@color/black"
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp"
@@ -135,7 +134,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Contrast"
-                android:background="@color/white"
                 android:textColor="@color/black"
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp"
@@ -145,7 +143,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Fill Light"
-                android:background="@color/white"
                 android:textColor="@color/black"
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp"
@@ -155,7 +152,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Fish eye"
-                android:background="@color/white"
                 android:textColor="@color/black"
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp"

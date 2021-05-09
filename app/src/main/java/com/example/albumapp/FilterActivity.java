@@ -2,7 +2,11 @@ package com.example.albumapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -10,8 +14,12 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.GridView;
 import android.widget.HorizontalScrollView;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.divyanshu.colorseekbar.ColorSeekBar;
@@ -19,6 +27,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 import ja.burhanrashid52.photoeditor.PhotoEditor;
 import ja.burhanrashid52.photoeditor.PhotoEditorView;
@@ -31,7 +40,7 @@ public class FilterActivity extends AppCompatActivity {
     SeekBar seekBarBrushSize;
     ColorSeekBar colorSeekBarPicker;
     HorizontalScrollView horizontalScrollViewFilter;
-
+    Dialog emoji_dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,7 +107,7 @@ public class FilterActivity extends AppCompatActivity {
                         seekBarBrushSize.setVisibility(View.INVISIBLE);
                         colorSeekBarPicker.setVisibility(View.INVISIBLE);
                         horizontalScrollViewFilter.setVisibility(View.INVISIBLE);
-                        Toast.makeText(FilterActivity.this, "Add Emoji", Toast.LENGTH_SHORT).show();
+                        show_emoji_picker(FilterActivity.this);
                         return true;
                     case R.id.nav_filter:
                         seekBarBrushSize.setVisibility(View.INVISIBLE);
@@ -203,5 +212,33 @@ public class FilterActivity extends AppCompatActivity {
                 mPhotoEditor.redo();
             }
         });
+    }
+
+    private void show_emoji_picker(Activity activity) {
+        ArrayList<String> emoji_list = PhotoEditor.getEmojis(FilterActivity.this);
+        //Toast.makeText(FilterActivity.this, emoji_list.get(0), Toast.LENGTH_SHORT).show();
+
+        emoji_dialog = new Dialog(activity);
+        emoji_dialog.setCancelable(true);
+        emoji_dialog.setContentView(R.layout.emojis_picker);
+        TextView tv = (TextView) emoji_dialog.findViewById(R.id.emoji_header);
+        tv.setText(R.string.emoji_select);
+        Button btndialog = (Button) emoji_dialog.findViewById(R.id.cancel_dialog);
+        btndialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                emoji_dialog.dismiss();
+            }
+        });
+        GridView gridView = (GridView) emoji_dialog.findViewById(R.id.grid);
+        gridView.setAdapter(new EmojisAdapter(this, emoji_list));
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mPhotoEditor.addEmoji(emoji_list.get(position));
+                emoji_dialog.dismiss();
+            }
+        });
+        emoji_dialog.show();
     }
 }

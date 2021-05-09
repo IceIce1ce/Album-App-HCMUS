@@ -426,7 +426,7 @@ public class FullScreenImageActivity extends AppCompatActivity {
     private void showCopyFileDialog(Activity activity, String target){
         dialog = new Dialog(activity);
         // dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         dialog.setContentView(R.layout.dialog_recycler);
 
         Button btndialog = (Button) dialog.findViewById(R.id.btndialog);

@@ -11,7 +11,7 @@
         android:title="Text Fields"/>
     <item
         android:id="@+id/nav_eraser"
-        android:icon="@drawable/ic_baseline_delete_24"
+        android:icon="@drawable/ic_eraser"
         android:title="Eraser"/>
     <item
         android:id="@+id/nav_emoji"

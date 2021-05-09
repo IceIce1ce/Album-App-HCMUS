@@ -199,6 +199,30 @@ public class FullScreenImageActivity2 extends AppCompatActivity {
                 .apply(new RequestOptions().placeholder(null).fitCenter())
                 .into(showImageFullscreen);
         txtNameImage.setText(getIntent().getStringExtra("display_image_name"));
+
+        showImageFullscreen.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int MIN_DISTANCE = 150;
+                switch (event.getAction()) {
+                    //case MotionEvent.ACTION_DOWN:
+                    case MotionEvent.ACTION_UP:
+                    //case MotionEvent.ACTION_CANCEL:
+                        PicturesActivity.statusToolbar = (PicturesActivity.statusToolbar + 1) % 2;
+                        if(PicturesActivity.statusToolbar == 1) {
+                            EnterFullScreenImage();
+                        }
+                        else{
+                            LeaveFullScreenImage();
+                        }
+                        break;
+                    default:
+                        return false;
+
+                }
+                return true;
+            }
+        });
         //swipe left and right to show new image in gallery
 
     }
@@ -362,14 +386,13 @@ public class FullScreenImageActivity2 extends AppCompatActivity {
     private void showCopyFileDialog(Activity activity, String target){
         dialog = new Dialog(activity);
         // dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         dialog.setContentView(R.layout.dialog_recycler);
 
         Button btndialog = (Button) dialog.findViewById(R.id.btndialog);
         btndialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 dialog.dismiss();
             }
         });

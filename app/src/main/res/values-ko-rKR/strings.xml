@@ -42,4 +42,5 @@
     <string name="no_date">날짜 헤더 없음</string>
     <string name="all" >모든 파일</string>
     <string name="dark_mode_switch" >다크 모드</string>
+    <string name="emoji_select" >이미지에 추가 할 그림 이모티콘을 선택하세요.</string>
 </resources>

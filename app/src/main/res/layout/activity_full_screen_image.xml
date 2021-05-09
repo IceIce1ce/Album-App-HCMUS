@@ -46,6 +46,7 @@
             app:menu="@menu/nav_bottom"
             android:background="@color/white"
             app:itemTextColor="@color/black"
-            app:itemIconTint="@color/black"/>
+            app:itemIconTint="@color/black"
+            app:labelVisibilityMode="labeled"/>
     </LinearLayout>
 </RelativeLayout>
