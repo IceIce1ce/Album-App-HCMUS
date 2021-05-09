@@ -123,7 +123,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
         //set default state when app start
         if(savedInstanceState == null){
+            /*
             pictures = PicturesActivity.newInstance();
+            refresh_all();
+            toolBar.setTitle(R.string.all);*/
+            ft = getSupportFragmentManager().beginTransaction();
+            pictures = PicturesActivity.newInstance();
+            ft.replace(R.id.content_frame, pictures);
+            ft.commit();
             refresh_all();
             toolBar.setTitle(R.string.all);
         }
@@ -451,6 +458,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
         }
     }*/
+
     private void refresh_all(){
         ft = getSupportFragmentManager().beginTransaction();
         if(this.view_mode_has_date){
@@ -508,7 +516,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.commit();
         }
         else if(id == R.id.nav_category_image){
-            toolBar.setTitle(R.string.Category_Image);
+            //toolBar.setTitle(R.string.Category_Image);
+            startActivity(new Intent(MainActivity.this, CategoryImageActivity.class));
         }
         else if (id == R.id.nav_settings) {
             startActivity(new Intent(MainActivity.this, SettingsActivity.class));

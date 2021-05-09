@@ -14,31 +14,32 @@
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
 
     <application
-        android:process=":location"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:process=":location"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AlbumApp">
+        <activity android:name=".CategoryImageActivity" />
         <activity android:name=".FilterActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".SlideshowActivity" />
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" /> <!-- optional (needed if default theme has no action bar) -->
-        <activity android:name=".FullScreenImageActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".FullScreenImageActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".OpenImageFileActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter tools:ignore="AppLinkUrlError">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="image/*"/>
+                <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
         <activity android:name=".OpenVideoFileActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter tools:ignore="AppLinkUrlError">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="video/*"/>
+                <data android:mimeType="video/*" />
             </intent-filter>
         </activity>
         <activity android:name=".FullScreenImageActivity2" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -48,8 +49,7 @@
         <activity android:name=".SettingsActivity" />
         <activity android:name=".SetPasswordActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".PasswordActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".MainActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:process=":location"/>
+        <activity android:name=".MainActivity" android:process=":location" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".GifIntroActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".AlbumDateActivity" />
         <activity android:name=".SplashScreenActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar">
@@ -59,6 +59,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--use with google vision
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="face" />-->
+        <!--use with firebase mlkit-->
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:value="face"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"
