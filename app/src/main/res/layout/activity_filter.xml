@@ -38,9 +38,9 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         app:menu="@menu/nav_bottom_filter"
-        android:background="#66000000"
-        app:itemTextColor="@color/white"
-        app:itemIconTint="@color/white"
+        android:background="@color/white"
+        app:itemTextColor="@color/black"
+        app:itemIconTint="@color/black"
         android:layout_alignParentStart="true"
         android:layout_above="@id/cancel_edit_image_btn"/>
 
@@ -52,6 +52,8 @@
         android:layout_alignParentEnd="true"
         android:src="@drawable/ic_baseline_redo_24"
         android:layout_marginEnd="30dp"
+        android:background="@color/white"
+        app:tint="@color/black"
         android:padding="7sp"
         android:layout_marginBottom="10dp"/>
 
@@ -63,6 +65,8 @@
         android:layout_alignParentEnd="true"
         android:src="@drawable/ic_baseline_undo_24"
         android:padding="7sp"
+        android:background="@color/white"
+        app:tint="@color/black"
         android:layout_marginEnd="70dp"
         android:layout_marginBottom="10dp"/>
 
@@ -101,7 +105,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Brightness"
-                android:textColor="@color/white"
+                android:background="@color/white"
+                android:textColor="@color/black"
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp"
                 android:textSize="17sp"/>
@@ -110,7 +115,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Black White"
-                android:textColor="@color/white"
+                android:background="@color/white"
+                android:textColor="@color/black"
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp"
                 android:textSize="17sp"/>
@@ -119,7 +125,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Due Tone"
-                android:textColor="@color/white"
+                android:background="@color/white"
+                android:textColor="@color/black"
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp"
                 android:textSize="17sp"/>
@@ -128,7 +135,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Contrast"
-                android:textColor="@color/white"
+                android:background="@color/white"
+                android:textColor="@color/black"
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp"
                 android:textSize="17sp"/>
@@ -137,7 +145,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Fill Light"
-                android:textColor="@color/white"
+                android:background="@color/white"
+                android:textColor="@color/black"
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp"
                 android:textSize="17sp"/>
@@ -146,7 +155,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Fish eye"
-                android:textColor="@color/white"
+                android:background="@color/white"
+                android:textColor="@color/black"
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginEnd="10dp"

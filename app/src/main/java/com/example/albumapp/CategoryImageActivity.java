@@ -60,14 +60,20 @@ public class CategoryImageActivity extends AppCompatActivity{
             public void onClick(View v) {
                 Gson gson = new Gson();
                 String result = readFileAsString("CATEGORY_IMAGE_DATA.txt");
-                Type type = new TypeToken<HashMap<String, String>>() {}.getType();
-                HashMap<String, String> backup_result = gson.fromJson(result, type);
-                //Toast.makeText(CategoryImageActivity.this, backup_result.toString(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(CategoryImageActivity.this, ShowingCategoryActivity.class);
-                Bundle args = new Bundle();
-                args.putSerializable("RESULT_HASHMAP", (Serializable)backup_result);
-                intent.putExtra("BUNDLE",args);
-                startActivity(intent);
+                if(result == null){
+                    Toast.makeText(CategoryImageActivity.this, "No backup file was found!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Type type = new TypeToken<HashMap<String, String>>() {
+                    }.getType();
+                    HashMap<String, String> backup_result = gson.fromJson(result, type);
+                    //Toast.makeText(CategoryImageActivity.this, backup_result.toString(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(CategoryImageActivity.this, ShowingCategoryActivity.class);
+                    Bundle args = new Bundle();
+                    args.putSerializable("RESULT_HASHMAP", (Serializable) backup_result);
+                    intent.putExtra("BUNDLE", args);
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -116,6 +122,7 @@ public class CategoryImageActivity extends AppCompatActivity{
 
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
         return stringBuilder.toString();
     }
