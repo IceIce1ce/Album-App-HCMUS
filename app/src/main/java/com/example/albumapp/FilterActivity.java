@@ -1,5 +1,6 @@
 package com.example.albumapp;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,6 +34,7 @@ import java.util.ArrayList;
 import ja.burhanrashid52.photoeditor.PhotoEditor;
 import ja.burhanrashid52.photoeditor.PhotoEditorView;
 import ja.burhanrashid52.photoeditor.PhotoFilter;
+import ja.burhanrashid52.photoeditor.TextStyleBuilder;
 
 public class FilterActivity extends AppCompatActivity {
     private PhotoEditorView mPhotoEditorView;
@@ -95,7 +98,22 @@ public class FilterActivity extends AppCompatActivity {
                         seekBarBrushSize.setVisibility(View.INVISIBLE);
                         colorSeekBarPicker.setVisibility(View.INVISIBLE);
                         horizontalScrollViewFilter.setVisibility(View.INVISIBLE);
-                        Toast.makeText(FilterActivity.this, "Add Text field", Toast.LENGTH_SHORT).show();
+                        /*
+                        TextStyleBuilder b = new TextStyleBuilder();
+                        b.withTextColor(Color.RED);
+                        mPhotoEditor.addText("inputText", b);
+                        */
+                        TextEditorDialogFragment textEditorDialogFragment = TextEditorDialogFragment.show(FilterActivity.this);
+                        textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
+                            @Override
+                            public void onDone(String inputText, int colorCode) {
+                                final TextStyleBuilder styleBuilder = new TextStyleBuilder();
+                                styleBuilder.withTextColor(colorCode);
+
+                                mPhotoEditor.addText(inputText, styleBuilder);
+                            }
+                        });
+                        //Toast.makeText(FilterActivity.this, "Add Text field", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.nav_eraser:
                         seekBarBrushSize.setVisibility(View.INVISIBLE);
