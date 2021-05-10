@@ -10,6 +10,10 @@
         android:icon="@drawable/ic_baseline_crop_24"
         android:title="Crop"/>
     <item
+        android:id="@+id/nav_adjust"
+        android:icon="@drawable/ic_baseline_settings_brightness_24"
+        android:title="Adjust"/>
+    <item
         android:id="@+id/nav_share"
         android:icon="@drawable/ic_baseline_share_24"
         android:title="Share"/>

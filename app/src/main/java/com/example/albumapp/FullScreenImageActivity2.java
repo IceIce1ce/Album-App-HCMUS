@@ -184,8 +184,15 @@ public class FullScreenImageActivity2 extends AppCompatActivity {
                         });
                         dialogDeleteSingle.show();
                         return true;
+                    case R.id.nav_adjust:
+                        String pathImageAdjust = Objects.requireNonNull(getIntent().getStringExtra("path"));
+                        Intent adjust_intent = new Intent(FullScreenImageActivity2.this, AdjustImageActivity.class);
+                        adjust_intent.putExtra("pathAdjust", pathImageAdjust);
+                        startActivity(adjust_intent);
+                        return true;
+                    default:
+                        return false;
                 }
-                return false;
             }
         });
         //position = Objects.requireNonNull(getIntent().getExtras()).getInt("id");

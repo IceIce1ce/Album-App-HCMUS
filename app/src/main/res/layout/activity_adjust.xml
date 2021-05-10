@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FilterActivity"
+    android:background="@color/white">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/cancel_adjust_image_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_alignParentBottom="true"
+        android:text="Cancel"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/save_adjust_image_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Save"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="10dp"/>
+
+    <ImageView
+        android:id="@+id/adjust_imgview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/linear_seekbars"/>
+
+    <LinearLayout
+        android:id="@+id/linear_seekbars"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_above="@id/cancel_adjust_image_btn"
+        android:background="@color/white">
+        <TextView
+            android:id="@+id/tv_brightness"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:padding="10sp"/>
+
+        <SeekBar
+            android:id="@+id/seekbar_brightness"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:max="255"
+            android:min="-255"
+            android:progress="0"/>
+        <TextView
+            android:id="@+id/tv_constrast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:padding="10sp"/>
+
+        <SeekBar
+            android:id="@+id/seekbar_contrast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:max="10"
+            android:min="0"
+            android:progress="1"/>
+    </LinearLayout>
+
+
+
+</RelativeLayout>

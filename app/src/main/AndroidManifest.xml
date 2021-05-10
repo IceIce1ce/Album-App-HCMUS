@@ -24,6 +24,7 @@
         android:theme="@style/Theme.AlbumApp">
         <activity android:name=".CategoryImageActivity" />
         <activity android:name=".FilterActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".AdjustImageActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".SlideshowActivity" />
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" /> <!-- optional (needed if default theme has no action bar) -->

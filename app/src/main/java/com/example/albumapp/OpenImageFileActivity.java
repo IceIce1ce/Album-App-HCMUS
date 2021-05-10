@@ -184,8 +184,15 @@ public class OpenImageFileActivity  extends AppCompatActivity {
                         });
                         dialogDeleteSingle.show();
                         return true;
+                    case R.id.nav_adjust:
+                        String pathImageAdjust = Objects.requireNonNull(getIntent().getStringExtra("path"));
+                        Intent adjust_intent = new Intent(OpenImageFileActivity.this, AdjustImageActivity.class);
+                        adjust_intent.putExtra("pathAdjust", pathImageAdjust);
+                        startActivity(adjust_intent);
+                        return true;
+                    default:
+                        return false;
                 }
-                return false;
             }
         });
         Glide.with(getApplicationContext()).asBitmap().load(cur_img_path)
