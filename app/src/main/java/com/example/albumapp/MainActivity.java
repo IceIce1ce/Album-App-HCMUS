@@ -527,8 +527,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.commit();
         }
         else if(id == R.id.nav_category_image){
-            //toolBar.setTitle(R.string.Category_Image);
             startActivity(new Intent(MainActivity.this, CategoryImageActivity.class));
+        }
+        else if(id == R.id.nav_location_tag){
+            startActivity(new Intent(MainActivity.this, ImageLocationMarkerActivity.class));
         }
         else if (id == R.id.nav_settings) {
             startActivity(new Intent(MainActivity.this, SettingsActivity.class));

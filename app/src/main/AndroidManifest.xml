@@ -5,12 +5,13 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera2" />
-    <!-- show location for captured image -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!-- permission for deleting multiple file -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="29" tools:ignore="ScopedStorage" />
-    <!-- set image wallpaper -->
+
+    <uses-feature android:name="android.hardware.camera2" /> <!-- show location for captured image -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- permission for deleting multiple file -->
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="29"
+        tools:ignore="ScopedStorage" /> <!-- set image wallpaper -->
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
 
     <application
@@ -22,6 +23,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AlbumApp">
+        <activity android:name=".ImageLocationMarkerActivity"/>
         <activity android:name=".CategoryImageActivity" />
         <activity android:name=".FilterActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".AdjustImageActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -32,14 +34,18 @@
         <activity android:name=".OpenImageFileActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter tools:ignore="AppLinkUrlError">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
         <activity android:name=".OpenVideoFileActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter tools:ignore="AppLinkUrlError">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="video/*" />
             </intent-filter>
         </activity>
@@ -53,7 +59,7 @@
         <activity android:name=".MainActivity" android:process=":location" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".GifIntroActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".AlbumDateActivity" />
-        <activity android:name=".ShowingCategoryActivity"/>
+        <activity android:name=".ShowingCategoryActivity" />
         <activity android:name=".SplashScreenActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -61,15 +67,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <!--use with google vision
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
-            android:value="face" />-->
+            android:value="face" />
+        -->
         <!--use with firebase mlkit-->
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
-            android:value="face"/>
+            android:value="face" />
+        <!--map marker-->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyD6DZs6MLX3cIR5jkqFkFaOzcXs3YFu2rw" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

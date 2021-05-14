@@ -34,6 +34,10 @@
             android:id="@+id/nav_category_image"
             android:icon="@drawable/ic_baseline_category_24"
             android:title="@string/Category_Image" />
+        <item
+            android:id="@+id/nav_location_tag"
+            android:icon="@drawable/ic_baseline_location_on_24"
+            android:title="Location Tag"/>
     </group>
     <item
         android:id="@+id/nav_dark_mode_switch"

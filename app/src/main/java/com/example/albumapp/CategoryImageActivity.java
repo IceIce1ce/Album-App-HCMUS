@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -49,6 +50,8 @@ public class CategoryImageActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_image);
+        getSupportActionBar().setTitle("Category Image");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         findViewById(R.id.start_category).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,6 +79,16 @@ public class CategoryImageActivity extends AppCompatActivity{
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+            default: return false;
+        }
     }
 
     //https://stackoverflow.com/questions/5960247/convert-bitmap-array-to-yuv-ycbcr-nv21
