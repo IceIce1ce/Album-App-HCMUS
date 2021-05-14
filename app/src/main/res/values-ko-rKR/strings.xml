@@ -28,7 +28,7 @@
     <string name="set_pin">핀 설정</string>
     <string name="delete_pin">핀 삭제</string>
     <string name="change_pin">핀 변경</string>
-    <string name="album_img_number">이미지 </string>
+    <string name="album_file_number">"파일 "</string>
     <!--language select dialog spinner-->
     <string-array name="language_select">
         <item>영어</item>
@@ -43,4 +43,5 @@
     <string name="all" >모든 파일</string>
     <string name="dark_mode_switch" >다크 모드</string>
     <string name="emoji_select" >이미지에 추가 할 그림 이모티콘을 선택하세요.</string>
+    <string name="Map" >지도</string>
 </resources>

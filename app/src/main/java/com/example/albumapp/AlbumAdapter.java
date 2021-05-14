@@ -43,7 +43,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
         else
             holder.sdcard_img.setVisibility(View.INVISIBLE);
         holder.album_title.setText(item.getAlbum_name());
-        holder.album_img_number.setText(String.valueOf(img_list.size()) + " " + context.getResources().getString(R.string.album_img_number));
+        holder.album_img_number.setText(String.valueOf(img_list.size()) + " " + context.getResources().getString(R.string.album_file_number));
         Glide.with(context)
                 .load(img_list.get(0))
                 .apply(RequestOptions.centerCropTransform())

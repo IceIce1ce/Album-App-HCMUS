@@ -28,7 +28,7 @@
     <string name="set_pin">定位销</string>
     <string name="delete_pin">删除图钉</string>
     <string name="change_pin">换针</string>
-    <string name="album_img_number">张图片 </string>
+    <string name="album_file_number">档案</string>
     <!--language select dialog spinner-->
     <string-array name="language_select">
         <item>英语</item>
@@ -43,4 +43,5 @@
     <string name="all" >全部文件</string>
     <string name="dark_mode_switch" >暗模式</string>
     <string name="emoji_select" >选择一个表情符号添加到图像</string>
+    <string name="Map" >地图</string>
 </resources>

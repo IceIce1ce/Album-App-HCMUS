@@ -56,7 +56,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/album_title"
-                    android:text="@string/album_img_number"
+                    android:text="@string/album_file_number"
                     android:textColor="@color/black"
                     android:layout_alignParentBottom="true"
                     />

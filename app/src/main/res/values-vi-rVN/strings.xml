@@ -28,7 +28,7 @@
     <string name="set_pin">Thiết lập mã pin</string>
     <string name="delete_pin">Xóa mã pin</string>
     <string name="change_pin">Thay đổi mã pin</string>
-    <string name="album_img_number">Ảnh</string>
+    <string name="album_file_number">Tệp</string>
     <!--language select dialog spinner-->
     <string-array name="language_select">
         <item>Tiếng Anh</item>
@@ -43,4 +43,5 @@
     <string name="all" >Tất cả các tệp</string>
     <string name="dark_mode_switch" >Chế độ tối</string>
     <string name="emoji_select" >Chọn một biểu tượng cảm xúc để thêm vào hình ảnh</string>
+    <string name="Map" >Bản Đồ</string>
 </resources>
