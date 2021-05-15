@@ -225,13 +225,23 @@ public class PicturesActivity extends Fragment {
                                 }
                                 //also delete multi images from wishlist
                                 for(int i = 0; i < imageUriArray.size(); i++){
+                                    if(!FavouriteActivity.favoriteImages.isEmpty()){
+                                        FavouriteActivity.favoriteImages.remove(imageUriArray.get(i).toString());
+                                        SharedPreferences sharedPreferencesRemoveWishList = PreferenceManager.getDefaultSharedPreferences(getContext());
+                                        SharedPreferences.Editor editorRemoveWishList = sharedPreferencesRemoveWishList.edit();
+                                        Gson gsonRemoveWishList = new Gson();
+                                        String jsonRemoveWishList = gsonRemoveWishList.toJson(FavouriteActivity.favoriteImages);
+                                        editorRemoveWishList.putString("savedFavoriteImages", jsonRemoveWishList);
+                                        editorRemoveWishList.apply();
+                                    }
+                                    /*
                                     FavouriteActivity.favoriteImages.remove(imageUriArray.get(i).toString());
                                     SharedPreferences sharedPreferencesRemoveWishList = PreferenceManager.getDefaultSharedPreferences(getContext());
                                     SharedPreferences.Editor editorRemoveWishList = sharedPreferencesRemoveWishList.edit();
                                     Gson gsonRemoveWishList = new Gson();
                                     String jsonRemoveWishList = gsonRemoveWishList.toJson(FavouriteActivity.favoriteImages);
                                     editorRemoveWishList.putString("savedFavoriteImages", jsonRemoveWishList);
-                                    editorRemoveWishList.apply();
+                                    editorRemoveWishList.apply();*/
                                 }
                                 Toast.makeText(getContext(), "Delete images successfully", Toast.LENGTH_SHORT).show();
                                 mode.finish();

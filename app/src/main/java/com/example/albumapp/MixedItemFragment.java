@@ -505,6 +505,7 @@ public class MixedItemFragment extends Fragment implements MixedItemClickListene
                                         checkedItemDelete);
                                 itemAdapter.setItemClickListener(MixedItemFragment.this);
                                 rv.setAdapter(itemAdapter);*/
+                                mode.finish();
                             }
                         });
                         dialogDeleteMixedItem.setButton(AlertDialog.BUTTON_NEGATIVE, "CANCEL", new DialogInterface.OnClickListener() {

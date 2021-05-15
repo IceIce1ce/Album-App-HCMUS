@@ -103,6 +103,8 @@ public class AdjustImageActivity extends AppCompatActivity {
                         getApplicationContext().sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.fromFile(outFile)));
                     }
                     Toast.makeText(AdjustImageActivity.this, "Save adjusted image successfully as\n" + folder + File.separator + fileName , Toast.LENGTH_SHORT).show();
+                    //finish();
+                    startActivity(new Intent(AdjustImageActivity.this, MainActivity.class));
                     finish();
                 } catch (Exception e) {
                     e.printStackTrace();

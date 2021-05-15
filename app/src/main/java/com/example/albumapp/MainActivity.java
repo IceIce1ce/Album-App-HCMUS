@@ -182,22 +182,57 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         try{
                             Thread.sleep(300);
                             if(currentFragment == 0){
-                                refresh_all();
-                                toolBar.setTitle(R.string.all);
+                                //
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        refresh_all();
+                                        toolBar.setTitle(R.string.all);
+                                    }
+                                });
+                                //
+                                //refresh_all();
+                                //toolBar.setTitle(R.string.all);
                             }
                             if(currentFragment == 1){
+                                //
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ft = getSupportFragmentManager().beginTransaction();
+                                        pictures = PicturesActivity.newInstance();
+                                        ft.replace(R.id.content_frame, pictures);
+                                        ft.commit();
+                                        toolBar.setTitle(R.string.Pictures);
+                                    }
+                                });
+                                //
+                                /*
                                 ft = getSupportFragmentManager().beginTransaction();
                                 pictures = PicturesActivity.newInstance();
                                 ft.replace(R.id.content_frame, pictures);
                                 ft.commit();
-                                toolBar.setTitle(R.string.Pictures);
+                                toolBar.setTitle(R.string.Pictures);*/
                             }
                             else if(currentFragment == 2){
+                                //
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ft = getSupportFragmentManager().beginTransaction();
+                                        videos = videoActivity.newInstance();
+                                        ft.replace(R.id.content_frame, videos);
+                                        ft.commit();
+                                        toolBar.setTitle(R.string.Videos);
+                                    }
+                                });
+                                //
+                                /*
                                 ft = getSupportFragmentManager().beginTransaction();
                                 videos = videoActivity.newInstance();
                                 ft.replace(R.id.content_frame, videos);
                                 ft.commit();
-                                toolBar.setTitle(R.string.Videos);
+                                toolBar.setTitle(R.string.Videos);*/
                             }
                         }
                         catch(InterruptedException e){
