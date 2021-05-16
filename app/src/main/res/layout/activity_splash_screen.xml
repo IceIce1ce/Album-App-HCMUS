@@ -5,7 +5,5 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SplashScreenActivity"
-    android:background="@drawable/background2">
-
+    tools:context=".SplashScreenActivity">
 </RelativeLayout>

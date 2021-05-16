@@ -209,7 +209,6 @@ public class FullScreenImageActivity extends AppCompatActivity {
                 .into(showImageFullscreen);
         txtNameImage.setText(getIntent().getStringExtra("display_image_name"));
         //swipe left and right to show new image in gallery
-
         showImageFullscreen.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -269,7 +268,6 @@ public class FullScreenImageActivity extends AppCompatActivity {
                 return false;
             }
         });
-
     }
 
     @Override
@@ -363,9 +361,31 @@ public class FullScreenImageActivity extends AppCompatActivity {
                 return true;
             case R.id.action_rotate_image_left:
                 showImageFullscreen.setRotation(showImageFullscreen.getRotation() + 90);
+                //scale image when rotate left
+                if(showImageFullscreen.getRotation() % 180.0 == 0.0){
+                    Glide.with(getApplicationContext()).asBitmap().load(PicturesActivity.images.get(position))
+                            .apply(new RequestOptions().placeholder(null).fitCenter())
+                            .into(showImageFullscreen);
+                }
+                else{
+                    Glide.with(getApplicationContext()).asBitmap().load(PicturesActivity.images.get(position))
+                            .apply(new RequestOptions().placeholder(null).fitCenter()).override(1100, 1080)
+                            .into(showImageFullscreen);
+                }
                 return true;
             case R.id.action_rotate_image_right:
                 showImageFullscreen.setRotation(showImageFullscreen.getRotation() - 90);
+                //scale image when rotate right
+                if(showImageFullscreen.getRotation() % -180.0 == 0.0){
+                    Glide.with(getApplicationContext()).asBitmap().load(PicturesActivity.images.get(position))
+                            .apply(new RequestOptions().placeholder(null).fitCenter())
+                            .into(showImageFullscreen);
+                }
+                else{
+                    Glide.with(getApplicationContext()).asBitmap().load(PicturesActivity.images.get(position))
+                            .apply(new RequestOptions().placeholder(null).fitCenter()).override(1100, 1080)
+                            .into(showImageFullscreen);
+                }
                 return true;
             case R.id.action_set_image_background:
                 WallpaperManager wallpaperManager = WallpaperManager.getInstance(getApplicationContext());
